@@ -286,5 +286,7 @@ return [
 	'Šírka loga (px)' => 'Logó szélessége (px)',
 	'💡 Šírka loga v pixeloch (20–100 px). Výška sa prispôsobí automaticky.' => '💡 A logó szélessége pixelben (20–100 px). A magasság automatikusan igazodik.',
 	'Hotové predvoľby jedným kliknutím doplnia bežné Google a Meta cookies spolu so súvisiacimi pravidlami blokovania.' => 'A kész előbeállítások egy kattintással hozzáadják a gyakori Google- és Meta-cookie-kat a kapcsolódó blokkolási szabályokkal együtt.',
+	'↺ Obnoviť predvolené' => '↺ Alapértelmezettek visszaállítása',
+	'Obnoviť predvolenú farbu' => 'Alapértelmezett szín visszaállítása',
 ];
 

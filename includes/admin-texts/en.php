@@ -75,4 +75,6 @@ return [
 	'Uložiť zmeny' => 'Save changes',
 	'Šírka loga (px)' => 'Logo width (px)',
 	'💡 Šírka loga v pixeloch (20–100 px). Výška sa prispôsobí automaticky.' => '💡 Logo width in pixels (20–100 px). Height adjusts automatically.',
+	'↺ Obnoviť predvolené' => '↺ Restore defaults',
+	'Obnoviť predvolenú farbu' => 'Restore default color',
 ];

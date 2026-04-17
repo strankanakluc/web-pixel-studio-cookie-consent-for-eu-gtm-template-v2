@@ -109,6 +109,7 @@ class CCWPS_Admin {
 			'cookies'     => $this->cookie_manager->get_grouped(),
 			'blockRules'  => $this->block_manager->get_all(),
 			'settings'    => $this->settings->get_all(),
+			'appearanceDefaults' => $this->get_appearance_defaults(),
 		] );
 
 		if ( $locale_switched ) {
@@ -369,6 +370,7 @@ class CCWPS_Admin {
 		$s = $this->settings;
 		$font_choices = $this->get_font_family_choices();
 		$current_font = (string) $s->get( 'font_family' );
+		$appearance_defaults = $this->get_appearance_defaults();
 
 		if ( '' !== $current_font && ! $this->font_choice_exists( $font_choices, $current_font ) && $this->is_valid_font_family_choice( $current_font ) ) {
 			$this->add_font_choice( $font_choices, 'current', $current_font );
@@ -586,7 +588,7 @@ class CCWPS_Admin {
 				] as $k => [ $lbl, $desc, $def ] ) : ?>
 				<tr>
 					<th><label for="<?php echo esc_attr( $k ); ?>"><?php echo esc_html( $lbl ); ?></label><p class="desc"><?php echo esc_html( $desc ); ?></p></th>
-					<td><input type="text" name="<?php echo esc_attr( $k ); ?>" id="<?php echo esc_attr( $k ); ?>" value="<?php echo esc_attr( $s->get( $k ) ?: $def ); ?>" class="ccwps-color-picker"></td>
+					<td><?php $this->render_color_picker_with_reset( $k, (string) ( $s->get( $k ) ?: $def ), $def ); ?></td>
 				</tr>
 				<?php endforeach; ?>
 			</table>
@@ -606,7 +608,7 @@ class CCWPS_Admin {
 				foreach ( $btn_primary as $k => [ $lbl, $def ] ) : ?>
 				<tr>
 					<th><label for="<?php echo esc_attr( $k ); ?>"><?php echo esc_html( $lbl ); ?></label></th>
-					<td><input type="text" name="<?php echo esc_attr( $k ); ?>" id="<?php echo esc_attr( $k ); ?>" value="<?php echo esc_attr( $s->get( $k ) ?: $def ); ?>" class="ccwps-color-picker"></td>
+					<td><?php $this->render_color_picker_with_reset( $k, (string) ( $s->get( $k ) ?: $def ), $def ); ?></td>
 				</tr>
 				<?php endforeach; ?>
 			</table>
@@ -626,7 +628,7 @@ class CCWPS_Admin {
 				foreach ( $btn_ghost as $k => [ $lbl, $def ] ) : ?>
 				<tr>
 					<th><label for="<?php echo esc_attr( $k ); ?>"><?php echo esc_html( $lbl ); ?></label></th>
-					<td><input type="text" name="<?php echo esc_attr( $k ); ?>" id="<?php echo esc_attr( $k ); ?>" value="<?php echo esc_attr( $s->get( $k ) ?: $def ); ?>" class="ccwps-color-picker"></td>
+					<td><?php $this->render_color_picker_with_reset( $k, (string) ( $s->get( $k ) ?: $def ), $def ); ?></td>
 				</tr>
 				<?php endforeach; ?>
 			</table>
@@ -649,11 +651,11 @@ class CCWPS_Admin {
 					<td>
 						<?php if ( $k === 'btn_outline_bg' ) : ?>
 							<div class="ccwps-color-with-transparent">
-								<input type="text" name="<?php echo esc_attr( $k ); ?>" id="<?php echo esc_attr( $k ); ?>" value="<?php echo esc_attr( $s->get( $k ) ?: $def ); ?>" class="ccwps-color-picker">
+								<?php $this->render_color_picker_with_reset( $k, (string) ( $s->get( $k ) ?: $def ), $def ); ?>
 								<label style="margin-left:8px;font-size:12px;color:#6b7280;"><input type="checkbox" class="ccwps-transparent-check" data-target="<?php echo esc_attr( $k ); ?>" <?php checked( !$s->get( $k ) || $s->get( $k ) === 'transparent', true ); ?>> <?php esc_html_e( 'Priehľadné', 'cookie-consent-webpixelstudio' ); ?></label>
 							</div>
 						<?php else : ?>
-							<input type="text" name="<?php echo esc_attr( $k ); ?>" id="<?php echo esc_attr( $k ); ?>" value="<?php echo esc_attr( $s->get( $k ) ?: $def ); ?>" class="ccwps-color-picker">
+							<?php $this->render_color_picker_with_reset( $k, (string) ( $s->get( $k ) ?: $def ), $def ); ?>
 						<?php endif; ?>
 					</td>
 				</tr>
@@ -680,7 +682,7 @@ class CCWPS_Admin {
 				foreach ( $modal_colors as $k => [ $lbl, $def ] ) : ?>
 				<tr>
 					<th><label for="<?php echo esc_attr( $k ); ?>"><?php echo esc_html( $lbl ); ?></label></th>
-					<td><input type="text" name="<?php echo esc_attr( $k ); ?>" id="<?php echo esc_attr( $k ); ?>" value="<?php echo esc_attr( $s->get( $k ) ?: $def ); ?>" class="ccwps-color-picker"></td>
+					<td><?php $this->render_color_picker_with_reset( $k, (string) ( $s->get( $k ) ?: $def ), $def ); ?></td>
 				</tr>
 				<?php endforeach; ?>
 				<tr>
@@ -691,9 +693,76 @@ class CCWPS_Admin {
 		</div>
 
 		<div class="ccwps-form-actions">
+			<button type="button" class="button ccwps-btn-secondary-action ccwps-reset-appearance"><?php echo esc_html( $this->tx( '↺ Obnoviť predvolené' ) ); ?></button>
 			<button type="button" class="button button-primary ccwps-save-settings ccwps-btn-primary-action"><?php echo esc_html( $this->t( 'admin_btn_save_appearance', 'Uložiť vzhľad' ) ); ?></button>
 		</div>
 		</form>
+		<?php
+	}
+
+	private function get_appearance_defaults(): array {
+		return [
+			'banner_layout'       => 'box',
+			'banner_position'     => 'middle-center',
+			'banner_show_icon'    => '1',
+			'icon_position'       => 'bottom-left',
+			'icon_type'           => 'cookie',
+			'icon_custom_url'     => '',
+			'banner_logo_show'    => '0',
+			'banner_logo_url'     => '',
+			'banner_logo_link_url'=> '',
+			'banner_logo_width'   => '40',
+			'font_family'         => 'inherit',
+			'btn_border_radius'   => '8',
+			'banner_border_radius'=> '12',
+			'modal_border_radius' => '12',
+			'bg_color'            => '#ffffff',
+			'text_color'          => '#111827',
+			'primary_color'       => '#1a73e8',
+			'btn_primary_bg'      => '#1a73e8',
+			'btn_primary_bg_hv'   => '#1557b0',
+			'btn_primary_txt'     => '#ffffff',
+			'btn_text_color'      => '#ffffff',
+			'btn_ghost_bg'        => '#1a73e8',
+			'btn_ghost_bg_hv'     => '#1557b0',
+			'btn_ghost_txt'       => '#ffffff',
+			'btn_ghost_txt_hv'    => '#ffffff',
+			'btn_outline_bg'      => 'transparent',
+			'btn_outline_bg_hv'   => '#1a73e8',
+			'btn_outline_txt'     => '#1a73e8',
+			'btn_outline_border'  => '#1a73e8',
+			'modal_bg'            => '#ffffff',
+			'modal_text'          => '#111827',
+			'modal_header_bg'     => '#ffffff',
+			'modal_footer_bg'     => '#f9fafb',
+			'modal_border'        => '#e5e7eb',
+			'cat_header_bg'       => '#f9fafb',
+			'cat_header_bg_hv'    => '#f0f2f5',
+			'toggle_on_color'     => '#1a73e8',
+			'always_on_color'     => '#1a73e8',
+		];
+	}
+
+	private function render_color_picker_with_reset( string $key, string $value, string $default ): void {
+		?>
+		<div class="ccwps-color-field-wrap">
+			<input
+				type="text"
+				name="<?php echo esc_attr( $key ); ?>"
+				id="<?php echo esc_attr( $key ); ?>"
+				value="<?php echo esc_attr( $value ); ?>"
+				class="ccwps-color-picker"
+				data-default-color="<?php echo esc_attr( $default ); ?>"
+			>
+			<button
+				type="button"
+				class="button ccwps-color-reset"
+				data-target="<?php echo esc_attr( $key ); ?>"
+				data-default="<?php echo esc_attr( $default ); ?>"
+				title="<?php echo esc_attr( $this->tx( 'Obnoviť predvolenú farbu' ) ); ?>"
+				aria-label="<?php echo esc_attr( $this->tx( 'Obnoviť predvolenú farbu' ) ); ?>"
+			>↺</button>
+		</div>
 		<?php
 	}
 

@@ -183,7 +183,7 @@
 	line-height: 1.75;
 	max-width: 92%;
 	margin-bottom: 24px;
-	color: color-mix(in srgb, var(--ccwps-muted) 70%, #1a2843 30%);
+	color: color-mix(in srgb, var(--ccwps-muted) 70%, #1a2843 100%);
 }
 .ccwps-banner.layout-cloud .ccwps-banner-actions {
 	gap: 12px;

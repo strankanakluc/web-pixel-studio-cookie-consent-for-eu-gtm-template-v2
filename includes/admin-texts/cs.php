@@ -286,5 +286,7 @@ return [
 	'Šírka loga (px)' => 'Šířka loga (px)',
 	'💡 Šírka loga v pixeloch (20–100 px). Výška sa prispôsobí automaticky.' => '💡 Šířka loga v pixelech (20–100 px). Výška se přizpůsobí automaticky.',
 	'Hotové predvoľby jedným kliknutím doplnia bežné Google a Meta cookies spolu so súvisiacimi pravidlami blokovania.' => 'Hotové předvolby jedním kliknutím doplní běžné Google a Meta cookies spolu se souvisejícími pravidly blokování.',
+	'↺ Obnoviť predvolené' => '↺ Obnovit výchozí',
+	'Obnoviť predvolenú farbu' => 'Obnovit výchozí barvu',
 ];
 

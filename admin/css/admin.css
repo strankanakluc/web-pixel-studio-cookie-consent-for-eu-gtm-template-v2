@@ -1068,6 +1068,33 @@ span.required { color: var(--cc-red); }
 }
 
 /* ---- Color with transparent option ---- */
+.ccwps-color-field-wrap {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.ccwps-color-reset {
+	min-width: 32px !important;
+	height: 30px !important;
+	padding: 0 9px !important;
+	line-height: 1 !important;
+	font-size: 16px !important;
+	font-weight: 700 !important;
+	color: var(--cc-gray-600) !important;
+	border-color: var(--cc-gray-300) !important;
+	border-radius: 8px !important;
+	background: #fff !important;
+	box-shadow: none !important;
+}
+
+.ccwps-color-reset:hover,
+.ccwps-color-reset:focus {
+	color: var(--cc-indigo) !important;
+	border-color: #b8d0ff !important;
+	background: #f8fbff !important;
+}
+
 .ccwps-color-with-transparent {
 	display: flex;
 	align-items: center;

@@ -2,7 +2,7 @@
 (function ($) {
 	'use strict';
 
-	const { ajaxUrl, nonce, i18n, langPresets, cookies, settings, siteUrl, siteHost } = window.ccwpsAdmin || {};
+	const { ajaxUrl, nonce, i18n, langPresets, cookies, settings, siteUrl, siteHost, appearanceDefaults } = window.ccwpsAdmin || {};
 
 	const normalizedHost = String(siteHost || '').replace(/^\.+/, '') || 'localhost';
 	const dottedHost = '.' + normalizedHost.replace(/^www\./i, '');
@@ -243,12 +243,35 @@
 		}
 	});
 
+	function setColorPickerValue($picker, value) {
+		if (!$picker.length) return;
+		$picker.val(value);
+		if (typeof $picker.wpColorPicker === 'function') {
+			$picker.wpColorPicker('color', value);
+		}
+		$picker.trigger('change');
+	}
+
 	/* ---- Transparent checkbox ---- */
 	$(document).on('change', '.ccwps-transparent-check', function () {
 		var key = $(this).data('target');
 		var $picker = $('#' + key);
 		if ($(this).is(':checked')) {
-			$picker.val('transparent').trigger('change');
+			setColorPickerValue($picker, 'transparent');
+		}
+	});
+
+	$(document).on('click', '.ccwps-color-reset', function () {
+		var key = $(this).data('target');
+		var def = $(this).data('default');
+		var $picker = $('#' + key);
+		if (!$picker.length) return;
+
+		setColorPickerValue($picker, String(def || ''));
+
+		var $transparent = $('.ccwps-transparent-check[data-target="' + key + '"]');
+		if ($transparent.length) {
+			$transparent.prop('checked', String(def) === 'transparent');
 		}
 	});
 
@@ -300,6 +323,44 @@
 	});
 
 	syncBarPositionOptions(false);
+
+	$(document).on('click', '.ccwps-reset-appearance', function () {
+		if (!appearanceDefaults || typeof appearanceDefaults !== 'object') return;
+		if (!confirm(i18n.confirmReset || 'Resetovať všetky nastavenia na predvolené hodnoty?')) return;
+
+		Object.entries(appearanceDefaults).forEach(function ([key, value]) {
+			var strVal = String(value ?? '');
+			var $fields = $('#ccwps-settings-form').find('[name="' + key + '"]');
+			if (!$fields.length) return;
+
+			var $first = $fields.first();
+			if ($first.hasClass('ccwps-color-picker')) {
+				setColorPickerValue($first, strVal);
+				var $transparent = $('.ccwps-transparent-check[data-target="' + key + '"]');
+				if ($transparent.length) {
+					$transparent.prop('checked', strVal === 'transparent');
+				}
+				return;
+			}
+
+			if ($first.is(':checkbox')) {
+				$first.prop('checked', strVal === '1').trigger('change');
+				return;
+			}
+
+			if ($first.is(':radio')) {
+				$fields.filter('[value="' + strVal + '"]').prop('checked', true).trigger('change');
+				return;
+			}
+
+			$first.val(strVal).trigger('change');
+		});
+
+		$('.ccwps-radio-option input[type="radio"]:checked').trigger('change');
+		$('.ccwps-layout-opt input[type="radio"]:checked').trigger('change');
+		syncBarPositionOptions(false);
+		showNotice(i18n.resetDone || 'Nastavenia boli resetované.');
+	});
 
 	/* =====================
 	   SAVE SETTINGS
@@ -796,7 +857,7 @@
 	/* Show/hide logo rows based on toggle */
 	$(document).on('change', 'input[name="banner_logo_show"]', function () {
 		var checked = $(this).is(':checked');
-		$('#ccwps-banner-logo-fields, #ccwps-banner-logo-width-row').toggle(checked);
+		$('#ccwps-banner-logo-fields, #ccwps-banner-logo-url-row, #ccwps-banner-logo-width-row').toggle(checked);
 	});
 
 	var logoMediaFrame = null;

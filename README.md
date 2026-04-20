@@ -29,7 +29,8 @@ If you want a consent plugin that looks professional, gives visitors clear choic
 - Google Consent Mode v2 and v3 integration ready for GA4 and Google Ads
 - Script blocking before consent with simple rules or regex
 - Prebuilt cookie and script presets for Google Analytics, Google Ads, Facebook Pixel, and Matomo (Analytics + Tag Manager)
-- Optional Matomo mode for anonymous cookieless measurement after reject, with full tracking activated on later consent
+- **Matomo Analytics support** — connect your self-hosted Matomo instance directly in plugin settings; choose between strict no-tracking after reject or optional anonymous cookieless measurement, with automatic switch to full tracking on later consent
+- **No dependency on Google** — works equally well with Matomo as your only analytics platform, keeping all visitor data on your own infrastructure
 - Built-in consent log with exportable records
 - Floating consent icon so visitors can reopen settings anytime
 - Multilingual presets with editable frontend texts
@@ -41,6 +42,7 @@ If you want a consent plugin that looks professional, gives visitors clear choic
 - agencies managing multiple WordPress sites
 - site owners who want clear cookie declarations
 - projects using Google Tag Manager, GA4, or Google Ads
+- **public sector and government sites** that need to keep visitor data away from third-party and Google infrastructure — Matomo can be fully self-hosted on your own server, so no data ever leaves your environment
 - anyone who wants self-hosted cookie control instead of a SaaS popup
 
 ### Features
@@ -51,6 +53,8 @@ If you want a consent plugin that looks professional, gives visitors clear choic
 - Script blocking based on URL match or regex rules
 - Cookie declarations with name, domain, expiration, and description
 - Prebuilt presets that add common cookie declarations together with matching blocking rules
+- **Matomo Analytics integration** — configure Matomo URL and Site ID, choose strict or anonymous mode, automatic consent switching
+- **Self-hosted analytics option** — full Matomo support means no Google dependency; ideal for GDPR-sensitive projects and public sector sites
 - Consent logging with unique consent ID and CSV export
 - Floating consent icon to reopen settings anytime
 - Import and export of plugin settings in JSON

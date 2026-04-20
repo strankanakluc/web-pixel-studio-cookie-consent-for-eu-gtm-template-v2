@@ -35,7 +35,10 @@ Declare individual cookies per category with name, domain, expiration, path and 
 Add ready-made presets for Google Analytics, Google Ads, Facebook Pixel, Matomo Analytics and Matomo Tag Manager directly from the admin. Matching blocking rules can be added together with the declared cookies to speed up setup.
 
 **Matomo Modes (strict + anonymous option)**
-Configure Matomo URL and Site ID directly in plugin settings. By default, Matomo remains fully disabled after reject (strict mode). Optionally, you can allow anonymous cookieless measurement after reject and automatically switch to full tracking once analytics consent is granted later.
+Configure Matomo URL and Site ID directly in plugin settings. By default, Matomo remains fully disabled after reject (strict mode). Optionally, you can allow anonymous cookieless measurement after reject and automatically switch to full tracking once analytics consent is granted later. Matomo can be fully self-hosted on your own server, making it the preferred choice for projects that need to keep all visitor data off third-party and Google infrastructure.
+
+**No Google Dependency Required**
+The plugin works equally well with Matomo as your only analytics platform. If you want consent management without any reliance on Google services, simply skip Google Consent Mode and use Matomo in self-hosted mode. This makes the plugin a strong fit for public sector websites, government projects, schools, and healthcare organisations that must keep visitor data within their own infrastructure.
 
 **Floating Consent Icon**
 After consent is given, a floating icon lets users re-open their preferences at any time. Clicking the icon first shows a small popup with the consent ID, date/time of consent, and two buttons: Close and Manage Consent.

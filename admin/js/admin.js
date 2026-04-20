@@ -6,6 +6,13 @@
 
 	const normalizedHost = String(siteHost || '').replace(/^\.+/, '') || 'localhost';
 	const dottedHost = '.' + normalizedHost.replace(/^www\./i, '');
+	const baseHost = normalizedHost.replace(/^www\./i, '');
+
+	function escapeRegex(value) {
+		return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+	}
+
+	const matomoHostPattern = '(?:www\\.)?' + escapeRegex(baseHost);
 
 	const blockRulesData = Array.isArray(window.ccwpsAdmin?.blockRules) ? window.ccwpsAdmin.blockRules.slice() : [];
 
@@ -40,6 +47,20 @@
 			{
 				script_source: '^(?:https?:)?\\/\\/(?:(?:www\\.)?facebook\\.com|connect\\.facebook\\.net)',
 				category: 'targeting',
+				is_regex: true,
+			},
+		],
+		mtm_analytics: [
+			{
+				script_source: '^(?:https?:)?\\/\\/' + matomoHostPattern + '\\/(?:matomo|piwik)\\.(?:js|php)(?:\\?.*)?$',
+				category: 'analytics',
+				is_regex: true,
+			},
+		],
+		mtm_tag_manager: [
+			{
+				script_source: '^(?:https?:)?\\/\\/' + matomoHostPattern + '\\/js\\/container_[A-Za-z0-9]{6,}\\.js(?:\\?.*)?$',
+				category: 'analytics',
 				is_regex: true,
 			},
 		],
@@ -146,6 +167,61 @@
 				},
 			],
 			blockPresets: [ 'fb' ],
+		},
+		matomo_analytics: {
+			cookies: [
+				{
+					name: '^_pk_id',
+					domain: '.yourdomain.com',
+					expiration: '13 months',
+					path: '/',
+					description: 'Stores a unique visitor ID used by Matomo Analytics to recognize returning visitors.',
+					category: 'analytics',
+					is_regex: '1',
+				},
+				{
+					name: '^_pk_ses',
+					domain: '.yourdomain.com',
+					expiration: '30 minutes',
+					path: '/',
+					description: 'Session cookie used by Matomo Analytics to temporarily store page view data for the current visit.',
+					category: 'analytics',
+					is_regex: '1',
+				},
+				{
+					name: '^_pk_ref',
+					domain: '.yourdomain.com',
+					expiration: '6 months',
+					path: '/',
+					description: 'Stores attribution details (referrer/campaign) for Matomo Analytics reporting.',
+					category: 'analytics',
+					is_regex: '1',
+				},
+			],
+			blockPresets: [ 'mtm_analytics' ],
+		},
+		matomo_tag_manager: {
+			cookies: [
+				{
+					name: 'mtm_consent',
+					domain: '.yourdomain.com',
+					expiration: '13 months',
+					path: '/',
+					description: 'Stores the Matomo consent status for this visitor.',
+					category: 'analytics',
+					is_regex: '',
+				},
+				{
+					name: 'mtm_cookie_consent',
+					domain: '.yourdomain.com',
+					expiration: '13 months',
+					path: '/',
+					description: 'Stores Matomo cookie consent status when cookie-consent mode is used.',
+					category: 'analytics',
+					is_regex: '',
+				},
+			],
+			blockPresets: [ 'mtm_tag_manager' ],
 		},
 	};
 
@@ -778,6 +854,74 @@
 			}
 		});
 	}
+
+	/* =====================
+	   BULK ACTIONS (Cookies)
+	   ===================== */
+	function updateCookiesBulkUI() {
+		const $checkboxes = $('.ccwps-cookie-checkbox:checked');
+		const count = $checkboxes.length;
+		const $actions = $('#ccwps-cookies-bulk-actions');
+		if (count > 0) {
+			$('#ccwps-cookies-bulk-count').text(`(${count} ${count === 1 ? 'položka' : 'položiek'})`);
+			$actions.show();
+		} else {
+			$actions.hide();
+		}
+	}
+
+	$(document).on('change', '.ccwps-cookie-checkbox', function () {
+		updateCookiesBulkUI();
+	});
+
+	$(document).on('change', '.ccwps-cookies-select-all', function () {
+		const checked = $(this).is(':checked');
+		$('.ccwps-cookie-checkbox').prop('checked', checked);
+		updateCookiesBulkUI();
+	});
+
+	$(document).on('click', '#ccwps-delete-cookies-bulk', function () {
+		const ids = $('.ccwps-cookie-checkbox:checked').map((i, el) => $(el).data('id')).get();
+		if (!ids.length) return;
+		if (!confirm(i18n.confirmDelete || 'Naozaj?')) return;
+		ajaxPost('ccwps_delete_cookies_bulk', { ids }, function (res) {
+			res.success ? location.reload() : showNotice(i18n.error, 'error');
+		});
+	});
+
+	/* =====================
+	   BULK ACTIONS (Blocks)
+	   ===================== */
+	function updateBlocksBulkUI() {
+		const $checkboxes = $('.ccwps-block-checkbox:checked');
+		const count = $checkboxes.length;
+		const $actions = $('#ccwps-blocks-bulk-actions');
+		if (count > 0) {
+			$('#ccwps-blocks-bulk-count').text(`(${count} ${count === 1 ? 'položka' : 'položiek'})`);
+			$actions.show();
+		} else {
+			$actions.hide();
+		}
+	}
+
+	$(document).on('change', '.ccwps-block-checkbox', function () {
+		updateBlocksBulkUI();
+	});
+
+	$(document).on('change', '.ccwps-blocks-select-all', function () {
+		const checked = $(this).is(':checked');
+		$('.ccwps-block-checkbox').prop('checked', checked);
+		updateBlocksBulkUI();
+	});
+
+	$(document).on('click', '#ccwps-delete-blocks-bulk', function () {
+		const ids = $('.ccwps-block-checkbox:checked').map((i, el) => $(el).data('id')).get();
+		if (!ids.length) return;
+		if (!confirm(i18n.confirmDelete || 'Naozaj?')) return;
+		ajaxPost('ccwps_delete_blocks_bulk', { ids }, function (res) {
+			res.success ? location.reload() : showNotice(i18n.error, 'error');
+		});
+	});
 
 }(jQuery));
 

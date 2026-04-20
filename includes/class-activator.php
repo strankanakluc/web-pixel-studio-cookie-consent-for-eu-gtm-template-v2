@@ -112,6 +112,10 @@ class CCWPS_Activator {
 			// Consent Mode
 			'consent_mode_version' => 'v2',
 			'gtm_id'               => '',
+			// Matomo
+			'matomo_url'           => '',
+			'matomo_site_id'       => '',
+			'matomo_anonymous_without_consent' => 0,
 			// Banner appearance
 			'banner_layout'        => 'box',
 			'banner_position'      => 'middle-center',

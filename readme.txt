@@ -4,7 +4,7 @@ Tags: cookie consent, GDPR, cookie banner, ePrivacy, consent mode
 Requires at least: 5.9
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,7 +32,10 @@ Define URL patterns (plain text or regex) that match script `src` attributes. Ma
 Declare individual cookies per category with name, domain, expiration, path and description. Descriptions are shown to visitors in the preferences modal so they understand what each cookie does.
 
 **Prebuilt Cookie & Script Presets**
-Add ready-made presets for Google Analytics, Google Ads and Facebook Pixel directly from the admin. Matching blocking rules can be added together with the declared cookies to speed up setup.
+Add ready-made presets for Google Analytics, Google Ads, Facebook Pixel, Matomo Analytics and Matomo Tag Manager directly from the admin. Matching blocking rules can be added together with the declared cookies to speed up setup.
+
+**Matomo Modes (strict + anonymous option)**
+Configure Matomo URL and Site ID directly in plugin settings. By default, Matomo remains fully disabled after reject (strict mode). Optionally, you can allow anonymous cookieless measurement after reject and automatically switch to full tracking once analytics consent is granted later.
 
 **Floating Consent Icon**
 After consent is given, a floating icon lets users re-open their preferences at any time. Clicking the icon first shows a small popup with the consent ID, date/time of consent, and two buttons: Close and Manage Consent.
@@ -118,6 +121,15 @@ The consent cookie is set client-side (not httpOnly) so the frontend can read it
 
 == Changelog ==
 
+= 1.0.3 =
+* Added Matomo integration settings (Matomo URL + Site ID) in the Settings tab.
+* Added new Matomo behavior toggle: strict no-tracking after reject (default) or optional anonymous cookieless measurement after reject.
+* Added automatic Matomo consent switching to full tracking when analytics consent is granted later.
+* Added new cookie presets for Matomo Analytics and Matomo Tag Manager.
+* Added new script blocking presets for Matomo Analytics and Matomo Tag Manager.
+* Added Matomo integration guidance in the About tab.
+* Added translations for new Matomo admin texts across supported languages.
+
 = 1.0.2 =
 * Fixed banner visibility regression where the banner could lose fixed positioning and appear only after scrolling.
 * Added Branding options for custom banner logo: upload, preview, width control, and optional clickable logo URL.
@@ -142,6 +154,9 @@ The consent cookie is set client-side (not httpOnly) so the frontend can read it
 * Added predefined cookie and script presets for Google Analytics, Google Ads and Facebook Pixel
 
 == Upgrade Notice ==
+
+= 1.0.3 =
+Adds Matomo support (strict default + optional anonymous mode), new Matomo presets, About-tab guidance, and full translation coverage for new Matomo admin texts.
 
 = 1.0.2 =
 Includes major 1.0.2 improvements: banner visibility fix, new Branding options (custom logo + link), refined layouts, stronger translation coverage, and more reliable full export/import roundtrip.

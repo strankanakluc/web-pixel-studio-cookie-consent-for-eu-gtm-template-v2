@@ -10,7 +10,7 @@
 **Tags:** cookie consent, GDPR, cookie banner, ePrivacy, consent mode  
 **Requires at least:** 5.9  
 **Tested up to:** 6.9  
-**Stable tag:** 1.0.2  
+**Stable tag:** 1.0.3  
 **License:** GPL-2.0-or-later  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -28,7 +28,8 @@ If you want a consent plugin that looks professional, gives visitors clear choic
 - Detailed preferences modal with category-level consent
 - Google Consent Mode v2 and v3 integration ready for GA4 and Google Ads
 - Script blocking before consent with simple rules or regex
-- Prebuilt cookie and script presets for Google Analytics, Google Ads, and Facebook Pixel
+- Prebuilt cookie and script presets for Google Analytics, Google Ads, Facebook Pixel, and Matomo (Analytics + Tag Manager)
+- Optional Matomo mode for anonymous cookieless measurement after reject, with full tracking activated on later consent
 - Built-in consent log with exportable records
 - Floating consent icon so visitors can reopen settings anytime
 - Multilingual presets with editable frontend texts
@@ -109,6 +110,10 @@ Yes. The plugin outputs the default denied consent state before marketing script
 
 Yes. You can define blocking rules for script URLs and assign them to categories such as Analytics, Targeting, or Preferences.
 
+### Does the plugin support Matomo?
+
+Yes. You can configure Matomo URL and Site ID, choose strict mode (no tracking after reject), or optionally allow anonymous cookieless measurement after reject and switch to full tracking after analytics consent is granted.
+
 ### Can visitors change their choice later?
 
 Yes. After consent is given, the floating icon lets visitors reopen the consent panel and update their preferences.
@@ -170,6 +175,16 @@ Yes. The plugin includes shortcodes for the cookie list and for displaying the c
 - `[ccwps_manage_consent]` opens the consent management interface from your content
 
 ## Changelog
+
+### 1.0.3
+
+- Added Matomo integration settings (Matomo URL + Site ID) in the Settings tab
+- Added new consent behavior toggle for Matomo: strict no-tracking on reject (default) or optional anonymous cookieless measurement on reject
+- Added automatic Matomo consent-mode switching: full tracking starts immediately after later analytics consent
+- Added new cookie presets: Matomo Analytics and Matomo Tag Manager
+- Added new script blocking presets: Matomo Analytics and Matomo Tag Manager
+- Added Matomo guidance section in the About tab, including recommended legal-safe deployment mode
+- Added admin translations for new Matomo Settings/About/presets texts across supported languages
 
 ### 1.0.2
 

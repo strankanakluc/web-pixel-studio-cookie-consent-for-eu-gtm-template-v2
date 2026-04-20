@@ -58,7 +58,7 @@ class CCWPS_Frontend {
 	}
 
 	private function enqueue_head_assets(): void {
-		$should_enqueue_head = $this->should_block_scripts() || in_array( $this->settings->get( 'consent_mode_version', 'v2' ), [ 'v2', 'v3' ], true );
+		$should_enqueue_head = $this->should_block_scripts() || in_array( $this->settings->get( 'consent_mode_version', 'v2' ), [ 'v2', 'v3' ], true ) || $this->is_matomo_configured();
 
 		if ( ! $should_enqueue_head ) {
 			return;
@@ -75,6 +75,11 @@ class CCWPS_Frontend {
 		$consent_mode_js = $this->get_consent_mode_js();
 		if ( '' !== $consent_mode_js ) {
 			wp_add_inline_script( 'ccwps-head', $consent_mode_js, 'before' );
+		}
+
+		$matomo_bootstrap_js = $this->get_matomo_bootstrap_js();
+		if ( '' !== $matomo_bootstrap_js ) {
+			wp_add_inline_script( 'ccwps-head', $matomo_bootstrap_js, 'before' );
 		}
 
 		$blocker_bootstrap_js = $this->get_script_blocker_bootstrap_js();
@@ -110,19 +115,53 @@ class CCWPS_Frontend {
 
 		$consent = $this->get_consent_from_cookie();
 		$plugin_assets_path = (string) ( wp_parse_url( CCWPS_PLUGIN_URL . 'public/js/', PHP_URL_PATH ) ?: '' );
+		$allow_matomo_without_consent = (bool) $this->settings->get( 'matomo_anonymous_without_consent', 0 );
+		$matomo_host = $this->get_matomo_host();
 
 		return '(function () {' .
 			'var rules = ' . wp_json_encode( $rules ) . ' || [];' .
 			'var pluginAssetsPath = ' . wp_json_encode( $plugin_assets_path ) . ';' .
+			'var allowMatomoWithoutConsent = ' . wp_json_encode( $allow_matomo_without_consent ) . ';' .
+			'var matomoHost = ' . wp_json_encode( $matomo_host ) . ';' .
 			'window.__ccwpsConsentState = ' . wp_json_encode( $consent ) . ';' .
 			'if (!rules.length) return;' .
 			'function getConsentState(){return window.__ccwpsConsentState || null;}' .
 			'function hasConsent(cat){var consent=getConsentState();if(cat==="necessary") return true;return !!(consent && consent[cat]);}' .
 			'function matches(src,rule){if(!src || !rule) return false;if(rule.isRegex){try{return new RegExp(rule.source,"i").test(src);}catch(e){return false;}}return String(src).toLowerCase().indexOf(String(rule.source).toLowerCase())!==-1;}' .
 			'function isPluginAsset(src){if(!pluginAssetsPath || !src) return false;try{var u=new URL(src,window.location.href);return String(u.pathname||"").indexOf(pluginAssetsPath)!==-1;}catch(e){return String(src).indexOf(pluginAssetsPath)!==-1;}}' .
-			'function neutralize(scriptEl){if(!scriptEl || !scriptEl.tagName || scriptEl.tagName.toLowerCase()!=="script") return;if(scriptEl.dataset && scriptEl.dataset.ccwpsHandled) return;var src=scriptEl.getAttribute("src") || scriptEl.src || "";if(!src || isPluginAsset(src)) return;for(var i=0;i<rules.length;i++){var rule=rules[i];if(!hasConsent(rule.cat) && matches(src,rule)){scriptEl.dataset.ccwpsCat=rule.cat;scriptEl.dataset.ccwpsOrigSrc=src;scriptEl.dataset.ccwpsHandled="1";scriptEl.type="text/plain";scriptEl.removeAttribute("src");break;}}}' .
+			'function isMatomoScriptAllowed(src,cat){if(cat!=="analytics" || !allowMatomoWithoutConsent || !matomoHost || !src) return false;try{var u=new URL(src,window.location.href);var h=String(u.hostname||"").replace(/^www\\./i,"").toLowerCase();var mh=String(matomoHost).replace(/^www\\./i,"").toLowerCase();return h===mh;}catch(e){return String(src).toLowerCase().indexOf(String(matomoHost).toLowerCase())!==-1;}}' .
+			'function neutralize(scriptEl){if(!scriptEl || !scriptEl.tagName || scriptEl.tagName.toLowerCase()!=="script") return;if(scriptEl.dataset && scriptEl.dataset.ccwpsHandled) return;var src=scriptEl.getAttribute("src") || scriptEl.src || "";if(!src || isPluginAsset(src)) return;for(var i=0;i<rules.length;i++){var rule=rules[i];if(!hasConsent(rule.cat) && matches(src,rule) && !isMatomoScriptAllowed(src,rule.cat)){scriptEl.dataset.ccwpsCat=rule.cat;scriptEl.dataset.ccwpsOrigSrc=src;scriptEl.dataset.ccwpsHandled="1";scriptEl.type="text/plain";scriptEl.removeAttribute("src");break;}}}' .
 			'var appendChild=Node.prototype.appendChild;Node.prototype.appendChild=function(node){neutralize(node);return appendChild.apply(this,arguments);};' .
 			'var insertBefore=Node.prototype.insertBefore;Node.prototype.insertBefore=function(node){neutralize(node);return insertBefore.apply(this,arguments);};' .
+		'})();';
+	}
+
+	private function get_matomo_bootstrap_js(): string {
+		if ( ! $this->is_matomo_configured() ) {
+			return '';
+		}
+
+		$matomo_url = trailingslashit( (string) $this->settings->get( 'matomo_url', '' ) );
+		$matomo_php = $matomo_url . 'matomo.php';
+		$matomo_js = $matomo_url . 'matomo.js';
+		$site_id = (int) $this->settings->get( 'matomo_site_id', 0 );
+		$allow_anonymous_without_consent = (bool) $this->settings->get( 'matomo_anonymous_without_consent', 0 );
+		$consent = $this->get_consent_from_cookie();
+		$analytics_granted = (bool) ( is_array( $consent ) && ! empty( $consent['analytics'] ) );
+
+		return '(function(){' .
+			'var matomoPhp=' . wp_json_encode( $matomo_php ) . ';' .
+			'var matomoJs=' . wp_json_encode( $matomo_js ) . ';' .
+			'var siteId=' . wp_json_encode( (string) $site_id ) . ';' .
+			'var allowAnonymous=' . wp_json_encode( $allow_anonymous_without_consent ) . ';' .
+			'var hasAnalyticsConsent=' . wp_json_encode( $analytics_granted ) . ';' .
+			'var _paq=window._paq=window._paq||[];' .
+			'var strictInitialized=false;' .
+			'function configureBase(){_paq.push(["setTrackerUrl",matomoPhp]);_paq.push(["setSiteId",siteId]);_paq.push(["enableLinkTracking"]);}' .
+			'function ensureMatomoScript(){if(window.__ccwpsMatomoScriptLoaded){return;}window.__ccwpsMatomoScriptLoaded=true;var d=document,g=d.createElement("script"),s=d.getElementsByTagName("script")[0];g.async=true;g.src=matomoJs;s.parentNode.insertBefore(g,s);}' .
+			'function initStrictIfNeeded(){if(strictInitialized){return;}strictInitialized=true;configureBase();_paq.push(["requireConsent"]);}' .
+			'if(allowAnonymous){configureBase();_paq.push(["requireCookieConsent"]);if(hasAnalyticsConsent){_paq.push(["setCookieConsentGiven"]);}else{_paq.push(["forgetCookieConsentGiven"]);}ensureMatomoScript();_paq.push(["trackPageView"]);}else if(hasAnalyticsConsent){initStrictIfNeeded();_paq.push(["setConsentGiven"]);ensureMatomoScript();_paq.push(["trackPageView"]);}' .
+			'window.addEventListener("ccwps:consent-updated",function(event){var detail=(event&&event.detail)||{};var prefs=(detail&&detail.prefs)?detail.prefs:detail;var granted=!!(prefs&&prefs.analytics);if(allowAnonymous){if(granted){_paq.push(["setCookieConsentGiven"]);}else{_paq.push(["forgetCookieConsentGiven"]);}ensureMatomoScript();_paq.push(["trackPageView"]);return;}if(granted){initStrictIfNeeded();_paq.push(["setConsentGiven"]);ensureMatomoScript();_paq.push(["trackPageView"]);}else if(strictInitialized){_paq.push(["forgetConsentGiven"]);}});' .
 		'})();';
 	}
 
@@ -190,6 +229,9 @@ class CCWPS_Frontend {
 				foreach ( $rules as $rule ) {
 					if ( ! $this->matches_block_rule( $src, $rule ) ) {
 						continue;
+					}
+					if ( 'analytics' === (string) $rule['cat'] && $this->should_allow_matomo_analytics_without_consent( $src ) ) {
+						return $matches[0];
 					}
 					if ( ! $this->should_block_category( (string) $rule['cat'], $consent ) ) {
 						return $matches[0];
@@ -480,5 +522,37 @@ class CCWPS_Frontend {
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Raw JSON cookie is decoded and validated before use.
 		return wp_unslash( $_COOKIE[ $key ] );
+	}
+
+	private function is_matomo_configured(): bool {
+		$matomo_url = trim( (string) $this->settings->get( 'matomo_url', '' ) );
+		$site_id = (int) $this->settings->get( 'matomo_site_id', 0 );
+
+		return '' !== $matomo_url && $site_id > 0;
+	}
+
+	private function get_matomo_host(): string {
+		$matomo_url = (string) $this->settings->get( 'matomo_url', '' );
+
+		return (string) ( wp_parse_url( $matomo_url, PHP_URL_HOST ) ?: '' );
+	}
+
+	private function should_allow_matomo_analytics_without_consent( string $src ): bool {
+		if ( ! $this->settings->get( 'matomo_anonymous_without_consent', 0 ) ) {
+			return false;
+		}
+
+		$matomo_host = strtolower( preg_replace( '/^www\./i', '', $this->get_matomo_host() ) );
+		if ( '' === $matomo_host ) {
+			return false;
+		}
+
+		$src_host = (string) ( wp_parse_url( $src, PHP_URL_HOST ) ?: '' );
+		if ( '' !== $src_host ) {
+			$src_host = strtolower( preg_replace( '/^www\./i', '', $src_host ) );
+			return $src_host === $matomo_host;
+		}
+
+		return false !== stripos( $src, $matomo_host );
 	}
 }

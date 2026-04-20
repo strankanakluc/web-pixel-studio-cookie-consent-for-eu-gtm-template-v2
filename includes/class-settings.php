@@ -55,6 +55,7 @@ class CCWPS_Settings {
 			'hide_from_bots', 'reconsent', 'record_consents', 'frontend_detect_visitor_language', 'hide_empty_categories',
 			'delay', 'cookie_expiration', 'cookie_path', 'cookie_domain',
 			'consent_mode_version', 'gtm_id',
+			'matomo_url', 'matomo_site_id', 'matomo_anonymous_without_consent',
 			'banner_layout', 'banner_position', 'banner_show_icon',
 			'icon_position', 'icon_type', 'icon_custom_url', 'font_family',
 			'banner_logo_show', 'banner_logo_url', 'banner_logo_link_url', 'banner_logo_width',
@@ -171,6 +172,9 @@ class CCWPS_Settings {
 		};
 
 		$mode = (string) $opt( $s, 'consent_mode_version', 'v2' );
+		$matomo_url = (string) $opt( $s, 'matomo_url', '' );
+		$matomo_site_id = (int) $opt( $s, 'matomo_site_id', 0 );
+		$matomo_host = (string) ( wp_parse_url( $matomo_url, PHP_URL_HOST ) ?: '' );
 		$admin_lang = (string) $opt( $s, 'admin_lang', 'en' );
 		$frontend_language_presets = $this->get_frontend_language_presets( $s );
 		$current_i18n              = $this->get_current_frontend_i18n( $s );
@@ -191,6 +195,9 @@ class CCWPS_Settings {
 			'consentModeVersion'   => $mode,
 			'consentModeEnabled'   => in_array( $mode, [ 'v2', 'v3' ], true ),
 			'gtmId'                => (string) $opt( $s, 'gtm_id', '' ),
+			'matomoEnabled'        => '' !== trim( $matomo_url ) && $matomo_site_id > 0,
+			'matomoHost'           => $matomo_host,
+			'matomoAnonymousWithoutConsent' => (bool) $opt( $s, 'matomo_anonymous_without_consent', 0 ),
 			'detectVisitorLanguage'=> (bool) $opt( $s, 'frontend_detect_visitor_language', 0 ),
 			'currentFrontendLang'  => $admin_lang,
 			'frontendLanguageFallback' => 'en',

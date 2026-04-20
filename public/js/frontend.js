@@ -363,6 +363,24 @@
 		return src.toLowerCase().indexOf(rule.source.toLowerCase()) !== -1;
 	}
 
+	function normalizeHost(value) {
+		return String(value || '').replace(/^www\./i, '').toLowerCase();
+	}
+
+	function isMatomoScriptAllowedWithoutConsent(src, category) {
+		if (category !== 'analytics') return false;
+		if (!C.matomoAnonymousWithoutConsent) return false;
+		var matomoHost = normalizeHost(C.matomoHost);
+		if (!matomoHost || !src) return false;
+
+		try {
+			var parsed = new URL(src, location.href);
+			return normalizeHost(parsed.hostname) === matomoHost;
+		} catch (e) {
+			return String(src).toLowerCase().indexOf(matomoHost) !== -1;
+		}
+	}
+
 	function getUrlParam(url, key) {
 		try {
 			return new URL(url, location.href).searchParams.get(key);
@@ -425,6 +443,7 @@
 			for (var j = 0; j < rules.length; j++) {
 				if (rules[j].cat === 'necessary') continue;
 				if (consent && consent[rules[j].cat]) continue;
+				if (isMatomoScriptAllowedWithoutConsent(src, rules[j].cat)) continue;
 				if (matchRule(src, rules[j])) {
 					el.dataset.ccwpsCat     = rules[j].cat;
 					el.dataset.ccwpsOrigSrc = src;
@@ -524,7 +543,8 @@
 		}
 	}
 
-	function applyConsent(prefs, oldPrefs) {
+	function applyConsent(prefs, oldPrefs, options) {
+		options = options || {};
 		updateConsentMode(prefs);
 		unblockScripts(prefs);
 		if (oldPrefs) {
@@ -534,6 +554,14 @@
 			}
 		}
 		replayConsentGrantedEvents(prefs, oldPrefs);
+		if (!options.silentUpdateEvent) {
+			window.dispatchEvent(new CustomEvent('ccwps:consent-updated', {
+				detail: {
+					prefs: prefs,
+					oldPrefs: oldPrefs || null
+				}
+			}));
+		}
 	}
 
 	/* ============================================
@@ -1065,8 +1093,7 @@
 				targeting:   !!consent.targeting,
 				preferences: !!consent.preferences
 			};
-			applyConsent(prefs, null);
-			updateConsentMode(prefs);
+			applyConsent(prefs, null, { silentUpdateEvent: true });
 			if (needsReconsent()) {
 				saveVersion();
 				setTimeout(showBanner, C.delay || 0);

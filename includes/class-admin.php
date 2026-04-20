@@ -356,6 +356,25 @@ class CCWPS_Admin {
 			</table>
 		</div>
 
+		<div class="ccwps-card">
+			<h2><?php echo esc_html( $this->tx( 'Matomo Analytics (voliteľné)' ) ); ?></h2>
+			<div class="ccwps-info-box">
+				<strong><?php echo esc_html( $this->tx( 'Nastavenie Matomo merania' ) ); ?></strong>
+				<?php echo ' ' . esc_html( $this->tx( 'Pridajte URL vašej Matomo inštancie a Site ID. Plugin vie podľa súhlasu prepínať medzi úplným meraním a anonymným meraním bez cookies.' ) ); ?>
+			</div>
+			<table class="ccwps-table">
+				<tr>
+					<th><label for="matomo_url"><?php echo esc_html( $this->tx( 'URL Matomo inštancie' ) ); ?></label><p class="desc"><?php echo esc_html( $this->tx( 'Napr. https://analytics.example.com/' ) ); ?></p></th>
+					<td><input type="url" name="matomo_url" id="matomo_url" value="<?php echo esc_attr( $s->get( 'matomo_url' ) ); ?>" class="regular-text" placeholder="https://analytics.example.com/"><?php $this->tip( $this->tx( '💡 Zadajte základnú URL Matomo bez súboru matomo.js (napr. https://analytics.example.com/).' ) ); ?></td>
+				</tr>
+				<tr>
+					<th><label for="matomo_site_id"><?php echo esc_html( $this->tx( 'Matomo Site ID' ) ); ?></label><p class="desc"><?php echo esc_html( $this->tx( 'Číselné ID webu v Matomo (napr. 1).' ) ); ?></p></th>
+					<td><input type="number" name="matomo_site_id" id="matomo_site_id" value="<?php echo esc_attr( $s->get( 'matomo_site_id' ) ); ?>" min="1" class="small-text"><?php $this->tip( $this->tx( '💡 Nájdete ho v Matomo v časti Administration → Websites.' ) ); ?></td>
+				</tr>
+				<?php $this->trow_toggle( 'matomo_anonymous_without_consent', $this->tx( 'Povoliť anonymné meranie pri odmietnutí' ), $this->tx( 'Ak návštevník odmietne analytické cookies, Matomo bude merať bez cookies (anonymne).' ), $s->get( 'matomo_anonymous_without_consent', 0 ), $this->tx( '💡 Odporúčané pre weby, ktoré chcú základné štatistiky aj bez súhlasu. Ak je voľba vypnutá, Matomo sa spustí až po udelení analytického súhlasu.' ) ); ?>
+			</table>
+		</div>
+
 		<div class="ccwps-form-actions">
 			<button type="button" class="button button-primary ccwps-save-settings ccwps-btn-primary-action"><?php echo esc_html( $this->t( 'admin_btn_save_settings', 'Uložiť nastavenia' ) ); ?></button>
 		</div>
@@ -864,9 +883,14 @@ class CCWPS_Admin {
 		</div>
 		<div class="ccwps-card">
 			<p class="description" style="margin-bottom:14px;"><?php esc_html_e( 'Popis cookie je viditeľný návštevníkom v modáli preferencií – pomáha im pochopiť, na čo daná cookie slúži.', 'cookie-consent-webpixelstudio' ); ?></p>
+			<div class="ccwps-bulk-actions" id="ccwps-cookies-bulk-actions" style="margin-bottom:12px;display:none;">
+				<button type="button" class="button button-link-delete ccwps-btn-danger-action" id="ccwps-delete-cookies-bulk"><?php echo esc_html( $this->tx( '🗑️ Odstrániť vybrané' ) ); ?></button>
+				<span class="ccwps-bulk-count" id="ccwps-cookies-bulk-count"></span>
+			</div>
 			<div class="ccwps-table-scroll">
 				<table class="wp-list-table widefat striped ccwps-data-table">
 					<thead><tr>
+						<th style="width:40px;"><input type="checkbox" class="ccwps-cookies-select-all" title="<?php echo esc_attr( $this->tx( 'Vybrať všetko / Zrušiť výber' ) ); ?>"></th>
 						<th><?php echo esc_html( $this->t( 'admin_col_name', 'Názov' ) ); ?></th>
 						<th><?php echo esc_html( $this->t( 'admin_col_domain', 'Doména' ) ); ?></th>
 						<th><?php echo esc_html( $this->t( 'admin_col_expiry', 'Platnosť' ) ); ?></th>
@@ -877,9 +901,10 @@ class CCWPS_Admin {
 					</tr></thead>
 					<tbody>
 					<?php if ( empty( $cookies ) ) : ?>
-						<tr><td colspan="7" style="text-align:center;padding:24px;"><?php esc_html_e( 'Žiadne cookies. Kliknite "+ Pridať cookie".', 'cookie-consent-webpixelstudio' ); ?></td></tr>
+						<tr><td colspan="8" style="text-align:center;padding:24px;"><?php esc_html_e( 'Žiadne cookies. Kliknite "+ Pridať cookie".', 'cookie-consent-webpixelstudio' ); ?></td></tr>
 					<?php else : foreach ( $cookies as $c ) : ?>
-						<tr>
+						<tr class="ccwps-cookies-row">
+							<td style="width:40px;"><input type="checkbox" class="ccwps-cookie-checkbox" data-id="<?php echo esc_attr( $c['id'] ); ?>"></td>
 							<td><strong><?php echo esc_html( $c['name'] ); ?></strong></td>
 							<td><?php echo esc_html( $c['domain'] ); ?></td>
 							<td><?php echo esc_html( $c['expiration'] ); ?></td>
@@ -904,7 +929,7 @@ class CCWPS_Admin {
 				<div class="ccwps-modal-body">
 					<input type="hidden" id="ccwps-cookie-id">
 					<table class="ccwps-table">
-						<tr><th><label for="c-preset"><?php echo esc_html( $this->tx( 'Predpripravené predvoľby' ) ); ?></label></th><td><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><select id="c-preset" style="min-width:260px;"><option value=""><?php echo esc_html( $this->tx( 'Vyberte predvoľbu' ) ); ?></option><option value="google_necessary"><?php echo esc_html( $this->tx( 'Google Necessary' ) ); ?></option><option value="google_analytics"><?php echo esc_html( $this->tx( 'Google Analytics' ) ); ?></option><option value="google_ads"><?php echo esc_html( $this->tx( 'Google Ads' ) ); ?></option><option value="facebook_pixel"><?php echo esc_html( $this->tx( 'Facebook Pixel' ) ); ?></option></select><button type="button" class="button button-primary ccwps-btn-primary-action" id="ccwps-apply-cookie-preset"><?php echo esc_html( $this->tx( 'Použiť predvoľbu' ) ); ?></button></div></td></tr>
+						<tr><th><label for="c-preset"><?php echo esc_html( $this->tx( 'Predpripravené predvoľby' ) ); ?></label></th><td><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><select id="c-preset" style="min-width:260px;"><option value=""><?php echo esc_html( $this->tx( 'Vyberte predvoľbu' ) ); ?></option><option value="google_necessary"><?php echo esc_html( $this->tx( 'Google Necessary' ) ); ?></option><option value="google_analytics"><?php echo esc_html( $this->tx( 'Google Analytics' ) ); ?></option><option value="google_ads"><?php echo esc_html( $this->tx( 'Google Ads' ) ); ?></option><option value="facebook_pixel"><?php echo esc_html( $this->tx( 'Facebook Pixel' ) ); ?></option><option value="matomo_analytics"><?php echo esc_html( $this->tx( 'Matomo Analytics' ) ); ?></option><option value="matomo_tag_manager"><?php echo esc_html( $this->tx( 'Matomo Tag Manager' ) ); ?></option></select><button type="button" class="button button-primary ccwps-btn-primary-action" id="ccwps-apply-cookie-preset"><?php echo esc_html( $this->tx( 'Použiť predvoľbu' ) ); ?></button></div></td></tr>
 						<tr><th><label for="c-name"><?php esc_html_e( 'Názov', 'cookie-consent-webpixelstudio' ); ?> <span class="required">*</span></label></th><td><input type="text" id="c-name" class="regular-text" placeholder="napr. _ga"></td></tr>
 						<tr><th><label for="c-domain"><?php esc_html_e( 'Doména', 'cookie-consent-webpixelstudio' ); ?></label></th><td><input type="text" id="c-domain" class="regular-text" placeholder="<?php echo esc_attr( $this->get_home_url_host() ); ?>"></td></tr>
 						<tr><th><label for="c-expiration"><?php esc_html_e( 'Platnosť', 'cookie-consent-webpixelstudio' ); ?></label></th><td><input type="text" id="c-expiration" class="regular-text" placeholder="napr. 2 roky, Relácia"></td></tr>
@@ -941,13 +966,23 @@ class CCWPS_Admin {
 		</div>
 		<div class="ccwps-card">
 			<div class="ccwps-info-box"><?php esc_html_e( 'Definujte zdroje skriptov, ktoré sa majú blokovať, kým používateľ neudelí súhlas pre danú kategóriu. Plugin zmení typ skriptu na text/plain, čo zabrání jeho spusteniu.', 'cookie-consent-webpixelstudio' ); ?></div>
+			<div class="ccwps-bulk-actions" id="ccwps-blocks-bulk-actions" style="margin-bottom:12px;display:none;">
+				<button type="button" class="button button-link-delete ccwps-btn-danger-action" id="ccwps-delete-blocks-bulk"><?php echo esc_html( $this->tx( '🗑️ Odstrániť vybrané' ) ); ?></button>
+				<span class="ccwps-bulk-count" id="ccwps-blocks-bulk-count"></span>
+			</div>
 			<table class="wp-list-table widefat striped ccwps-data-table">
-				<thead><tr><th><?php echo esc_html( $this->t( 'admin_col_script_source', 'Zdroj skriptu' ) ); ?></th><th style="width:130px"><?php echo esc_html( $this->t( 'admin_col_category', 'Kategória' ) ); ?></th><th style="width:70px"><?php esc_html_e( 'Regex', 'cookie-consent-webpixelstudio' ); ?></th><th style="width:120px"><?php echo esc_html( $this->t( 'admin_col_actions', 'Akcie' ) ); ?></th></tr></thead>
+				<thead><tr><th style="width:40px;"><input type="checkbox" class="ccwps-blocks-select-all" title="<?php echo esc_attr( $this->tx( 'Vybrať všetko / Zrušiť výber' ) ); ?>"></th><th><?php echo esc_html( $this->t( 'admin_col_script_source', 'Zdroj skriptu' ) ); ?></th><th style="width:130px"><?php echo esc_html( $this->t( 'admin_col_category', 'Kategória' ) ); ?></th><th style="width:70px"><?php esc_html_e( 'Regex', 'cookie-consent-webpixelstudio' ); ?></th><th style="width:120px"><?php echo esc_html( $this->t( 'admin_col_actions', 'Akcie' ) ); ?></th></tr></thead>
 				<tbody>
 				<?php if ( empty( $rules ) ) : ?>
-					<tr><td colspan="4" style="text-align:center;padding:24px;"><?php esc_html_e( 'Žiadne pravidlá blokovania.', 'cookie-consent-webpixelstudio' ); ?></td></tr>
+					<tr><td colspan="5" style="text-align:center;padding:24px;"><?php esc_html_e( 'Žiadne pravidlá blokovania.', 'cookie-consent-webpixelstudio' ); ?></td></tr>
 				<?php else : foreach ( $rules as $r ) : ?>
-					<tr><td><code><?php echo esc_html( $r['script_source'] ); ?></code></td><td><span class="ccwps-badge ccwps-badge-<?php echo esc_attr( $r['category'] ); ?>"><?php echo esc_html( ucfirst( $r['category'] ) ); ?></span></td><td><?php echo $r['is_regex'] ? '<span class="ccwps-badge ccwps-badge-regex">Regex</span>' : '—'; ?></td><td><button class="button button-small ccwps-edit-block" data-row='<?php echo esc_attr( wp_json_encode( $r ) ); ?>'><?php echo esc_html( $this->t( 'admin_btn_edit', 'Upraviť' ) ); ?></button> <button class="button button-small button-link-delete ccwps-delete-block" data-id="<?php echo esc_attr( $r['id'] ); ?>"><?php echo esc_html( $this->t( 'admin_btn_delete', 'Zmazať' ) ); ?></button></td></tr>
+					<tr class="ccwps-blocks-row">
+						<td style="width:40px;"><input type="checkbox" class="ccwps-block-checkbox" data-id="<?php echo esc_attr( $r['id'] ); ?>"></td>
+						<td><code><?php echo esc_html( $r['script_source'] ); ?></code></td>
+						<td><span class="ccwps-badge ccwps-badge-<?php echo esc_attr( $r['category'] ); ?>"><?php echo esc_html( ucfirst( $r['category'] ) ); ?></span></td>
+						<td><?php echo $r['is_regex'] ? '<span class="ccwps-badge ccwps-badge-regex">Regex</span>' : '—'; ?></td>
+						<td><button class="button button-small ccwps-edit-block" data-row='<?php echo esc_attr( wp_json_encode( $r ) ); ?>'><?php echo esc_html( $this->t( 'admin_btn_edit', 'Upraviť' ) ); ?></button> <button class="button button-small button-link-delete ccwps-delete-block" data-id="<?php echo esc_attr( $r['id'] ); ?>"><?php echo esc_html( $this->t( 'admin_btn_delete', 'Zmazať' ) ); ?></button></td>
+					</tr>
 				<?php endforeach; endif; ?>
 				</tbody>
 			</table>
@@ -958,7 +993,7 @@ class CCWPS_Admin {
 				<div class="ccwps-modal-body">
 					<input type="hidden" id="ccwps-block-id">
 					<table class="ccwps-table">
-						<tr><th><label for="b-preset"><?php echo esc_html( $this->tx( 'Predpripravené predvoľby' ) ); ?></label></th><td><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><select id="b-preset" style="min-width:260px;"><option value=""><?php echo esc_html( $this->tx( 'Vyberte predvoľbu' ) ); ?></option><option value="ga"><?php echo esc_html( $this->tx( 'Google Analytics' ) ); ?></option><option value="gtm"><?php echo esc_html( $this->tx( 'Google Tag Manager' ) ); ?></option><option value="gads"><?php echo esc_html( $this->tx( 'Google Ads' ) ); ?></option><option value="fb"><?php echo esc_html( $this->tx( 'Facebook Pixel' ) ); ?></option></select><button type="button" class="button button-primary ccwps-btn-primary-action" id="ccwps-apply-block-preset"><?php echo esc_html( $this->tx( 'Použiť predvoľbu' ) ); ?></button></div></td></tr>
+						<tr><th><label for="b-preset"><?php echo esc_html( $this->tx( 'Predpripravené predvoľby' ) ); ?></label></th><td><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><select id="b-preset" style="min-width:260px;"><option value=""><?php echo esc_html( $this->tx( 'Vyberte predvoľbu' ) ); ?></option><option value="ga"><?php echo esc_html( $this->tx( 'Google Analytics' ) ); ?></option><option value="gtm"><?php echo esc_html( $this->tx( 'Google Tag Manager' ) ); ?></option><option value="gads"><?php echo esc_html( $this->tx( 'Google Ads' ) ); ?></option><option value="fb"><?php echo esc_html( $this->tx( 'Facebook Pixel' ) ); ?></option><option value="mtm_analytics"><?php echo esc_html( $this->tx( 'Matomo Analytics' ) ); ?></option><option value="mtm_tag_manager"><?php echo esc_html( $this->tx( 'Matomo Tag Manager' ) ); ?></option></select><button type="button" class="button button-primary ccwps-btn-primary-action" id="ccwps-apply-block-preset"><?php echo esc_html( $this->tx( 'Použiť predvoľbu' ) ); ?></button></div></td></tr>
 						<tr><th><label for="b-source"><?php esc_html_e( 'Zdroj skriptu', 'cookie-consent-webpixelstudio' ); ?> <span class="required">*</span></label><p class="desc"><?php esc_html_e( 'Fragment URL, napr. "google-analytics.com"', 'cookie-consent-webpixelstudio' ); ?></p></th><td><input type="text" id="b-source" class="large-text" placeholder="napr. google-analytics.com"></td></tr>
 						<tr><th><label for="b-category"><?php esc_html_e( 'Kategória', 'cookie-consent-webpixelstudio' ); ?></label></th><td><select id="b-category"><?php foreach ( $categories as $cat ) : ?><option value="<?php echo esc_attr( $cat ); ?>"><?php echo esc_html( ucfirst( $cat ) ); ?></option><?php endforeach; ?></select></td></tr>
 						<tr><th><label for="b-is-regex"><?php esc_html_e( 'Je Regex?', 'cookie-consent-webpixelstudio' ); ?></label></th><td><label class="ccwps-toggle"><input type="checkbox" id="b-is-regex"><span class="ccwps-toggle-slider"></span></label></td></tr>
@@ -1320,6 +1355,25 @@ class CCWPS_Admin {
 					<h4><?php esc_html_e( 'Overenie pomocou Google Tag Assistant', 'cookie-consent-webpixelstudio' ); ?></h4>
 					<p><?php esc_html_e( 'Otvorte Google Tag Assistant a overte, že pri odmietnutí cookies sú tagy v stave "Consent Blocked" a po udelení súhlasu sa aktivujú. Skontrolujte tiež Google Analytics Realtime report.', 'cookie-consent-webpixelstudio' ); ?></p>
 				</div>
+			</div>
+		</div>
+
+		<div class="ccwps-card">
+			<h2><?php echo esc_html( $this->tx( 'Matomo integrácia a režimy súhlasu' ) ); ?></h2>
+			<p><?php echo esc_html( $this->tx( 'Plugin podporuje aj Matomo Analytics vrátane režimu bez cookies. V Nastaveniach môžete zvoliť, či sa má pri odmietnutí analytických cookies meranie úplne vypnúť, alebo bežať v anonymnom režime bez ukladania cookies.' ) ); ?></p>
+			<div class="ccwps-about-steps" style="margin-top:14px;">
+				<div class="ccwps-about-step">
+					<h4><?php echo esc_html( $this->tx( 'Režim 1: Bez merania po odmietnutí (predvolené)' ) ); ?></h4>
+					<p><?php echo esc_html( $this->tx( 'Ak je táto voľba aktívna, Matomo sa nespustí, kým návštevník neudelí analytický súhlas. Po neskoršom udelení súhlasu sa automaticky aktivuje plné meranie.' ) ); ?></p>
+				</div>
+				<div class="ccwps-about-step">
+					<h4><?php echo esc_html( $this->tx( 'Režim 2: Anonymné meranie bez cookies po odmietnutí' ) ); ?></h4>
+					<p><?php echo esc_html( $this->tx( 'Ak túto voľbu zapnete, Matomo po odmietnutí stále zbiera základné štatistiky bez cookies. Po udelení analytického súhlasu sa prepne na plné meranie s cookies.' ) ); ?></p>
+				</div>
+			</div>
+			<div class="ccwps-info-box" style="margin-top:14px;">
+				<strong><?php echo esc_html( $this->tx( 'Odporúčanie pre nasadenie' ) ); ?></strong>
+				<?php echo ' ' . esc_html( $this->tx( 'Ak si nie ste istí právnym základom, ponechajte predvolený režim bez merania po odmietnutí. Anonymný režim zapnite iba v prípade, že je to v súlade s vašimi právnymi požiadavkami.' ) ); ?>
 			</div>
 		</div>
 

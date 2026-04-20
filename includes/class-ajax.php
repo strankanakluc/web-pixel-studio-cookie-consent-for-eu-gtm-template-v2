@@ -23,14 +23,16 @@ class CCWPS_Ajax {
 		add_action( 'wp_ajax_nopriv_ccwps_save_consent', [ $this, 'save_consent' ] );
 
 		// Admin.
-		add_action( 'wp_ajax_ccwps_clear_log',        [ $this, 'clear_log' ] );
-		add_action( 'wp_ajax_ccwps_save_settings',    [ $this, 'save_settings' ] );
-		add_action( 'wp_ajax_ccwps_save_cookie',      [ $this, 'save_cookie' ] );
-		add_action( 'wp_ajax_ccwps_delete_cookie',    [ $this, 'delete_cookie' ] );
-		add_action( 'wp_ajax_ccwps_save_block',       [ $this, 'save_block' ] );
-		add_action( 'wp_ajax_ccwps_delete_block',     [ $this, 'delete_block' ] );
-		add_action( 'wp_ajax_ccwps_reset_settings',   [ $this, 'reset_settings' ] );
-		add_action( 'wp_ajax_ccwps_save_admin_lang',  [ $this, 'save_admin_lang' ] );
+		add_action( 'wp_ajax_ccwps_clear_log',           [ $this, 'clear_log' ] );
+		add_action( 'wp_ajax_ccwps_save_settings',       [ $this, 'save_settings' ] );
+		add_action( 'wp_ajax_ccwps_save_cookie',         [ $this, 'save_cookie' ] );
+		add_action( 'wp_ajax_ccwps_delete_cookie',       [ $this, 'delete_cookie' ] );
+		add_action( 'wp_ajax_ccwps_delete_cookies_bulk', [ $this, 'delete_cookies_bulk' ] );
+		add_action( 'wp_ajax_ccwps_save_block',          [ $this, 'save_block' ] );
+		add_action( 'wp_ajax_ccwps_delete_block',        [ $this, 'delete_block' ] );
+		add_action( 'wp_ajax_ccwps_delete_blocks_bulk',  [ $this, 'delete_blocks_bulk' ] );
+		add_action( 'wp_ajax_ccwps_reset_settings',      [ $this, 'reset_settings' ] );
+		add_action( 'wp_ajax_ccwps_save_admin_lang',     [ $this, 'save_admin_lang' ] );
 	}
 
 	/* ---- PUBLIC ---- */
@@ -91,7 +93,7 @@ class CCWPS_Ajax {
 			$posted['banner_position'] = in_array( $position, $bar_positions, true ) ? $position : 'bottom-center';
 		}
 
-		$url_keys = [ 'icon_custom_url', 'banner_logo_url', 'banner_logo_link_url' ];
+		$url_keys = [ 'icon_custom_url', 'banner_logo_url', 'banner_logo_link_url', 'matomo_url' ];
 		foreach ( $allowed_keys as $key ) {
 			if ( ! array_key_exists( $key, $posted ) ) continue;
 			$value = $posted[ $key ];
@@ -135,6 +137,20 @@ class CCWPS_Ajax {
 		( new CCWPS_Cookie_Manager() )->delete( $id ) ? wp_send_json_success() : wp_send_json_error();
 	}
 
+	public function delete_cookies_bulk(): void {
+		check_ajax_referer( 'ccwps_admin', 'nonce' );
+		if ( ! current_user_can( 'manage_options' ) ) wp_die( -1 );
+		$ids = $this->get_posted_array( 'ids' );
+		$ids = array_map( 'intval', $ids );
+		if ( empty( $ids ) ) wp_send_json_error();
+		$manager = new CCWPS_Cookie_Manager();
+		$deleted = 0;
+		foreach ( $ids as $id ) {
+			if ( $manager->delete( $id ) ) $deleted++;
+		}
+		$deleted > 0 ? wp_send_json_success() : wp_send_json_error();
+	}
+
 	public function save_block(): void {
 		check_ajax_referer( 'ccwps_admin', 'nonce' );
 		if ( ! current_user_can( 'manage_options' ) ) wp_die( -1 );
@@ -147,6 +163,20 @@ class CCWPS_Ajax {
 		];
 		$ok      = $id ? $manager->update( $id, $data ) : (bool) $manager->insert( $data );
 		$ok ? wp_send_json_success() : wp_send_json_error( 'Failed to save rule.' );
+	}
+
+	public function delete_blocks_bulk(): void {
+		check_ajax_referer( 'ccwps_admin', 'nonce' );
+		if ( ! current_user_can( 'manage_options' ) ) wp_die( -1 );
+		$ids = $this->get_posted_array( 'ids' );
+		$ids = array_map( 'intval', $ids );
+		if ( empty( $ids ) ) wp_send_json_error();
+		$manager = new CCWPS_Block_Manager();
+		$deleted = 0;
+		foreach ( $ids as $id ) {
+			if ( $manager->delete( $id ) ) $deleted++;
+		}
+		$deleted > 0 ? wp_send_json_success() : wp_send_json_error();
 	}
 
 	public function delete_block(): void {

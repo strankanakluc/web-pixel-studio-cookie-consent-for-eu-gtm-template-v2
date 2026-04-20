@@ -125,10 +125,14 @@ The consent cookie is set client-side (not httpOnly) so the frontend can read it
 * Added Matomo integration settings (Matomo URL + Site ID) in the Settings tab.
 * Added new Matomo behavior toggle: strict no-tracking after reject (default) or optional anonymous cookieless measurement after reject.
 * Added automatic Matomo consent switching to full tracking when analytics consent is granted later.
+* Fixed duplicate Matomo pageview call on initial page load when existing analytics consent was already stored.
+* Fixed strict Matomo mode: script is now lazy-loaded only after analytics consent is granted, preventing early script execution.
 * Added new cookie presets for Matomo Analytics and Matomo Tag Manager.
-* Added new script blocking presets for Matomo Analytics and Matomo Tag Manager.
+* Added new script blocking presets for Matomo Analytics and Matomo Tag Manager with dynamic host-scoped regex (www + non-www).
 * Added Matomo integration guidance in the About tab.
-* Added translations for new Matomo admin texts across supported languages.
+* Added installation screenshots with lightbox preview for Matomo Tag setup directly in the Settings tab.
+* Added bulk delete functionality with checkboxes and select-all in the Cookies and Blocking lists.
+* Added translations for all new admin texts (Matomo settings, bulk actions, screenshot labels) across all 8 supported languages.
 
 = 1.0.2 =
 * Fixed banner visibility regression where the banner could lose fixed positioning and appear only after scrolling.
@@ -156,7 +160,7 @@ The consent cookie is set client-side (not httpOnly) so the frontend can read it
 == Upgrade Notice ==
 
 = 1.0.3 =
-Adds Matomo support (strict default + optional anonymous mode), new Matomo presets, About-tab guidance, and full translation coverage for new Matomo admin texts.
+Version 1.0.3 adds full Matomo Analytics integration with strict no-tracking and optional anonymous cookieless modes, fixes duplicate pageview and lazy-loading issues, adds host-scoped Matomo blocking presets, introduces bulk delete with checkboxes in the Cookies and Blocking lists, adds Matomo installation screenshots with lightbox in the Settings tab, and expands translation coverage across all 8 supported languages.
 
 = 1.0.2 =
 Includes major 1.0.2 improvements: banner visibility fix, new Branding options (custom logo + link), refined layouts, stronger translation coverage, and more reliable full export/import roundtrip.

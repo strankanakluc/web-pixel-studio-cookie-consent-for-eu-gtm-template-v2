@@ -310,5 +310,8 @@ return [
 	'Ak túto voľbu zapnete, Matomo po odmietnutí stále zbiera základné štatistiky bez cookies. Po udelení analytického súhlasu sa prepne na plné meranie s cookies.' => 'Si activas esta opción, Matomo seguirá recopilando estadísticas básicas sin cookies tras el rechazo. Después del consentimiento analítico, cambia a medición completa con cookies.',
 	'Odporúčanie pre nasadenie' => 'Recomendación de implementación',
 	'Ak si nie ste istí právnym základom, ponechajte predvolený režim bez merania po odmietnutí. Anonymný režim zapnite iba v prípade, že je to v súlade s vašimi právnymi požiadavkami.' => 'Si no estás seguro de la base legal, mantén el modo predeterminado sin medición tras rechazo. Activa el modo anónimo solo si cumple tus requisitos legales.',	'🗑️ Odstrániť vybrané' => '🗑️ Eliminar seleccionados',
-	'Vybrať všetko / Zrušiť výber' => 'Seleccionar todo / Limpiar selección',];
+	'Vybrať všetko / Zrušiť výber' => 'Seleccionar todo / Limpiar selección',
+	'Screenshoty inštalácie Matomo' => 'Capturas de pantalla de la instalación de Matomo',
+	'Náhľady krokov inštalácie Matomo Tag v administrácii Matomo.' => 'Vista previa de los pasos de instalación de la etiqueta Matomo en la administración de Matomo.',
+];
 

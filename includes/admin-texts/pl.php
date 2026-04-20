@@ -312,5 +312,7 @@ return [
 	'Ak si nie ste istí právnym základom, ponechajte predvolený režim bez merania po odmietnutí. Anonymný režim zapnite iba v prípade, že je to v súlade s vašimi právnymi požiadavkami.' => 'Jeśli nie masz pewności co do podstawy prawnej, pozostaw domyślny tryb bez pomiaru po odrzuceniu. Tryb anonimowy włączaj tylko wtedy, gdy jest zgodny z Twoimi wymaganiami prawnymi.',
 	'🗑️ Odstrániť vybrané' => '🗑️ Usuń wybrane',
 	'Vybrať všetko / Zrušiť výber' => 'Zaznacz wszystko / Wyczyść zaznaczenie',
+	'Screenshoty inštalácie Matomo' => 'Zrzuty ekranu instalacji Matomo',
+	'Náhľady krokov inštalácie Matomo Tag v administrácii Matomo.' => 'Podgląd kroków instalacji znacznika Matomo w panelu administracyjnym Matomo.',
 ];
 

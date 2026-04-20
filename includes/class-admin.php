@@ -375,6 +375,46 @@ class CCWPS_Admin {
 			</table>
 		</div>
 
+		<?php
+		$matomo_shots = [];
+		for ( $i = 1; $i <= 2; $i++ ) {
+			$img_path = plugin_dir_path( __FILE__ ) . '../admin/images/' . $i . '-matomo.webp';
+			if ( file_exists( $img_path ) ) {
+				$matomo_shots[] = plugin_dir_url( __FILE__ ) . '../admin/images/' . $i . '-matomo.webp';
+			}
+		}
+		if ( ! empty( $matomo_shots ) ) :
+		?>
+		<div class="ccwps-card">
+			<h2><?php echo esc_html( $this->tx( 'Screenshoty inštalácie Matomo' ) ); ?></h2>
+			<p><?php echo esc_html( $this->tx( 'Náhľady krokov inštalácie Matomo Tag v administrácii Matomo.' ) ); ?></p>
+			<div class="ccwps-gtm-gallery">
+				<?php foreach ( $matomo_shots as $index => $shot_url ) : ?>
+					<?php $step_label = sprintf( $this->tx( 'Krok %d' ), $index + 1 ); ?>
+					<figure class="ccwps-gtm-shot">
+						<button
+							type="button"
+							class="ccwps-matomo-shot-trigger"
+							data-ccwps-matomo-image="<?php echo esc_url( $shot_url ); ?>"
+							data-ccwps-matomo-caption="<?php echo esc_attr( $step_label ); ?>"
+						>
+							<img src="<?php echo esc_url( $shot_url ); ?>" alt="<?php echo esc_attr( $step_label ); ?>" style="width:300px;height:auto;">
+						</button>
+						<figcaption><?php echo esc_html( $step_label ); ?></figcaption>
+					</figure>
+				<?php endforeach; ?>
+			</div>
+			<div class="ccwps-gtm-lightbox" id="ccwps-matomo-lightbox" hidden>
+				<div class="ccwps-gtm-lightbox-backdrop" data-ccwps-matomo-lightbox-close></div>
+				<div class="ccwps-gtm-lightbox-dialog" role="dialog" aria-modal="true" aria-labelledby="ccwps-matomo-lightbox-caption">
+					<button type="button" class="ccwps-gtm-lightbox-close" data-ccwps-matomo-lightbox-close aria-label="Close preview">&times;</button>
+					<img src="" alt="" class="ccwps-gtm-lightbox-image" id="ccwps-matomo-lightbox-image">
+					<div class="ccwps-gtm-lightbox-caption" id="ccwps-matomo-lightbox-caption"></div>
+				</div>
+			</div>
+		</div>
+		<?php endif; ?>
+
 		<div class="ccwps-form-actions">
 			<button type="button" class="button button-primary ccwps-save-settings ccwps-btn-primary-action"><?php echo esc_html( $this->t( 'admin_btn_save_settings', 'Uložiť nastavenia' ) ); ?></button>
 		</div>

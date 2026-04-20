@@ -755,6 +755,34 @@
 		if (e.key === 'Escape' && !$('#ccwps-gtm-lightbox').is('[hidden]')) {
 			closeGtmLightbox();
 		}
+		if (e.key === 'Escape' && !$('#ccwps-matomo-lightbox').is('[hidden]')) {
+			closeMatomoLightbox();
+		}
+	});
+
+	/* =====================
+	   MATOMO SCREENSHOT LIGHTBOX
+	   ===================== */
+	function closeMatomoLightbox() {
+		const $lightbox = $('#ccwps-matomo-lightbox');
+		$lightbox.attr('hidden', true);
+		$lightbox.find('.ccwps-gtm-lightbox-image').attr({ src: '', alt: '' });
+		$lightbox.find('.ccwps-gtm-lightbox-caption').text('');
+		$('body').removeClass('ccwps-lightbox-open');
+	}
+
+	$(document).on('click', '.ccwps-matomo-shot-trigger', function () {
+		const image = $(this).data('ccwps-matomo-image');
+		const caption = $(this).data('ccwps-matomo-caption') || '';
+		const $lightbox = $('#ccwps-matomo-lightbox');
+		$lightbox.find('.ccwps-gtm-lightbox-image').attr({ src: image, alt: caption });
+		$lightbox.find('.ccwps-gtm-lightbox-caption').text(caption);
+		$lightbox.removeAttr('hidden');
+		$('body').addClass('ccwps-lightbox-open');
+	});
+
+	$(document).on('click', '[data-ccwps-matomo-lightbox-close]', function () {
+		closeMatomoLightbox();
 	});
 
 	/* =====================

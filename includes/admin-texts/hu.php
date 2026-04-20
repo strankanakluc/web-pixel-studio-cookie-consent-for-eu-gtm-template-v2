@@ -312,5 +312,7 @@ return [
 	'Ak si nie ste istí právnym základom, ponechajte predvolený režim bez merania po odmietnutí. Anonymný režim zapnite iba v prípade, že je to v súlade s vašimi právnymi požiadavkami.' => 'Ha nem biztos a jogalapban, hagyja meg az alapértelmezett, elutasítás utáni mérés nélküli módot. Az anonim módot csak akkor kapcsolja be, ha ez megfelel a jogi követelményeinek.',
 	'🗑️ Odstrániť vybrané' => '🗑️ Kijelöltek törlése',
 	'Vybrať všetko / Zrušiť výber' => 'Összes kijelölése / Kijelölés törlése',
+	'Screenshoty inštalácie Matomo' => 'Matomo telepítés képernyőképek',
+	'Náhľady krokov inštalácie Matomo Tag v administrácii Matomo.' => 'A Matomo Tag telepítési lépéseinek előnézete a Matomo adminisztrációban.',
 ];
 

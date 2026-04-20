@@ -312,5 +312,7 @@ return [
 	'Ak si nie ste istí právnym základom, ponechajte predvolený režim bez merania po odmietnutí. Anonymný režim zapnite iba v prípade, že je to v súlade s vašimi právnymi požiadavkami.' => 'Wenn Sie sich hinsichtlich der Rechtsgrundlage nicht sicher sind, lassen Sie den Standardmodus ohne Tracking nach Ablehnung aktiviert. Den anonymen Modus nur aktivieren, wenn dies mit Ihren rechtlichen Anforderungen vereinbar ist.',
 	'🗑️ Odstrániť vybrané' => '🗑️ Ausgewählte löschen',
 	'Vybrať všetko / Zrušiť výber' => 'Alle auswählen / Auswahl löschen',
+	'Screenshoty inštalácie Matomo' => 'Screenshots der Matomo-Installation',
+	'Náhľady krokov inštalácie Matomo Tag v administrácii Matomo.' => 'Vorschau der Installationsschritte des Matomo-Tags in der Matomo-Verwaltung.',
 ];
 

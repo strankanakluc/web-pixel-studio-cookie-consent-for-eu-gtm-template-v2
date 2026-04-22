@@ -849,29 +849,61 @@
 	}
 
 	/* ---- Color pickers ---- */
-	// Load theme palette and initialize color pickers with theme colors
+	// Default color palette - web-safe colors
+	var defaultPalette = [
+		'#000000', '#FFFFFF', '#F5F5F5', '#E5E5E5',
+		'#1a73e8', '#EA4335', '#FBBC04', '#34A853',
+		'#FF6D00', '#9C27B0'
+	];
+
+	// Initialize color pickers with default palette
+	$('.ccwps-color-picker').wpColorPicker({
+		palettes: defaultPalette,
+		change: function(event, ui) {
+			var key = $(this).attr('name');
+			var chk = $('[data-target="' + key + '"]');
+			if (chk.length) chk.prop('checked', false);
+		}
+	});
+
+	// Try to load theme palette and update color pickers if available
 	ajaxPost('ccwps_get_theme_palette', {}, function(res) {
-		var palette = [];
 		if (res.success && res.data && res.data.palette && res.data.palette.length > 0) {
-			palette = res.data.palette.map(function(item) { 
+			var themePalette = res.data.palette.map(function(item) { 
 				return item.color; 
 			});
+
+			// Re-initialize color pickers with theme palette
+			$('.ccwps-color-picker').each(function() {
+				var $picker = $(this);
+				var currentValue = $picker.val();
+				var defaultColor = $picker.data('default-color');
+				
+				// Remove previous color picker instance if exists
+				$picker.wpColorPicker('close');
+				if ($picker.nextAll('.wp-color-result').length) {
+					$picker.nextAll('.wp-color-result').first().remove();
+					$picker.nextAll('.wp-picker-container').first().remove();
+				}
+				
+				// Re-initialize with theme palette
+				$picker.wpColorPicker({
+					palettes: themePalette,
+					defaultColor: defaultColor,
+					change: function(event, ui) {
+						var key = $(this).attr('name');
+						var chk = $('[data-target="' + key + '"]');
+						if (chk.length) chk.prop('checked', false);
+					}
+				});
+				
+				// Restore value
+				$picker.val(currentValue);
+				if (typeof $picker.wpColorPicker === 'function') {
+					$picker.wpColorPicker('color', currentValue);
+				}
+			});
 		}
-
-		var colorPickerConfig = {
-			change: function(event, ui) {
-				var key = $(this).attr('name');
-				var chk = $('[data-target="' + key + '"]');
-				if (chk.length) chk.prop('checked', false);
-			}
-		};
-
-		// Add palette if available
-		if (palette.length > 0) {
-			colorPickerConfig.palettes = palette;
-		}
-
-		$('.ccwps-color-picker').wpColorPicker(colorPickerConfig);
 	});
 
 	function setColorPickerValue($picker, value) {

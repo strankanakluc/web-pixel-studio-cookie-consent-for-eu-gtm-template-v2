@@ -851,42 +851,80 @@ class CCWPS_Admin {
 		$palette = [];
 
 		// Try to get palette from theme.json (Gutenberg / Full Site Editing)
-		$theme_json_file = get_template_directory() . '/theme.json';
-		if ( file_exists( $theme_json_file ) ) {
-			// Read and parse theme.json
-			$json_content = function_exists( 'wp_json_file_get_contents' ) 
-				? wp_json_file_get_contents( $theme_json_file )
-				: json_decode( file_get_contents( $theme_json_file ), true ); // phpcs:ignore
+		// Check both active theme and child theme
+		$json_files = array_unique( [
+			get_stylesheet_directory() . '/theme.json',
+			get_template_directory() . '/theme.json',
+		] );
 
-			if ( is_array( $json_content ) && isset( $json_content['settings']['color']['palette'] ) ) {
-				$colors = $json_content['settings']['color']['palette'];
-				if ( is_array( $colors ) ) {
-					foreach ( $colors as $color ) {
-						if ( isset( $color['color'] ) ) {
-							$hex = sanitize_hex_color( $color['color'] );
-							if ( $hex ) {
-								$palette[] = $hex;
-							}
+		foreach ( $json_files as $theme_json_file ) {
+			if ( ! file_exists( $theme_json_file ) ) {
+				continue;
+			}
+
+			$json_string  = file_get_contents( $theme_json_file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+			$json_content = json_decode( $json_string, true );
+
+			if ( ! is_array( $json_content ) ) {
+				continue;
+			}
+
+			$color_sources = [];
+
+			// Standard palette
+			if ( isset( $json_content['settings']['color']['palette'] ) && is_array( $json_content['settings']['color']['palette'] ) ) {
+				$color_sources[] = $json_content['settings']['color']['palette'];
+			}
+
+			// Custom palette (some themes use this key)
+			if ( isset( $json_content['settings']['color']['palette']['theme'] ) && is_array( $json_content['settings']['color']['palette']['theme'] ) ) {
+				$color_sources[] = $json_content['settings']['color']['palette']['theme'];
+			}
+
+			foreach ( $color_sources as $colors ) {
+				foreach ( $colors as $color ) {
+					if ( ! isset( $color['color'] ) ) {
+						continue;
+					}
+					$raw = trim( (string) $color['color'] );
+
+					// Accept hex colors directly
+					$hex = sanitize_hex_color( $raw );
+					if ( $hex && ! in_array( $hex, $palette, true ) ) {
+						$palette[] = $hex;
+					}
+				}
+			}
+
+			// If found colors, stop (child theme takes priority)
+			if ( ! empty( $palette ) ) {
+				break;
+			}
+		}
+
+		// Fallback: try WordPress Global Styles API (WP 5.9+)
+		if ( empty( $palette ) && function_exists( 'wp_get_global_settings' ) ) {
+			$global = wp_get_global_settings( [ 'color', 'palette' ] );
+			if ( ! empty( $global['theme'] ) && is_array( $global['theme'] ) ) {
+				foreach ( $global['theme'] as $color ) {
+					if ( isset( $color['color'] ) ) {
+						$hex = sanitize_hex_color( trim( (string) $color['color'] ) );
+						if ( $hex && ! in_array( $hex, $palette, true ) ) {
+							$palette[] = $hex;
 						}
 					}
 				}
 			}
-		}
-
-		// If no palette found from theme.json, add a default web-safe palette
-		if ( empty( $palette ) ) {
-			$palette = [
-				'#000000',
-				'#FFFFFF',
-				'#F5F5F5',
-				'#E5E5E5',
-				'#1a73e8',
-				'#EA4335',
-				'#FBBC04',
-				'#34A853',
-				'#FF6D00',
-				'#9C27B0',
-			];
+			if ( empty( $palette ) && ! empty( $global['default'] ) && is_array( $global['default'] ) ) {
+				foreach ( $global['default'] as $color ) {
+					if ( isset( $color['color'] ) ) {
+						$hex = sanitize_hex_color( trim( (string) $color['color'] ) );
+						if ( $hex && ! in_array( $hex, $palette, true ) ) {
+							$palette[] = $hex;
+						}
+					}
+				}
+			}
 		}
 
 		return $palette;

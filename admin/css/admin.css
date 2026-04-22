@@ -1149,31 +1149,42 @@ span.required { color: var(--cc-red); }
 	margin-left: 4px;
 }
 
+.ccwps-color-swatches small {
+	display: block;
+	font-size: 10px;
+	color: var(--cc-gray-500);
+	text-transform: uppercase;
+	letter-spacing: .3px;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
 .ccwps-swatches-grid {
 	display: flex;
-	gap: 6px;
+	gap: 4px;
 	flex-wrap: wrap;
 	align-items: center;
-	max-width: 200px;
+	max-width: 220px;
 }
 
 .ccwps-swatch {
 	display: inline-block;
-	width: 28px;
-	height: 28px;
+	width: 22px;
+	height: 22px;
 	border-radius: 4px;
-	border: 1px solid #e5e7eb;
+	border: 2px solid rgba(0, 0, 0, 0.12);
 	cursor: pointer;
-	transition: all 0.15s ease;
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
 	padding: 0 !important;
-	background: var(--cc-bg) !important;
 	line-height: 1 !important;
 }
 
 .ccwps-swatch:hover,
 .ccwps-swatch:focus {
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-	transform: scale(1.1);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+	transform: scale(1.15);
+	border-color: rgba(0, 0, 0, 0.3);
+	outline: none;
 }
 
 .ccwps-color-with-transparent {

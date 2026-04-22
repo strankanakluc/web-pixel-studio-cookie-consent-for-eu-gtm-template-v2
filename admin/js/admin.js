@@ -863,64 +863,37 @@
 		: [];
 
 	if (themePalette.length > 0) {
-		// Create palette swatch container for each color picker
-		$('.ccwps-color-picker').each(function() {
-			var $picker = $(this);
-			var pickerId = $picker.attr('id');
-			var $wrapper = $picker.closest('.ccwps-color-field-wrap');
-			
-			// Create swatches HTML
-			var swatchesHtml = '<div class="ccwps-color-swatches" data-picker="' + pickerId + '">';
-			swatchesHtml += '<small style="display:block;font-size:10px;color:#6b7280;margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px;font-weight:600;">🎨 Farby z témy</small>';
-			swatchesHtml += '<div class="ccwps-swatches-grid">';
-			
-			themePalette.forEach(function(color) {
-				swatchesHtml += '<button type="button" class="ccwps-swatch" style="background-color:' + color + ';border:1px solid #e5e7eb;width:28px;height:28px;border-radius:4px;cursor:pointer;transition:all .15s;padding:0;" title="' + color + '" data-color="' + color + '" data-picker="' + pickerId + '"></button>';
-			});
-			
-			swatchesHtml += '</div></div>';
-			
-			// Insert after reset button
-			var $resetBtn = $wrapper.find('.ccwps-color-reset');
-			if ($resetBtn.length) {
-				$resetBtn.after(swatchesHtml);
-			} else {
-				$wrapper.append(swatchesHtml);
-			}
+		// Build swatches HTML (shared for all pickers - same palette)
+		var swatchGridHtml = '<div class="ccwps-swatches-grid">';
+		themePalette.forEach(function(color) {
+			swatchGridHtml += '<button type="button" class="ccwps-swatch" style="background-color:' + color + ';" title="' + color + '" data-color="' + color + '"></button>';
+		});
+		swatchGridHtml += '</div>';
+
+		var swatchesBlockHtml = '<div class="ccwps-color-swatches"><small>🎨 Farby z témy/builderu</small>' + swatchGridHtml + '</div>';
+
+		// Insert swatches after every reset button (each reset button is inside .ccwps-color-field-wrap)
+		$('.ccwps-color-reset').each(function() {
+			$(this).after(swatchesBlockHtml);
 		});
 
-		// Handle swatch clicks
+		// Handle swatch clicks - find the related color picker via the .ccwps-color-field-wrap wrapper
 		$(document).on('click', '.ccwps-swatch', function(e) {
 			e.preventDefault();
 			var color = $(this).data('color');
-			var pickerId = $(this).data('picker');
-			var $picker = $('#' + pickerId);
-			
+			// Find the input.ccwps-color-picker inside the same .ccwps-color-field-wrap
+			var $wrapper = $(this).closest('.ccwps-color-field-wrap');
+			var $picker = $wrapper.find('input.ccwps-color-picker');
+
 			if ($picker.length) {
-				// Set color value
-				$picker.val(color);
-				
-				// Update color picker display
-				if (typeof $picker.wpColorPicker === 'function') {
-					$picker.wpColorPicker('color', color);
-				}
-				
-				// Trigger change event
-				$picker.trigger('change');
-				
-				// Uncheck transparent if set
-				var $transparent = $('.ccwps-transparent-check[data-target="' + pickerId + '"]');
+				setColorPickerValue($picker, color);
+				// Uncheck transparent checkbox if present
+				var key = $picker.attr('name');
+				var $transparent = $('.ccwps-transparent-check[data-target="' + key + '"]');
 				if ($transparent.length) {
 					$transparent.prop('checked', false);
 				}
 			}
-		});
-
-		// Add hover effect to swatches
-		$(document).on('mouseenter', '.ccwps-swatch', function() {
-			$(this).css({'transform': 'scale(1.1)', 'box-shadow': '0 2px 8px rgba(0,0,0,0.15)'});
-		}).on('mouseleave', '.ccwps-swatch', function() {
-			$(this).css({'transform': 'scale(1)', 'box-shadow': 'none'});
 		});
 	}
 

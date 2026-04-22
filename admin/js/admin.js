@@ -849,12 +849,29 @@
 	}
 
 	/* ---- Color pickers ---- */
-	$('.ccwps-color-picker').wpColorPicker({
-		change: function(event, ui) {
-			var key = $(this).attr('name');
-			var chk = $('[data-target="' + key + '"]');
-			if (chk.length) chk.prop('checked', false);
+	// Load theme palette and initialize color pickers with theme colors
+	ajaxPost('ccwps_get_theme_palette', {}, function(res) {
+		var palette = [];
+		if (res.success && res.data && res.data.palette && res.data.palette.length > 0) {
+			palette = res.data.palette.map(function(item) { 
+				return item.color; 
+			});
 		}
+
+		var colorPickerConfig = {
+			change: function(event, ui) {
+				var key = $(this).attr('name');
+				var chk = $('[data-target="' + key + '"]');
+				if (chk.length) chk.prop('checked', false);
+			}
+		};
+
+		// Add palette if available
+		if (palette.length > 0) {
+			colorPickerConfig.palettes = palette;
+		}
+
+		$('.ccwps-color-picker').wpColorPicker(colorPickerConfig);
 	});
 
 	function setColorPickerValue($picker, value) {

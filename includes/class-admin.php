@@ -844,6 +844,40 @@ class CCWPS_Admin {
 	}
 
 	/* ================================================
+	   THEME PALETTE EXTRACTION
+	   ================================================ */
+	public function get_theme_palette(): array {
+		$palette = [];
+
+		// Try to get palette from theme.json (Gutenberg / Full Site Editing)
+		if ( function_exists( 'wp_get_theme' ) ) {
+			$theme = wp_get_theme();
+
+			// Try to get theme.json data
+			$theme_json_file = get_template_directory() . '/theme.json';
+			if ( file_exists( $theme_json_file ) ) {
+				$theme_json = wp_json_file_get_contents( $theme_json_file );
+				if ( is_array( $theme_json ) && isset( $theme_json['settings']['color']['palette'] ) ) {
+					$colors = $theme_json['settings']['color']['palette'];
+					if ( is_array( $colors ) ) {
+						foreach ( $colors as $color ) {
+							if ( isset( $color['color'] ) && isset( $color['name'] ) ) {
+								$palette[] = [
+									'color' => $color['color'],
+									'name'  => $color['name'],
+								];
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// If no palette found, return empty array
+		return $palette;
+	}
+
+	/* ================================================
 	   TRANSLATIONS TAB
 	   ================================================ */
 	private function tab_translations(): void {

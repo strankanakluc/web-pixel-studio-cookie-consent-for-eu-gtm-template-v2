@@ -108,6 +108,8 @@ class CCWPS_Admin {
 				'enterScriptSource' => $this->tx( 'Zadajte zdroj skriptu.' ),
 				'copied'        => $this->tx( '✓ Skopírované!' ),
 				'copy'          => $this->t( 'admin_btn_copy', 'Kopírovať' ),
+				'themeColorsToggle' => $this->tx( 'Farby z témy/builderu' ),
+				'themeColorsHide'   => $this->tx( 'Skryť farby témy' ),
 				'mediaTitle'    => $this->tx( 'Vybrať vlastnú ikonu' ),
 				'mediaButton'   => $this->tx( 'Použiť tento obrázok' ),
 				'customIconAlt' => $this->tx( 'Vlastná ikona' ),

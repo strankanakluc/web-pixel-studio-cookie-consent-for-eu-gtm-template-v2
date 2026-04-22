@@ -205,6 +205,8 @@ return [
 	'Vždy aktívne' => 'Mindig aktív',
 	'Vlastná ikona' => 'Egyéni ikon',
 	'Žiadny obrázok' => 'Nincsen kép',
+	'Farby z témy/builderu' => 'Téma/builder színek',
+	'Skryť farby témy' => 'Téma színek elrejtése',
 	'Vybrať vlastnú ikonu' => 'Válasszon egyéni ikont',
 	'Použiť tento obrázok' => 'E kép használata',
 	'Zadajte názov cookie.' => 'Adja meg a süti nevét.',

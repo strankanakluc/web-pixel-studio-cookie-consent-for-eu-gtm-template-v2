@@ -205,6 +205,8 @@ return [
 	'Vždy aktívne' => 'Siempre activo',
 	'Vlastná ikona' => 'Icono personalizado',
 	'Žiadny obrázok' => 'Sin imagen',
+	'Farby z témy/builderu' => 'Colores del tema/constructor',
+	'Skryť farby témy' => 'Ocultar colores del tema',
 	'Vybrať vlastnú ikonu' => 'Seleccionar icono',
 	'Použiť tento obrázok' => 'Usar esta imagen',
 	'Zadajte názov cookie.' => 'Ingrese nombre de cookie.',

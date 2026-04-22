@@ -863,6 +863,11 @@
 		: [];
 
 	if (themePalette.length > 0) {
+		var i18nToggle = (window.ccwpsAdmin && window.ccwpsAdmin.i18n && window.ccwpsAdmin.i18n.themeColorsToggle)
+			? window.ccwpsAdmin.i18n.themeColorsToggle : 'Farby z témy/builderu';
+		var i18nHide = (window.ccwpsAdmin && window.ccwpsAdmin.i18n && window.ccwpsAdmin.i18n.themeColorsHide)
+			? window.ccwpsAdmin.i18n.themeColorsHide : 'Skryť farby témy';
+
 		// Build swatches HTML (shared for all pickers - same palette)
 		var swatchGridHtml = '<div class="ccwps-swatches-grid">';
 		themePalette.forEach(function(color) {
@@ -870,11 +875,37 @@
 		});
 		swatchGridHtml += '</div>';
 
-		var swatchesBlockHtml = '<div class="ccwps-color-swatches"><small>🎨 Farby z témy/builderu</small>' + swatchGridHtml + '</div>';
+		var swatchesBlockHtml = '<div class="ccwps-color-swatches">'
+			+ '<button type="button" class="ccwps-swatches-toggle" aria-expanded="false">'
+			+ '<span class="ccwps-swatches-toggle-icon">🎨</span>'
+			+ '<span class="ccwps-swatches-toggle-label">' + i18nToggle + '</span>'
+			+ '<span class="ccwps-swatches-toggle-arrow">▾</span>'
+			+ '</button>'
+			+ '<div class="ccwps-swatches-panel" hidden>' + swatchGridHtml + '</div>'
+			+ '</div>';
 
 		// Insert swatches after every reset button (each reset button is inside .ccwps-color-field-wrap)
 		$('.ccwps-color-reset').each(function() {
 			$(this).after(swatchesBlockHtml);
+		});
+
+		// Toggle panel open/close
+		$(document).on('click', '.ccwps-swatches-toggle', function() {
+			var $btn = $(this);
+			var $panel = $btn.next('.ccwps-swatches-panel');
+			var expanded = $btn.attr('aria-expanded') === 'true';
+
+			if (expanded) {
+				$panel.attr('hidden', '');
+				$btn.attr('aria-expanded', 'false');
+				$btn.find('.ccwps-swatches-toggle-label').text(i18nToggle);
+				$btn.find('.ccwps-swatches-toggle-arrow').text('▾');
+			} else {
+				$panel.removeAttr('hidden');
+				$btn.attr('aria-expanded', 'true');
+				$btn.find('.ccwps-swatches-toggle-label').text(i18nHide);
+				$btn.find('.ccwps-swatches-toggle-arrow').text('▴');
+			}
 		});
 
 		// Handle swatch clicks - find the related color picker via the .ccwps-color-field-wrap wrapper

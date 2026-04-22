@@ -1159,6 +1159,39 @@ span.required { color: var(--cc-red); }
 	white-space: nowrap;
 }
 
+.ccwps-swatches-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	background: none;
+	border: 1px solid var(--cc-border, #e5e7eb);
+	border-radius: 4px;
+	padding: 2px 7px;
+	cursor: pointer;
+	font-size: 11px;
+	color: var(--cc-gray-500, #6b7280);
+	line-height: 1.4;
+	transition: background 0.12s, color 0.12s;
+	white-space: nowrap;
+}
+
+.ccwps-swatches-toggle:hover {
+	background: var(--cc-bg-hover, #f3f4f6);
+	color: var(--cc-text, #111827);
+}
+
+.ccwps-swatches-toggle-arrow {
+	font-size: 9px;
+	margin-left: 2px;
+}
+
+.ccwps-swatches-panel {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin-top: 4px;
+}
+
 .ccwps-swatches-grid {
 	display: flex;
 	gap: 4px;

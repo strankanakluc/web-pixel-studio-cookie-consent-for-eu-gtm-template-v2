@@ -758,6 +758,32 @@
 
 	const localizedAlwaysPluginCookies = alwaysPluginCookies.map(localizePresetCookie);
 
+	function localizeAdminCookieListDescriptions() {
+		$('.ccwps-cookies-row').each(function () {
+			const $row = $(this);
+			const cookieName = String($row.data('cookie-name') || '');
+			if (!cookieName) return;
+
+			const localizedDescriptions = {
+				...(presetCookieDescriptions[adminLang] || {}),
+				...(googleMarketingPresetDescriptions[adminLang] || {}),
+			};
+
+			const translatedDescription = localizedDescriptions[cookieName];
+			if (!translatedDescription) return;
+
+			const preview = translatedDescription.length > 70
+				? translatedDescription.slice(0, 70) + '…'
+				: translatedDescription;
+
+			const $descCell = $row.find('.ccwps-desc-preview');
+			$descCell.text(preview);
+			$descCell.closest('td').attr('title', translatedDescription);
+		});
+	}
+
+	localizeAdminCookieListDescriptions();
+
 	/* ---- Notice ---- */
 	function showNotice(msg, type = 'success') {
 		const $n = $('#ccwps-notice');
@@ -1077,6 +1103,64 @@
 	/* =====================
 	   COOKIE MANAGEMENT
 	   ===================== */
+	function isValidEmail(email) {
+		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || '').trim());
+	}
+
+	function openRequestPresetModal() {
+		$('#ccwps-request-email').val('');
+		$('#ccwps-request-subject').val('');
+		$('#ccwps-request-message').val('');
+		$('#ccwps-request-company').val('');
+		$('#ccwps-request-preset-modal').show();
+	}
+
+	$(document).on('click', '#ccwps-request-preset', function () {
+		openRequestPresetModal();
+	});
+
+	$(document).on('click', '#ccwps-send-preset-request', function () {
+		const $btn = $(this);
+		const email = String($('#ccwps-request-email').val() || '').trim();
+		const subject = String($('#ccwps-request-subject').val() || '').trim();
+		const message = String($('#ccwps-request-message').val() || '').trim();
+		const honeypot = String($('#ccwps-request-company').val() || '').trim();
+
+		if (!isValidEmail(email) || email.length > 190) {
+			showNotice(i18n.requestPresetEmailInvalid || 'Zadajte platný e-mail.', 'error');
+			return;
+		}
+
+		if (subject.length < 3 || subject.length > 150) {
+			showNotice(i18n.requestPresetSubjectInvalid || 'Predmet musí mať 3 až 150 znakov.', 'error');
+			return;
+		}
+
+		if (message.length < 20 || message.length > 4000) {
+			showNotice(i18n.requestPresetMessageInvalid || 'Text správy musí mať 20 až 4000 znakov.', 'error');
+			return;
+		}
+
+		$btn.prop('disabled', true).text(i18n.sendingRequest || 'Odosielam žiadosť…');
+
+		ajaxPost('ccwps_request_cookie_preset', {
+			email,
+			subject,
+			message,
+			company: honeypot,
+		}, function (res) {
+			$btn.prop('disabled', false).text(i18n.requestPresetSend || 'Odoslať žiadosť');
+
+			if (res.success) {
+				$('#ccwps-request-preset-modal').hide();
+				showNotice(res.data || i18n.requestPresetSent || 'Žiadosť bola úspešne odoslaná.');
+				return;
+			}
+
+			showNotice(res.data || i18n.error, 'error');
+		});
+	});
+
 	function openCookieModal(data = {}) {
 		const isEdit = !!data.id;
 		$('#ccwps-cookie-modal-title').text(isEdit ? (i18n.editCookie || 'Edit cookie') : (i18n.addCookie || 'Add cookie'));

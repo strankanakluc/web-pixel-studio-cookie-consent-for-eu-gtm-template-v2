@@ -95,6 +95,13 @@ class CCWPS_Admin {
 				'addCookie'     => $this->tx( 'Pridať cookie' ),
 				'editCookie'    => $this->tx( 'Upraviť cookie' ),
 				'enterCookieName' => $this->tx( 'Zadajte názov cookie.' ),
+				'requestPreset' => $this->tx( 'Žiadosť o pridanie predvoľby' ),
+				'requestPresetSend' => $this->tx( 'Odoslať žiadosť' ),
+				'requestPresetSent' => $this->tx( 'Žiadosť bola úspešne odoslaná.' ),
+				'requestPresetEmailInvalid' => $this->tx( 'Zadajte platný e-mail.' ),
+				'requestPresetSubjectInvalid' => $this->tx( 'Predmet musí mať 3 až 150 znakov.' ),
+				'requestPresetMessageInvalid' => $this->tx( 'Text správy musí mať 20 až 4000 znakov.' ),
+				'sendingRequest' => $this->tx( 'Odosielam žiadosť…' ),
 				'addRule'       => $this->tx( 'Pridať pravidlo' ),
 				'editRule'      => $this->tx( 'Upraviť pravidlo' ),
 				'enterScriptSource' => $this->tx( 'Zadajte zdroj skriptu.' ),
@@ -927,6 +934,7 @@ class CCWPS_Admin {
 		<div class="ccwps-page-header">
 			<h1><?php echo esc_html( $this->t( 'admin_tab_cookies_h1', 'Deklarácia cookies' ) ); ?></h1>
 			<div class="ccwps-header-actions">
+				<button type="button" class="button ccwps-btn-secondary-action" id="ccwps-request-preset"><?php echo esc_html( $this->tx( 'Žiadosť o pridanie predvoľby' ) ); ?></button>
 				<button type="button" class="button button-primary ccwps-btn-primary-action" id="ccwps-add-cookie">+ <?php echo esc_html( $this->t( 'admin_btn_add_cookie', 'Pridať cookie' ) ); ?></button>
 				<button type="button" class="button ccwps-btn-secondary-action" id="ccwps-preview-cookie-list">📋 <?php echo esc_html( $this->t( 'admin_btn_show_list', 'Zobraziť zoznam' ) ); ?></button>
 			</div>
@@ -953,7 +961,7 @@ class CCWPS_Admin {
 					<?php if ( empty( $cookies ) ) : ?>
 						<tr><td colspan="8" style="text-align:center;padding:24px;"><?php esc_html_e( 'Žiadne cookies. Kliknite "+ Pridať cookie".', 'cookie-consent-webpixelstudio' ); ?></td></tr>
 					<?php else : foreach ( $cookies as $c ) : ?>
-						<tr class="ccwps-cookies-row">
+						<tr class="ccwps-cookies-row" data-cookie-name="<?php echo esc_attr( $c['name'] ); ?>">
 							<td style="width:40px;"><input type="checkbox" class="ccwps-cookie-checkbox" data-id="<?php echo esc_attr( $c['id'] ); ?>"></td>
 							<td><strong><?php echo esc_html( $c['name'] ); ?></strong></td>
 							<td><?php echo esc_html( $c['domain'] ); ?></td>
@@ -979,7 +987,7 @@ class CCWPS_Admin {
 				<div class="ccwps-modal-body">
 					<input type="hidden" id="ccwps-cookie-id">
 					<table class="ccwps-table">
-						<tr><th><label for="c-preset"><?php echo esc_html( $this->tx( 'Predpripravené predvoľby' ) ); ?></label></th><td><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><select id="c-preset" style="min-width:260px;"><option value=""><?php echo esc_html( $this->tx( 'Vyberte predvoľbu' ) ); ?></option><option value="google_necessary"><?php echo esc_html( $this->tx( 'Google Necessary' ) ); ?></option><option value="google_analytics"><?php echo esc_html( $this->tx( 'Google Analytics' ) ); ?></option><option value="google_targeting"><?php echo esc_html( $this->tx( 'Google Targeting' ) ); ?></option><option value="google_preferences"><?php echo esc_html( $this->tx( 'Google Preferences' ) ); ?></option><option value="google_ads"><?php echo esc_html( $this->tx( 'Google Ads' ) ); ?></option><option value="facebook_pixel"><?php echo esc_html( $this->tx( 'Facebook Pixel' ) ); ?></option><option value="matomo_analytics"><?php echo esc_html( $this->tx( 'Matomo Analytics' ) ); ?></option><option value="matomo_tag_manager"><?php echo esc_html( $this->tx( 'Matomo Tag Manager' ) ); ?></option></select><button type="button" class="button button-primary ccwps-btn-primary-action" id="ccwps-apply-cookie-preset"><?php echo esc_html( $this->tx( 'Použiť predvoľbu' ) ); ?></button></div></td></tr>
+						<tr><th><label for="c-preset"><?php echo esc_html( $this->tx( 'Predpripravené predvoľby' ) ); ?></label></th><td><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><select id="c-preset" style="min-width:260px;"><option value=""><?php echo esc_html( $this->tx( 'Vyberte predvoľbu' ) ); ?></option><option value="google_necessary"><?php echo esc_html( $this->tx( 'Google Necessary' ) ); ?></option><option value="google_analytics"><?php echo esc_html( $this->tx( 'GA4 + GTM' ) ); ?></option><option value="google_targeting"><?php echo esc_html( $this->tx( 'Google Targeting' ) ); ?></option><option value="google_preferences"><?php echo esc_html( $this->tx( 'Google Preferences' ) ); ?></option><option value="google_ads"><?php echo esc_html( $this->tx( 'Google Ads' ) ); ?></option><option value="facebook_pixel"><?php echo esc_html( $this->tx( 'Facebook Pixel' ) ); ?></option><option value="matomo_analytics"><?php echo esc_html( $this->tx( 'Matomo Analytics' ) ); ?></option><option value="matomo_tag_manager"><?php echo esc_html( $this->tx( 'Matomo Tag Manager' ) ); ?></option></select><button type="button" class="button button-primary ccwps-btn-primary-action" id="ccwps-apply-cookie-preset"><?php echo esc_html( $this->tx( 'Použiť predvoľbu' ) ); ?></button></div></td></tr>
 						<tr><th><label for="c-name"><?php esc_html_e( 'Názov', 'cookie-consent-webpixelstudio' ); ?> <span class="required">*</span></label></th><td><input type="text" id="c-name" class="regular-text" placeholder="napr. _ga"></td></tr>
 						<tr><th><label for="c-domain"><?php esc_html_e( 'Doména', 'cookie-consent-webpixelstudio' ); ?></label></th><td><input type="text" id="c-domain" class="regular-text" placeholder="<?php echo esc_attr( $this->get_home_url_host() ); ?>"></td></tr>
 						<tr><th><label for="c-expiration"><?php esc_html_e( 'Platnosť', 'cookie-consent-webpixelstudio' ); ?></label></th><td><input type="text" id="c-expiration" class="regular-text" placeholder="napr. 2 roky, Relácia"></td></tr>
@@ -990,6 +998,32 @@ class CCWPS_Admin {
 					</table>
 				</div>
 				<div class="ccwps-modal-footer"><button type="button" class="button ccwps-modal-close ccwps-btn-secondary-action"><?php echo esc_html( $this->t( 'admin_btn_cancel', 'Zrušiť' ) ); ?></button><button type="button" class="button button-primary ccwps-btn-primary-action" id="ccwps-save-cookie"><?php echo esc_html( $this->t( 'admin_btn_save', 'Uložiť' ) ); ?></button></div>
+			</div>
+		</div>
+
+		<!-- Request preset modal -->
+		<div id="ccwps-request-preset-modal" class="ccwps-modal" style="display:none;">
+			<div class="ccwps-modal-inner" style="max-width:680px;">
+				<div class="ccwps-modal-header"><h3><?php echo esc_html( $this->tx( 'Žiadosť o pridanie predvoľby' ) ); ?></h3><button type="button" class="ccwps-modal-close">×</button></div>
+				<div class="ccwps-modal-body">
+					<table class="ccwps-table">
+						<tr>
+							<th><label for="ccwps-request-email"><?php esc_html_e( 'Email', 'cookie-consent-webpixelstudio' ); ?> <span class="required">*</span></label></th>
+							<td><input type="email" id="ccwps-request-email" class="regular-text" placeholder="name@example.com" maxlength="190"></td>
+						</tr>
+						<tr>
+							<th><label for="ccwps-request-subject"><?php esc_html_e( 'Predmet', 'cookie-consent-webpixelstudio' ); ?> <span class="required">*</span></label></th>
+							<td><input type="text" id="ccwps-request-subject" class="large-text" maxlength="150" placeholder="napr. Nová predvoľba: LinkedIn Insight Tag"></td>
+						</tr>
+						<tr>
+							<th><label for="ccwps-request-message"><?php esc_html_e( 'Text', 'cookie-consent-webpixelstudio' ); ?> <span class="required">*</span></label></th>
+							<td><textarea id="ccwps-request-message" rows="6" class="large-text" maxlength="4000" placeholder="Opíšte, akú predvoľbu potrebujete, cookies alebo script source domény."></textarea></td>
+						</tr>
+					</table>
+					<input type="text" id="ccwps-request-company" value="" autocomplete="off" tabindex="-1" style="position:absolute;left:-9999px;opacity:0;pointer-events:none;" aria-hidden="true">
+					<p class="description" style="margin-top:10px;"><?php echo esc_html( $this->tx( 'Email použijeme iba na vybavenie tejto žiadosti.' ) ); ?></p>
+				</div>
+				<div class="ccwps-modal-footer"><button type="button" class="button ccwps-modal-close ccwps-btn-secondary-action"><?php echo esc_html( $this->t( 'admin_btn_cancel', 'Zrušiť' ) ); ?></button><button type="button" class="button button-primary ccwps-btn-primary-action" id="ccwps-send-preset-request"><?php echo esc_html( $this->tx( 'Odoslať žiadosť' ) ); ?></button></div>
 			</div>
 		</div>
 

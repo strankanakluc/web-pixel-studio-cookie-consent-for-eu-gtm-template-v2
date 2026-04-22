@@ -849,52 +849,24 @@
 	}
 
 	/* ---- Color pickers ---- */
-	// Initialize color pickers - default palette
-	var defaultPalette = [
-		'#000000', '#FFFFFF', '#F5F5F5', '#E5E5E5',
-		'#1a73e8', '#EA4335', '#FBBC04', '#34A853',
-		'#FF6D00', '#9C27B0'
-	];
+	// Get palette from PHP (wp_localize_script)
+	var themePalette = (window.ccwpsAdmin && window.ccwpsAdmin.colorPalette && Array.isArray(window.ccwpsAdmin.colorPalette)) 
+		? window.ccwpsAdmin.colorPalette 
+		: [
+			'#000000', '#FFFFFF', '#F5F5F5', '#E5E5E5',
+			'#1a73e8', '#EA4335', '#FBBC04', '#34A853',
+			'#FF6D00', '#9C27B0'
+		];
 
+	// Initialize all color pickers with theme palette
 	$('.ccwps-color-picker').wpColorPicker({
-		palettes: defaultPalette,
+		palettes: themePalette,
 		change: function(event, ui) {
 			var key = $(this).attr('name');
 			var chk = $('[data-target="' + key + '"]');
 			if (chk.length) chk.prop('checked', false);
 		}
 	});
-
-	// Load theme palette via AJAX and update the picker's palette without reopening
-	(function() {
-		ajaxPost('ccwps_get_theme_palette', {}, function(res) {
-			if (res.success && res.data && res.data.palette && res.data.palette.length > 0) {
-				var themePalette = res.data.palette.map(function(item) { 
-					return item.color; 
-				});
-
-				// Update palette for all color pickers
-				// This updates the palette shown in the dialog without re-initializing
-				$('.ccwps-color-picker').each(function() {
-					var $picker = $(this);
-					// Find the color picker container
-					var $container = $picker.closest('div').find('.wp-picker-container');
-					if ($container.length) {
-						// Find the palette element and update it
-						var $palette = $container.find('.wp-picker-palette');
-						if ($palette.length && themePalette.length > 0) {
-							// Rebuild palette HTML
-							var paletteHtml = '';
-							themePalette.forEach(function(color) {
-								paletteHtml += '<span class="color-palette" style="background-color: ' + color + '" data-color="' + color + '" title="' + color + '"></span>';
-							});
-							$palette.html(paletteHtml);
-						}
-					}
-				});
-			}
-		});
-	})();
 
 	function setColorPickerValue($picker, value) {
 		if (!$picker.length) return;

@@ -80,6 +80,7 @@ class CCWPS_Admin {
 			'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
 			'siteUrl'     => home_url(),
 			'siteHost'    => $this->get_home_url_host(),
+			'colorPalette' => $this->get_theme_palette(),
 			'i18n'        => [
 				'saved'         => $this->tx( 'Nastavenia uložené.' ),
 				'error'         => $this->tx( 'Vyskytla sa chyba.' ),
@@ -850,22 +851,21 @@ class CCWPS_Admin {
 		$palette = [];
 
 		// Try to get palette from theme.json (Gutenberg / Full Site Editing)
-		if ( function_exists( 'wp_get_theme' ) ) {
-			$theme = wp_get_theme();
+		$theme_json_file = get_template_directory() . '/theme.json';
+		if ( file_exists( $theme_json_file ) ) {
+			// Read and parse theme.json
+			$json_content = function_exists( 'wp_json_file_get_contents' ) 
+				? wp_json_file_get_contents( $theme_json_file )
+				: json_decode( file_get_contents( $theme_json_file ), true ); // phpcs:ignore
 
-			// Try to get theme.json data
-			$theme_json_file = get_template_directory() . '/theme.json';
-			if ( file_exists( $theme_json_file ) ) {
-				$theme_json = wp_json_file_get_contents( $theme_json_file );
-				if ( is_array( $theme_json ) && isset( $theme_json['settings']['color']['palette'] ) ) {
-					$colors = $theme_json['settings']['color']['palette'];
-					if ( is_array( $colors ) ) {
-						foreach ( $colors as $color ) {
-							if ( isset( $color['color'] ) && isset( $color['name'] ) ) {
-								$palette[] = [
-									'color' => $color['color'],
-									'name'  => $color['name'],
-								];
+			if ( is_array( $json_content ) && isset( $json_content['settings']['color']['palette'] ) ) {
+				$colors = $json_content['settings']['color']['palette'];
+				if ( is_array( $colors ) ) {
+					foreach ( $colors as $color ) {
+						if ( isset( $color['color'] ) ) {
+							$hex = sanitize_hex_color( $color['color'] );
+							if ( $hex ) {
+								$palette[] = $hex;
 							}
 						}
 					}
@@ -873,7 +873,22 @@ class CCWPS_Admin {
 			}
 		}
 
-		// If no palette found, return empty array
+		// If no palette found from theme.json, add a default web-safe palette
+		if ( empty( $palette ) ) {
+			$palette = [
+				'#000000',
+				'#FFFFFF',
+				'#F5F5F5',
+				'#E5E5E5',
+				'#1a73e8',
+				'#EA4335',
+				'#FBBC04',
+				'#34A853',
+				'#FF6D00',
+				'#9C27B0',
+			];
+		}
+
 		return $palette;
 	}
 

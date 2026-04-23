@@ -657,6 +657,8 @@
 			// Base
 			'--ccwps-primary:    ' + (col.primary || '#1a73e8') + ';',
 			'--ccwps-text:       ' + (col.text    || '#111827') + ';',
+			'--ccwps-title-text: ' + (col.titleText || col.text || '#111827') + ';',
+			'--ccwps-desc-text:  ' + (col.descText  || col.text || '#111827') + ';',
 			'--ccwps-bg:         ' + (col.bg      || '#ffffff') + ';',
 			'--ccwps-muted:      #6b7280;',
 			'--ccwps-border:     ' + modalBorder + ';',

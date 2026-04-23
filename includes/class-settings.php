@@ -60,7 +60,7 @@ class CCWPS_Settings {
 			'icon_position', 'icon_type', 'icon_custom_url', 'font_family',
 			'banner_logo_show', 'banner_logo_url', 'banner_logo_link_url', 'banner_logo_width',
 			// Banner box
-			'primary_color', 'text_color', 'bg_color', 'btn_text_color', 'btn_border_radius',
+			'primary_color', 'banner_title_color', 'text_color', 'bg_color', 'btn_text_color', 'btn_border_radius',
 			'banner_border_radius', 'banner_shadow',
 			// Primary button (Accept All)
 			'btn_primary_bg', 'btn_primary_bg_hv', 'btn_primary_txt',
@@ -217,6 +217,8 @@ class CCWPS_Settings {
 				// Base (legacy, also used as fallback)
 				'primary'       => $s['primary_color'],
 				'text'          => $s['text_color'],
+				'titleText'     => $s['banner_title_color'] ?: $s['text_color'],
+				'descText'      => $s['text_color'],
 				'bg'            => $s['bg_color'],
 				'btnText'       => $s['btn_text_color'],
 				'btnRadius'     => (int) $s['btn_border_radius'],

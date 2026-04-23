@@ -128,6 +128,7 @@ class CCWPS_Activator {
 			'banner_logo_link_url' => '',
 			'banner_logo_width'    => 40,
 			'primary_color'        => '#1a73e8',
+			'banner_title_color'   => '#1f2937',
 			'text_color'           => '#1f2937',
 			'bg_color'             => '#ffffff',
 			'btn_text_color'       => '#ffffff',

@@ -660,7 +660,8 @@ class CCWPS_Admin {
 			<table class="ccwps-table">
 				<?php foreach ( [
 					'bg_color'    => [ __( 'Pozadie bannera', 'cookie-consent-webpixelstudio' ),    __( 'Farba pozadia cookie lišty.', 'cookie-consent-webpixelstudio' ), '#ffffff' ],
-					'text_color'  => [ __( 'Farba textu bannera', 'cookie-consent-webpixelstudio' ), __( 'Farba nadpisu a popisu v banneri.', 'cookie-consent-webpixelstudio' ), '#111827' ],
+					'banner_title_color' => [ __( 'Farba nadpisu bannera', 'cookie-consent-webpixelstudio' ), __( 'Farba hlavného nadpisu v banneri.', 'cookie-consent-webpixelstudio' ), '#111827' ],
+					'text_color'  => [ __( 'Farba textu bannera', 'cookie-consent-webpixelstudio' ), __( 'Farba popisu a bežného textu v banneri.', 'cookie-consent-webpixelstudio' ), '#111827' ],
 					'primary_color' => [ __( 'Primárna / akcentová farba', 'cookie-consent-webpixelstudio' ), __( 'Používa sa ako fallback farba pre tlačidlá a zvýraznenia.', 'cookie-consent-webpixelstudio' ), '#1a73e8' ],
 				] as $k => [ $lbl, $desc, $def ] ) : ?>
 				<tr>
@@ -794,6 +795,7 @@ class CCWPS_Admin {
 			'banner_border_radius'=> '12',
 			'modal_border_radius' => '12',
 			'bg_color'            => '#ffffff',
+			'banner_title_color'  => '#111827',
 			'text_color'          => '#111827',
 			'primary_color'       => '#1a73e8',
 			'btn_primary_bg'      => '#1a73e8',
@@ -2067,7 +2069,7 @@ class CCWPS_Admin {
 	private function sanitize_import_setting_value( string $key, $value ) {
 		// Color keys - accept hex colors (including 'transparent')
 		$color_keys = [
-			'primary_color', 'text_color', 'bg_color', 'btn_text_color',
+			'primary_color', 'banner_title_color', 'text_color', 'bg_color', 'btn_text_color',
 			'btn_primary_bg', 'btn_primary_bg_hv', 'btn_primary_txt',
 			'btn_ghost_bg', 'btn_ghost_bg_hv', 'btn_ghost_txt', 'btn_ghost_txt_hv',
 			'btn_outline_bg', 'btn_outline_bg_hv', 'btn_outline_txt', 'btn_outline_border',

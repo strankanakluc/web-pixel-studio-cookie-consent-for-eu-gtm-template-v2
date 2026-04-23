@@ -77,7 +77,7 @@ class CCWPS_Ajax {
 
 		$allowed_keys = array_keys( $this->settings->get_all() );
 		$color_keys   = [
-			'primary_color', 'text_color', 'bg_color', 'btn_text_color',
+			'primary_color', 'banner_title_color', 'text_color', 'bg_color', 'btn_text_color',
 			'btn_primary_bg', 'btn_primary_bg_hv', 'btn_primary_txt',
 			'btn_ghost_bg', 'btn_ghost_bg_hv', 'btn_ghost_txt', 'btn_ghost_txt_hv',
 			'btn_outline_bg', 'btn_outline_bg_hv', 'btn_outline_txt', 'btn_outline_border',

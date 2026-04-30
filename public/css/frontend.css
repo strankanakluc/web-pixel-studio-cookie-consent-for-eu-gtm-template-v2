@@ -504,7 +504,7 @@
 	text-align: center;
 }
 .ccwps-tip-powered a {
-	color: color-mix(in srgb, var(--ccwps-float-tip-text) 64%, transparent);
+	color: color-mix(in srgb, var(--ccwps-float-tip-text) 40%, transparent);
 	text-decoration: none;
 	font-size: 11px;
 }

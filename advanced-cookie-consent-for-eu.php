@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Cookie Consent by Web Pixel Studio
+ * Plugin Name:       Advanced Cookie Consent for EU
  * Plugin URI:        https://wps.sk
  * Description:       GDPR & ePrivacy compliant cookie consent manager with Consent Mode v2 support, full customization, consent logging, and cookie blocking.
  * Version:           1.04
@@ -10,7 +10,7 @@
  * Author URI:        https://wps.sk
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       cookie-consent-webpixelstudio
+ * Text Domain:       advanced-cookie-consent-for-eu
  * Domain Path:       /languages
  * Tested up to:      6.9
  *

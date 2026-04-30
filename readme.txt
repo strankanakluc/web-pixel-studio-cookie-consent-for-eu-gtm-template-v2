@@ -1,4 +1,4 @@
-=== Cookie Consent by Web Pixel Studio ===
+=== Advanced Cookie Consent for EU ===
 Contributors: duddi, wpssk, webpixelstudio
 Tags: cookie consent, GDPR, cookie banner, ePrivacy, consent mode
 Requires at least: 5.9
@@ -12,7 +12,7 @@ GDPR/ePrivacy cookie consent manager for WordPress with Google Consent Mode v2/v
 
 == Description ==
 
-**Cookie Consent by Web Pixel Studio** is a comprehensive, fully customisable cookie consent solution for WordPress, built primarily for GDPR and EU cookie/ePrivacy compliance workflows. Built on the [orest bida cookieconsent library](https://cookieconsent.orestbida.com/), it extends it with a full WordPress admin panel, database consent logging and advanced script blocking.
+**Advanced Cookie Consent for EU** is a comprehensive, fully customisable cookie consent solution for WordPress, built primarily for GDPR and EU cookie/ePrivacy compliance workflows. Built on the [orest bida cookieconsent library](https://cookieconsent.orestbida.com/), it extends it with a full WordPress admin panel, database consent logging and advanced script blocking.
 
 = What this plugin offers =
 
@@ -76,7 +76,7 @@ This plugin is designed to help you comply with GDPR, ePrivacy Directive and sim
 
 == Installation ==
 
-1. Upload the `cookie-consent-webpixelstudio` folder to `/wp-content/plugins/`, or install through the WordPress Plugins screen.
+1. Upload the `advanced-cookie-consent-for-eu` folder to `/wp-content/plugins/`, or install through the WordPress Plugins screen.
 2. Activate the plugin.
 3. Go to **Cookie Consent** in your WordPress admin menu.
 4. In **Nastavenia** (Settings): enable consent logging, bot detection and re-consent. Select your Consent Mode version. Enter your GTM Container ID if applicable.

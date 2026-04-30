@@ -270,7 +270,7 @@ class CCWPS_Frontend {
 		echo '<div id="ccwps-tip-wrap"></div>' . "\n";
 
 		if ( $this->settings->get( 'banner_show_icon' ) ) {
-			echo '<div id="ccwps-floating-icon" aria-label="' . esc_attr__( 'Cookie settings', 'cookie-consent-webpixelstudio' ) . '" role="button" tabindex="0" style="display:none;"></div>' . "\n";
+				echo '<div id="ccwps-floating-icon" aria-label="' . esc_attr__( 'Cookie settings', 'advanced-cookie-consent-for-eu' ) . '" role="button" tabindex="0" style="display:none;"></div>' . "\n";
 		}
 
 		$gtm_id = $this->settings->get( 'gtm_id' );
@@ -306,11 +306,11 @@ class CCWPS_Frontend {
 			<?php if ( $atts['label'] ) : ?>
 				<strong><?php echo esc_html( $atts['label'] ); ?>:</strong>
 			<?php endif; ?>
-			<span class="ccwps-sc-id" data-ccwps-consent-id="1" data-empty-label="<?php echo esc_attr__( 'Súhlas nebol udelený.', 'cookie-consent-webpixelstudio' ); ?>">
+			<span class="ccwps-sc-id" data-ccwps-consent-id="1" data-empty-label="<?php echo esc_attr__( 'Súhlas nebol udelený.', 'advanced-cookie-consent-for-eu' ); ?>">
 				<?php if ( $consent_id ) : ?>
 					<code class="ccwps-sc-id-code"><?php echo esc_html( $consent_id ); ?></code>
 				<?php else : ?>
-					<em class="ccwps-sc-id-empty"><?php esc_html_e( 'Súhlas nebol udelený.', 'cookie-consent-webpixelstudio' ); ?></em>
+						<em class="ccwps-sc-id-empty"><?php esc_html_e( 'Súhlas nebol udelený.', 'advanced-cookie-consent-for-eu' ); ?></em>
 				<?php endif; ?>
 			</span>
 		</<?php echo esc_attr( $tag ); ?>>
@@ -348,7 +348,7 @@ class CCWPS_Frontend {
 		];
 
 		if ( empty( array_filter( $cookies_by_cat ) ) ) {
-			return '<p>' . esc_html__( 'Žiadne cookies nie sú deklarované.', 'cookie-consent-webpixelstudio' ) . '</p>';
+			return '<p>' . esc_html__( 'Žiadne cookies nie sú deklarované.', 'advanced-cookie-consent-for-eu' ) . '</p>';
 		}
 
 		ob_start();
@@ -382,17 +382,6 @@ class CCWPS_Frontend {
 			</div>
 		<?php endforeach; ?>
 		</div>
-		<style>
-		.ccwps-cookie-list-table { font-size: 14px; line-height: 1.5; }
-		.ccwps-cl-cat-title { font-size: 16px; font-weight: 700; margin: 20px 0 8px; }
-		.ccwps-cl-table-wrap { overflow-x: auto; }
-		.ccwps-cl-table { width: 100%; border-collapse: collapse; }
-		.ccwps-cl-table th, .ccwps-cl-table td { padding: 8px 12px; text-align: left; border-bottom: 1px solid #e5e7eb; }
-		.ccwps-cl-table th { background: #f9fafb; color: #000000; font-weight: 600; font-size: 13px; }
-		.ccwps-cl-table tr:last-child td { border-bottom: none; }
-		.ccwps-cookie-list-table pre, .ccwps-cookie-list-table code, .ccwps-cookie-list-table samp, .ccwps-cookie-list-table kbd { tab-size: 4; border-radius: 3px; background: #b9b9b9; color: #000000; }
-		.ccwps-sc-regex { display: inline-block; background: #fef3c7; color: #92400e; font-size: 10px; padding: 1px 5px; border-radius: 3px; }
-		</style>
 		<?php
 		return ob_get_clean();
 	}

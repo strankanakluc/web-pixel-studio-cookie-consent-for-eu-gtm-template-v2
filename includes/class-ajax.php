@@ -240,7 +240,7 @@ class CCWPS_Ajax {
 
 		$honeypot = trim( $this->get_posted_text( 'company' ) );
 		if ( '' !== $honeypot ) {
-			wp_send_json_error( __( 'Nepodarilo sa odoslať žiadosť. Skúste to znova.', 'cookie-consent-webpixelstudio' ) );
+			wp_send_json_error( __( 'Nepodarilo sa odoslať žiadosť. Skúste to znova.', 'advanced-cookie-consent-for-eu' ) );
 		}
 
 		$email   = sanitize_email( $this->get_posted_text( 'email' ) );
@@ -248,17 +248,17 @@ class CCWPS_Ajax {
 		$message = trim( sanitize_textarea_field( $this->get_posted_text( 'message' ) ) );
 
 		if ( ! is_email( $email ) ) {
-			wp_send_json_error( __( 'Zadajte platný e-mail.', 'cookie-consent-webpixelstudio' ) );
+			wp_send_json_error( __( 'Zadajte platný e-mail.', 'advanced-cookie-consent-for-eu' ) );
 		}
 
 		$subject_length = function_exists( 'mb_strlen' ) ? mb_strlen( $subject ) : strlen( $subject );
 		if ( $subject_length < 3 || $subject_length > 150 ) {
-			wp_send_json_error( __( 'Predmet musí mať 3 až 150 znakov.', 'cookie-consent-webpixelstudio' ) );
+			wp_send_json_error( __( 'Predmet musí mať 3 až 150 znakov.', 'advanced-cookie-consent-for-eu' ) );
 		}
 
 		$message_length = function_exists( 'mb_strlen' ) ? mb_strlen( $message ) : strlen( $message );
 		if ( $message_length < 20 || $message_length > 4000 ) {
-			wp_send_json_error( __( 'Text správy musí mať 20 až 4000 znakov.', 'cookie-consent-webpixelstudio' ) );
+			wp_send_json_error( __( 'Text správy musí mať 20 až 4000 znakov.', 'advanced-cookie-consent-for-eu' ) );
 		}
 
 		$ip = $this->get_ip();
@@ -275,15 +275,15 @@ class CCWPS_Ajax {
 		$cooldown    = (int) get_transient( $cooldown_key );
 
 		if ( $cooldown > 0 ) {
-			wp_send_json_error( __( 'Počkajte prosím 30 sekúnd a skúste to znova.', 'cookie-consent-webpixelstudio' ) );
+			wp_send_json_error( __( 'Počkajte prosím 30 sekúnd a skúste to znova.', 'advanced-cookie-consent-for-eu' ) );
 		}
 
 		if ( $short_count >= 3 ) {
-			wp_send_json_error( __( 'Dosiahli ste limit 3 žiadostí za 10 minút. Skúste to neskôr.', 'cookie-consent-webpixelstudio' ) );
+			wp_send_json_error( __( 'Dosiahli ste limit 3 žiadostí za 10 minút. Skúste to neskôr.', 'advanced-cookie-consent-for-eu' ) );
 		}
 
 		if ( $daily_count >= 10 ) {
-			wp_send_json_error( __( 'Denný limit žiadostí bol dosiahnutý. Skúste to zajtra.', 'cookie-consent-webpixelstudio' ) );
+			wp_send_json_error( __( 'Denný limit žiadostí bol dosiahnutý. Skúste to zajtra.', 'advanced-cookie-consent-for-eu' ) );
 		}
 
 		$site_url = home_url( '/' );
@@ -330,11 +330,11 @@ class CCWPS_Ajax {
 				'error' => $this->last_mail_error,
 			]);
 
-			$error_message = __( 'Žiadosť sa nepodarilo odoslať z tohto WordPress webu. Skontrolujte SMTP/mail konfiguráciu hostingu.', 'cookie-consent-webpixelstudio' );
+			$error_message = __( 'Žiadosť sa nepodarilo odoslať z tohto WordPress webu. Skontrolujte SMTP/mail konfiguráciu hostingu.', 'advanced-cookie-consent-for-eu' );
 			if ( '' !== $this->last_mail_error ) {
 				$error_message .= ' ' . sprintf(
 					/* translators: %s = mail transport error */
-					__( 'Detail chyby: %s', 'cookie-consent-webpixelstudio' ),
+						__( 'Detail chyby: %s', 'advanced-cookie-consent-for-eu' ),
 					$this->last_mail_error
 				);
 			}
@@ -346,7 +346,7 @@ class CCWPS_Ajax {
 		set_transient( $daily_key, $daily_count + 1, DAY_IN_SECONDS );
 		set_transient( $cooldown_key, 30, 30 );
 
-		wp_send_json_success( __( 'Žiadosť bola úspešne odoslaná.', 'cookie-consent-webpixelstudio' ) );
+		wp_send_json_success( __( 'Žiadosť bola úspešne odoslaná.', 'advanced-cookie-consent-for-eu' ) );
 	}
 
 	public function capture_wp_mail_failed( $error ): void {

@@ -1,8 +1,8 @@
 ___INFO___
 
 {
-  "displayName": "Cookie Consent by Web Pixel Studio",
-  "description": "Nastaví predvolený stav Google Consent Mode (všetko odmietnuté) a okamžite aktualizuje súhlas podľa uloženého cookie ccwps_consent z pluginu Cookie Consent by Web Pixel Studio.",
+  "displayName": "Advanced Cookie Consent for EU",
+  "description": "Nastaví predvolený stav Google Consent Mode (všetko odmietnuté) a okamžite aktualizuje súhlas podľa uloženého cookie ccwps_consent z pluginu Advanced Cookie Consent for EU.",
   "id": "cvt_cookie_consent_wps",
   "type": "TAG",
   "version": 1,
@@ -272,8 +272,8 @@ ___NOTES___
 ## Návod na použitie
 
 1. GTM → Šablóny → Šablóny tagov → Nová
-2. Tri bodky (⋮) → Importovať → nahrať súbor `cookie-consent-webpixelstudio.tpl`
-3. Tagy → Nový → zvoliť "Cookie Consent by Web Pixel Studio"
+2. Tri bodky (⋮) → Importovať → nahrať súbor `advanced-cookie-consent-for-eu.tpl`
+3. Tagy → Nový → zvoliť "Advanced Cookie Consent for EU"
 4. Trigger: **Inicializácia súhlasu – všetky stránky** (Consent Initialization – All Pages)
 5. Uložiť a publikovať
 

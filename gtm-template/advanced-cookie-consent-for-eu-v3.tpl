@@ -1,7 +1,7 @@
 ___INFO___
 
 {
-  "displayName": "Cookie Consent by Web Pixel Studio v3",
+  "displayName": "Advanced Cookie Consent for EU v3",
   "description": "Consent Mode v3 šablóna: nastaví default denied stav, aktivuje developer_id signál a okamžite aktualizuje súhlas podľa cookie ccwps_consent.",
   "id": "cvt_cookie_consent_wps_v3",
   "type": "TAG",
@@ -277,8 +277,8 @@ ___NOTES___
 ## Návod na použitie
 
 1. GTM → Šablóny → Šablóny tagov → Nová
-2. Tri bodky (⋮) → Importovať → nahrať súbor `cookie-consent-webpixelstudio-v3.tpl`
-3. Tagy → Nový → zvoliť "Cookie Consent by Web Pixel Studio v3"
+2. Tri bodky (⋮) → Importovať → nahrať súbor `advanced-cookie-consent-for-eu-v3.tpl`
+3. Tagy → Nový → zvoliť "Advanced Cookie Consent for EU v3"
 4. Trigger: **Inicializácia súhlasu – všetky stránky** (Consent Initialization – All Pages)
 5. Uložiť a publikovať
 

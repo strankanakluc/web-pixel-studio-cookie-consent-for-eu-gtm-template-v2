@@ -10,7 +10,7 @@
 **Tags:** cookie consent, GDPR, cookie banner, ePrivacy, consent mode  
 **Requires at least:** 5.9  
 **Tested up to:** 6.9  
-**Stable tag:** 1.04  
+**Stable tag:** 1.0.5  
 **License:** GPL-2.0-or-later  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -182,6 +182,13 @@ Yes. The plugin includes shortcodes for the cookie list and for displaying the c
 
 ## Changelog
 
+### 1.0.5
+
+- Fixed fatal activation error caused by a missing closing brace in the admin class
+- Replaced inline style output in the cookie list shortcode with styles loaded from the enqueued frontend stylesheet
+- Completed rename consistency for new plugin naming (main plugin file, GTM template files, and POT filename)
+- Updated sidebar author link to `https://webpixelstudio.org`
+
 ### 1.04
 
 - Added plugin action link for direct access to Cookie Consent settings from the Plugins list
@@ -240,6 +247,10 @@ Yes. The plugin includes shortcodes for the cookie list and for displaying the c
 - Added predefined cookie and blocking presets for Google Analytics, Google Ads, and Facebook Pixel
 
 ## Upgrade Notice
+
+### 1.0.5
+
+Maintenance and compliance release: fixes a fatal activation issue, moves shortcode inline CSS to the enqueued stylesheet for WordPress.org compliance, finalizes renamed file consistency, and updates the sidebar author URL.
 
 ### 1.04
 

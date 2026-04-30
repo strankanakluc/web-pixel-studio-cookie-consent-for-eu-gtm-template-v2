@@ -4,7 +4,7 @@ Tags: cookie consent, GDPR, cookie banner, ePrivacy, consent mode
 Requires at least: 5.9
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.04
+Stable tag: 1.0.5
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -124,6 +124,12 @@ The consent cookie is set client-side (not httpOnly) so the frontend can read it
 
 == Changelog ==
 
+= 1.0.5 =
+* Fixed fatal activation error caused by missing closing brace in admin class.
+* Replaced frontend inline style output in cookie list shortcode with styles loaded from the enqueued frontend stylesheet.
+* Updated plugin branding rename consistency (new main plugin filename, GTM template filenames, and translation POT filename).
+* Updated sidebar author link to https://webpixelstudio.org.
+
 = 1.04 =
 * Added plugin action link for direct access to Cookie Consent settings from the Plugins list.
 * Removed Powered by text from banner layouts; branding remains available in the floating consent tip popup.
@@ -173,6 +179,9 @@ The consent cookie is set client-side (not httpOnly) so the frontend can read it
 * Added predefined cookie and script presets for Google Analytics, Google Ads and Facebook Pixel
 
 == Upgrade Notice ==
+
+= 1.0.5 =
+Maintenance and compliance release: fixes fatal activation issue, moves shortcode inline CSS to enqueued stylesheet for WordPress.org compliance, completes renamed file consistency, and updates sidebar author URL.
 
 = 1.04 =
 Adds plugin settings quick link, new Google Targeting/Preferences presets with auto-block rules, improved localization for consent labels and cookie descriptions, and removes Powered by from banner layouts (still shown in consent tip popup).

@@ -1,7 +1,6 @@
 <?php
 /**
  * Plugin Name:       Advanced Cookie Consent for EU
- * Plugin URI:        https://wps.sk
  * Description:       GDPR & ePrivacy compliant cookie consent manager with Consent Mode v2 support, full customization, consent logging, and cookie blocking.
  * Version:           1.0.5
  * Requires at least: 5.9

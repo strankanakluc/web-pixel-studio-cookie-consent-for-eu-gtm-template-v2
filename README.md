@@ -1,8 +1,8 @@
-# Advanced Cookie Consent for EU
+# Web Pixel Studio Cookie Consent for EU
 ![Plugin for](https://img.shields.io/badge/WordPress-21759B?style=flat&logo=wordpress&logoColor=white)
-![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/advanced-cookie-consent-for-eu?style=flat)
-![WordPress Plugin Rating](https://img.shields.io/wordpress/plugin/r/advanced-cookie-consent-for-eu?style=flat)
-![WordPress Plugin Active Installs](https://img.shields.io/wordpress/plugin/i/advanced-cookie-consent-for-eu?style=flat)
+![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/web-pixel-studio-cookie-consent-for-eu?style=flat)
+![WordPress Plugin Rating](https://img.shields.io/wordpress/plugin/r/web-pixel-studio-cookie-consent-for-eu?style=flat)
+![WordPress Plugin Active Installs](https://img.shields.io/wordpress/plugin/i/web-pixel-studio-cookie-consent-for-eu?style=flat)
 [![Facebook](https://img.shields.io/badge/Facebook-0866FF?style=flat&logo=facebook&logoColor=white)](https://www.facebook.com/wps.sk)
 [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=flat&logo=instagram&logoColor=white)](https://www.instagram.com/tvorbawebov/)
 
@@ -10,13 +10,13 @@
 **Tags:** cookie consent, GDPR, cookie banner, ePrivacy, consent mode  
 **Requires at least:** 5.9  
 **Tested up to:** 6.9  
-**Stable tag:** 1.0.5  
+**Stable tag:** 1.0.6  
 **License:** GPL-2.0-or-later  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
 ## Description
 
-Advanced Cookie Consent for EU gives you a modern, customizable cookie banner for WordPress designed primarily for GDPR and EU cookie/ePrivacy requirements.
+Web Pixel Studio Cookie Consent for EU gives you a modern, customizable cookie banner for WordPress designed primarily for GDPR and EU cookie/ePrivacy requirements.
 
 It combines a polished frontend experience with practical compliance tools: Google Consent Mode v2 and v3 support, script blocking, cookie declarations, consent logging, multilingual presets, and an admin panel built for real websites.
 
@@ -90,7 +90,7 @@ This plugin is built to support GDPR and ePrivacy requirements, but legal compli
 
 ## Installation
 
-1. Upload the plugin files to the /wp-content/plugins/advanced-cookie-consent-for-eu directory, or install the plugin through the WordPress plugins screen.
+1. Upload the plugin files to the /wp-content/plugins/web-pixel-studio-cookie-consent-for-eu directory, or install the plugin through the WordPress plugins screen.
 2. Activate the plugin through the Plugins screen in WordPress.
 3. Open Cookie Consent in the WordPress admin menu.
 4. Configure Consent Mode, banner texts, cookie categories, script blocking, and appearance settings.
@@ -182,6 +182,13 @@ Yes. The plugin includes shortcodes for the cookie list and for displaying the c
 
 ## Changelog
 
+### 1.0.6
+
+- Updated plugin display name for consistency across the admin panel and WordPress plugin repository
+- Removed "Powered by" link from banner output to keep the frontend completely unbranded
+- Revised import and export settings flow: improved field handling to prevent data loss on partial imports and avoid overwriting fields not included in the exported file
+- Removed REST API endpoint registration that was previously used for internal consent handling
+
 ### 1.0.5
 
 - Fixed fatal activation error caused by a missing closing brace in the admin class
@@ -247,6 +254,10 @@ Yes. The plugin includes shortcodes for the cookie list and for displaying the c
 - Added predefined cookie and blocking presets for Google Analytics, Google Ads, and Facebook Pixel
 
 ## Upgrade Notice
+
+### 1.0.6
+
+Updates plugin name, removes Powered by link from the banner, improves import/export reliability, and removes the REST API endpoint.
 
 ### 1.0.5
 

@@ -1176,7 +1176,9 @@
 			: '<div class="ccwps-tip-date" style="margin-bottom:16px;">' + esc(i18n.noConsentYet || 'Súhlas nebol udelený.') + '</div>';
 
 		var poweredLabel = normalizePoweredByLabel(i18n.poweredBy);
-		var tipPowered = '<div class="ccwps-tip-powered"><a href="https://wps.sk" target="_blank" rel="noopener">Powered by ' + esc(poweredLabel) + '</a></div>';
+		var tipPowered = C.showPoweredByLink
+			? '<div class="ccwps-tip-powered"><a href="https://wps.sk" target="_blank" rel="noopener">Powered by ' + esc(poweredLabel) + '</a></div>'
+			: '';
 
 		tipEl = document.createElement('div');
 		tipEl.className = 'ccwps-tip-popup';

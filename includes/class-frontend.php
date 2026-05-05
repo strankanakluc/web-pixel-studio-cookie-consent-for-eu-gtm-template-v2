@@ -97,6 +97,17 @@ class CCWPS_Frontend {
 		}
 
 		ob_start( [ $this, 'rewrite_blocked_scripts_in_html' ] );
+		add_action( 'shutdown', [ $this, 'end_output_buffer' ], 0 );
+	}
+
+	/**
+	 * Explicitly close the output buffer opened in start_output_buffer().
+	 * Called on 'shutdown' so the buffer is always paired with an explicit close.
+	 */
+	public function end_output_buffer(): void {
+		if ( ob_get_level() > 0 ) {
+			ob_end_flush();
+		}
 	}
 
 	/**
@@ -270,7 +281,7 @@ class CCWPS_Frontend {
 		echo '<div id="ccwps-tip-wrap"></div>' . "\n";
 
 		if ( $this->settings->get( 'banner_show_icon' ) ) {
-				echo '<div id="ccwps-floating-icon" aria-label="' . esc_attr__( 'Cookie settings', 'advanced-cookie-consent-for-eu' ) . '" role="button" tabindex="0" style="display:none;"></div>' . "\n";
+				echo '<div id="ccwps-floating-icon" aria-label="' . esc_attr__( 'Cookie settings', 'web-pixel-studio-cookie-consent-for-eu' ) . '" role="button" tabindex="0" style="display:none;"></div>' . "\n";
 		}
 
 		$gtm_id = $this->settings->get( 'gtm_id' );
@@ -306,11 +317,11 @@ class CCWPS_Frontend {
 			<?php if ( $atts['label'] ) : ?>
 				<strong><?php echo esc_html( $atts['label'] ); ?>:</strong>
 			<?php endif; ?>
-			<span class="ccwps-sc-id" data-ccwps-consent-id="1" data-empty-label="<?php echo esc_attr__( 'Súhlas nebol udelený.', 'advanced-cookie-consent-for-eu' ); ?>">
+			<span class="ccwps-sc-id" data-ccwps-consent-id="1" data-empty-label="<?php echo esc_attr__( 'Súhlas nebol udelený.', 'web-pixel-studio-cookie-consent-for-eu' ); ?>">
 				<?php if ( $consent_id ) : ?>
 					<code class="ccwps-sc-id-code"><?php echo esc_html( $consent_id ); ?></code>
 				<?php else : ?>
-						<em class="ccwps-sc-id-empty"><?php esc_html_e( 'Súhlas nebol udelený.', 'advanced-cookie-consent-for-eu' ); ?></em>
+						<em class="ccwps-sc-id-empty"><?php esc_html_e( 'Súhlas nebol udelený.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></em>
 				<?php endif; ?>
 			</span>
 		</<?php echo esc_attr( $tag ); ?>>
@@ -348,7 +359,7 @@ class CCWPS_Frontend {
 		];
 
 		if ( empty( array_filter( $cookies_by_cat ) ) ) {
-			return '<p>' . esc_html__( 'Žiadne cookies nie sú deklarované.', 'advanced-cookie-consent-for-eu' ) . '</p>';
+			return '<p>' . esc_html__( 'Žiadne cookies nie sú deklarované.', 'web-pixel-studio-cookie-consent-for-eu' ) . '</p>';
 		}
 
 		ob_start();

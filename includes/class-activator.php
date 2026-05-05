@@ -120,6 +120,7 @@ class CCWPS_Activator {
 			'banner_layout'        => 'box',
 			'banner_position'      => 'middle-center',
 			'banner_show_icon'     => 1,
+			'floating_show_powered_by' => 0,
 			'icon_position'        => 'bottom-left',
 			'icon_type'            => 'cookie',
 			'icon_custom_url'      => '',

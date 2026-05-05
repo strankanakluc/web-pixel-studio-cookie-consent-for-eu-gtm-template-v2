@@ -1,10 +1,10 @@
-=== Advanced Cookie Consent for EU ===
+=== Web Pixel Studio Cookie Consent for EU ===
 Contributors: duddi, wpssk, webpixelstudio
 Tags: cookie consent, GDPR, cookie banner, ePrivacy, consent mode
 Requires at least: 5.9
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ GDPR/ePrivacy cookie consent manager for WordPress with Google Consent Mode v2/v
 
 == Description ==
 
-**Advanced Cookie Consent for EU** is a comprehensive, fully customisable cookie consent solution for WordPress, built primarily for GDPR and EU cookie/ePrivacy compliance workflows. Built on the [orest bida cookieconsent library](https://cookieconsent.orestbida.com/), it extends it with a full WordPress admin panel, database consent logging and advanced script blocking.
+**Web Pixel Studio Cookie Consent for EU** is a comprehensive, fully customisable cookie consent solution for WordPress, built primarily for GDPR and EU cookie/ePrivacy compliance workflows. Built on the [orest bida cookieconsent library](https://cookieconsent.orestbida.com/), it extends it with a full WordPress admin panel, database consent logging and advanced script blocking.
 
 = What this plugin offers =
 
@@ -76,7 +76,7 @@ This plugin is designed to help you comply with GDPR, ePrivacy Directive and sim
 
 == Installation ==
 
-1. Upload the `advanced-cookie-consent-for-eu` folder to `/wp-content/plugins/`, or install through the WordPress Plugins screen.
+1. Upload the `web-pixel-studio-cookie-consent-for-eu` folder to `/wp-content/plugins/`, or install through the WordPress Plugins screen.
 2. Activate the plugin.
 3. Go to **Cookie Consent** in your WordPress admin menu.
 4. In **Nastavenia** (Settings): enable consent logging, bot detection and re-consent. Select your Consent Mode version. Enter your GTM Container ID if applicable.
@@ -123,6 +123,12 @@ The consent cookie is set client-side (not httpOnly) so the frontend can read it
 10. Admin – About tab
 
 == Changelog ==
+
+= 1.0.6 =
+* Updated plugin display name for consistency across the admin panel and WordPress plugin repository.
+* Removed "Powered by" link from banner output to keep frontend completely unbranded.
+* Revised import and export settings flow: improved field handling to prevent data loss on partial imports and avoid overwriting fields not included in the exported file.
+* Removed REST API endpoint registration that was previously used for internal consent handling.
 
 = 1.0.5 =
 * Fixed fatal activation error caused by missing closing brace in admin class.
@@ -179,6 +185,9 @@ The consent cookie is set client-side (not httpOnly) so the frontend can read it
 * Added predefined cookie and script presets for Google Analytics, Google Ads and Facebook Pixel
 
 == Upgrade Notice ==
+
+= 1.0.6 =
+Updates plugin name, removes Powered by link from the banner, improves import/export reliability, and removes the REST API endpoint.
 
 = 1.0.5 =
 Maintenance and compliance release: fixes fatal activation issue, moves shortcode inline CSS to enqueued stylesheet for WordPress.org compliance, completes renamed file consistency, and updates sidebar author URL.

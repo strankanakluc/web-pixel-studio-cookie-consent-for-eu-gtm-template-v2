@@ -73,6 +73,7 @@ return [
 	'Podporované formáty: obrázky povolené vo WordPress (napr. JPG, JPEG, PNG, GIF, WebP). SVG iba ak je povolené vo WordPress.' => 'Supported formats: image types allowed by WordPress (e.g. JPG, JPEG, PNG, GIF, WebP). SVG only if enabled in WordPress.',
 	'Nahrajte alebo vyberte obrázok z knižnice médií. Odporúčaná veľkosť: 50×50 px. Podporované formáty: obrázky povolené vo WordPress (napr. JPG, JPEG, PNG, GIF, WebP). SVG iba ak je povolené vo WordPress.' => 'Upload or select an image from the media library. Recommended size: 50×50 px. Supported formats: image types allowed by WordPress (e.g. JPG, JPEG, PNG, GIF, WebP). SVG only if enabled in WordPress.',
 	'💡 Ikona sa zobrazí v kruhu s farbou pozadia (primárna farba). Pre najlepší výsledok použite biely alebo priehľadný obrázok 50×50 px.' => '💡 The icon is shown in a circle with background color (primary color). For best results, use a white or transparent 50×50 px image.',
+	'Podporte nás nenápadným odkazom v plávajúcej ikone' => 'Support us with a subtle link in the floating icon',
 	'Uložiť zmeny' => 'Save changes',
 	'Šírka loga (px)' => 'Logo width (px)',
 	'💡 Šírka loga v pixeloch (20–100 px). Výška sa prispôsobí automaticky.' => '💡 Logo width in pixels (20–100 px). Height adjusts automatically.',

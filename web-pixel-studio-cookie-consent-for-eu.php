@@ -1,15 +1,15 @@
 <?php
 /**
- * Plugin Name:       Advanced Cookie Consent for EU
+ * Plugin Name:       Web Pixel Studio Cookie Consent for EU
  * Description:       GDPR & ePrivacy compliant cookie consent manager with Consent Mode v2 support, full customization, consent logging, and cookie blocking.
- * Version:           1.0.5
+ * Version:           1.0.6
  * Requires at least: 5.9
  * Requires PHP:      7.4
  * Author:            Web Pixel Studio
- * Author URI:        https://wps.sk
+ * Author URI:        https://webpixelstudio.org
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       advanced-cookie-consent-for-eu
+ * Text Domain:       web-pixel-studio-cookie-consent-for-eu
  * Domain Path:       /languages
  * Tested up to:      6.9
  *
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CCWPS_VERSION', '1.0.5' );
+define( 'CCWPS_VERSION', '1.0.6' );
 define( 'CCWPS_PLUGIN_FILE', __FILE__ );
 define( 'CCWPS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CCWPS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -74,7 +74,6 @@ final class Cookie_Consent_WPS {
 		require_once CCWPS_PLUGIN_DIR . 'includes/class-frontend.php';
 		require_once CCWPS_PLUGIN_DIR . 'includes/class-admin.php';
 		require_once CCWPS_PLUGIN_DIR . 'includes/class-ajax.php';
-		require_once CCWPS_PLUGIN_DIR . 'includes/class-rest-api.php';
 	}
 
 	private function init_hooks(): void {
@@ -94,7 +93,6 @@ final class Cookie_Consent_WPS {
 		$frontend      = new CCWPS_Frontend( $settings );
 		$admin         = new CCWPS_Admin( $settings, $consent_log, $cookie_manager, $block_manager );
 		$ajax          = new CCWPS_Ajax( $consent_log, $settings );
-		$rest_api      = new CCWPS_Rest_API( $consent_log, $settings );
 	}
 }
 

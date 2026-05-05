@@ -39,7 +39,7 @@ class CCWPS_Admin {
 		$settings_link = sprintf(
 			'<a href="%s">%s</a>',
 			esc_url( admin_url( 'admin.php?page=ccwps' ) ),
-			esc_html__( 'Nastavenia', 'advanced-cookie-consent-for-eu' )
+			esc_html__( 'Nastavenia', 'web-pixel-studio-cookie-consent-for-eu' )
 		);
 
 		array_unshift( $links, $settings_link );
@@ -49,8 +49,8 @@ class CCWPS_Admin {
 
 	public function add_menu(): void {
 		add_menu_page(
-			__( 'Cookie Consent', 'advanced-cookie-consent-for-eu' ),
-			__( 'Cookie Consent', 'advanced-cookie-consent-for-eu' ),
+			__( 'Cookie Consent', 'web-pixel-studio-cookie-consent-for-eu' ),
+			__( 'Cookie Consent', 'web-pixel-studio-cookie-consent-for-eu' ),
 			'manage_options',
 			'ccwps',
 			[ $this, 'render_page' ],
@@ -112,14 +112,14 @@ class CCWPS_Admin {
 				'customIconAlt' => $this->tx( 'Vlastná ikona' ),
 				'noImage'       => $this->tx( 'Žiadny obrázok' ),
 				'cookieListEmpty' => $this->tx( 'Žiadne cookies nie sú deklarované.' ),
-				'cookieColName' => $this->settings->get( 'lang_cookie_name', __( 'Názov', 'advanced-cookie-consent-for-eu' ) ),
-				'cookieColDomain' => $this->settings->get( 'lang_cookie_domain', __( 'Doména', 'advanced-cookie-consent-for-eu' ) ),
-				'cookieColExpiration' => $this->settings->get( 'lang_cookie_expiration', __( 'Platnosť', 'advanced-cookie-consent-for-eu' ) ),
-				'cookieColDescription' => $this->settings->get( 'lang_cookie_description', __( 'Popis', 'advanced-cookie-consent-for-eu' ) ),
-				'catNecessary'  => $this->settings->get( 'lang_necessary_title', __( 'Nevyhnutné', 'advanced-cookie-consent-for-eu' ) ),
-				'catAnalytics'  => $this->settings->get( 'lang_analytics_title', __( 'Analytické', 'advanced-cookie-consent-for-eu' ) ),
-				'catTargeting'  => $this->settings->get( 'lang_targeting_title', __( 'Marketingové', 'advanced-cookie-consent-for-eu' ) ),
-				'catPreferences'=> $this->settings->get( 'lang_preferences_title', __( 'Preferenčné', 'advanced-cookie-consent-for-eu' ) ),
+				'cookieColName' => $this->settings->get( 'lang_cookie_name', __( 'Názov', 'web-pixel-studio-cookie-consent-for-eu' ) ),
+				'cookieColDomain' => $this->settings->get( 'lang_cookie_domain', __( 'Doména', 'web-pixel-studio-cookie-consent-for-eu' ) ),
+				'cookieColExpiration' => $this->settings->get( 'lang_cookie_expiration', __( 'Platnosť', 'web-pixel-studio-cookie-consent-for-eu' ) ),
+				'cookieColDescription' => $this->settings->get( 'lang_cookie_description', __( 'Popis', 'web-pixel-studio-cookie-consent-for-eu' ) ),
+				'catNecessary'  => $this->settings->get( 'lang_necessary_title', __( 'Nevyhnutné', 'web-pixel-studio-cookie-consent-for-eu' ) ),
+				'catAnalytics'  => $this->settings->get( 'lang_analytics_title', __( 'Analytické', 'web-pixel-studio-cookie-consent-for-eu' ) ),
+				'catTargeting'  => $this->settings->get( 'lang_targeting_title', __( 'Marketingové', 'web-pixel-studio-cookie-consent-for-eu' ) ),
+				'catPreferences'=> $this->settings->get( 'lang_preferences_title', __( 'Preferenčné', 'web-pixel-studio-cookie-consent-for-eu' ) ),
 				'applyPreset'   => $this->tx( 'Použiť predvoľbu' ),
 				'selectPreset'  => $this->tx( 'Vyberte predvoľbu.' ),
 				'presetsAdded'  => $this->tx( 'Predvoľby boli pridané.' ),
@@ -144,14 +144,16 @@ class CCWPS_Admin {
 		if ( ! current_user_can( 'manage_options' ) ) return;
 
 		$locale_switched = $this->switch_admin_locale();
+		$ob_started = false;
 		try {
 		ob_start();
+		$ob_started = true;
 
 		$import_notice = '';
 		if ( '' !== $this->get_query_string( 'ccwps_imported' ) ) {
 			$import_notice = '1' === $this->get_query_string( 'ccwps_imported' )
-				? '<div class="ccwps-notice success">' . esc_html__( 'Nastavenia boli importované.', 'advanced-cookie-consent-for-eu' ) . '</div>'
-				: '<div class="ccwps-notice error">'   . esc_html__( 'Import zlyhal. Skontrolujte súbor.', 'advanced-cookie-consent-for-eu' ) . '</div>';
+				? '<div class="ccwps-notice success">' . esc_html__( 'Nastavenia boli importované.', 'web-pixel-studio-cookie-consent-for-eu' ) . '</div>'
+				: '<div class="ccwps-notice error">'   . esc_html__( 'Import zlyhal. Skontrolujte súbor.', 'web-pixel-studio-cookie-consent-for-eu' ) . '</div>';
 		}
 
 		$s          = $this->settings;
@@ -159,16 +161,16 @@ class CCWPS_Admin {
 		$admin_lang = $s->get( 'admin_lang', 'sk' );
 
 		$nav_items = [
-			'settings'     => [ 'icon' => '⚙️', 'label' => $s->get( 'admin_nav_settings',     __( 'Nastavenia',          'advanced-cookie-consent-for-eu' ) ) ],
-			'appearance'   => [ 'icon' => '🎨', 'label' => $s->get( 'admin_nav_appearance',   __( 'Vzhľad',              'advanced-cookie-consent-for-eu' ) ) ],
-			'translations' => [ 'icon' => '🌐', 'label' => $s->get( 'admin_nav_translations', __( 'Preklady',            'advanced-cookie-consent-for-eu' ) ) ],
-			'cookies'      => [ 'icon' => '🍪', 'label' => $s->get( 'admin_nav_cookies',      __( 'Cookies',             'advanced-cookie-consent-for-eu' ) ) ],
-			'blocking'     => [ 'icon' => '🚫', 'label' => $s->get( 'admin_nav_blocking',     __( 'Blokovanie skriptov', 'advanced-cookie-consent-for-eu' ) ) ],
-			'log'          => [ 'icon' => '📋', 'label' => $s->get( 'admin_nav_log',          __( 'Záznamy súhlasov',    'advanced-cookie-consent-for-eu' ) ) ],
-			'shortcodes'   => [ 'icon' => '[ ]','label' => $s->get( 'admin_nav_shortcodes',   __( 'Shortcodes',          'advanced-cookie-consent-for-eu' ) ) ],
+			'settings'     => [ 'icon' => '⚙️', 'label' => $s->get( 'admin_nav_settings',     __( 'Nastavenia',          'web-pixel-studio-cookie-consent-for-eu' ) ) ],
+			'appearance'   => [ 'icon' => '🎨', 'label' => $s->get( 'admin_nav_appearance',   __( 'Vzhľad',              'web-pixel-studio-cookie-consent-for-eu' ) ) ],
+			'translations' => [ 'icon' => '🌐', 'label' => $s->get( 'admin_nav_translations', __( 'Preklady',            'web-pixel-studio-cookie-consent-for-eu' ) ) ],
+			'cookies'      => [ 'icon' => '🍪', 'label' => $s->get( 'admin_nav_cookies',      __( 'Cookies',             'web-pixel-studio-cookie-consent-for-eu' ) ) ],
+			'blocking'     => [ 'icon' => '🚫', 'label' => $s->get( 'admin_nav_blocking',     __( 'Blokovanie skriptov', 'web-pixel-studio-cookie-consent-for-eu' ) ) ],
+			'log'          => [ 'icon' => '📋', 'label' => $s->get( 'admin_nav_log',          __( 'Záznamy súhlasov',    'web-pixel-studio-cookie-consent-for-eu' ) ) ],
+			'shortcodes'   => [ 'icon' => '[ ]','label' => $s->get( 'admin_nav_shortcodes',   __( 'Shortcodes',          'web-pixel-studio-cookie-consent-for-eu' ) ) ],
 			'gtm-template' => [ 'icon' => '🏷️', 'label' => $this->tx( 'GTM šablóna' ) ],
-			'tools'        => [ 'icon' => '🔧', 'label' => $s->get( 'admin_nav_tools',        __( 'Nástroje',            'advanced-cookie-consent-for-eu' ) ) ],
-			'about'        => [ 'icon' => 'ℹ️', 'label' => $s->get( 'admin_nav_about',        __( 'O plugine',           'advanced-cookie-consent-for-eu' ) ) ],
+			'tools'        => [ 'icon' => '🔧', 'label' => $s->get( 'admin_nav_tools',        __( 'Nástroje',            'web-pixel-studio-cookie-consent-for-eu' ) ) ],
+			'about'        => [ 'icon' => 'ℹ️', 'label' => $s->get( 'admin_nav_about',        __( 'O plugine',           'web-pixel-studio-cookie-consent-for-eu' ) ) ],
 		];
 		?>
 		<div class="ccwps-wrap">
@@ -184,7 +186,7 @@ class CCWPS_Admin {
 				</div>
 
 				<div class="ccwps-admin-lang-bar">
-					<span class="ccwps-admin-lang-label">🌐 <?php echo esc_html( $s->get( 'admin_lang_label', __( 'Jazyk:', 'advanced-cookie-consent-for-eu' ) ) ); ?></span>
+					<span class="ccwps-admin-lang-label">🌐 <?php echo esc_html( $s->get( 'admin_lang_label', __( 'Jazyk:', 'web-pixel-studio-cookie-consent-for-eu' ) ) ); ?></span>
 					<?php
 					$all_presets    = CCWPS_Language_Presets::get_all();
 					$current_preset = $all_presets[ $admin_lang ] ?? $all_presets['sk'];
@@ -220,12 +222,12 @@ class CCWPS_Admin {
 
 				<!-- Preview buttons (always visible) -->
 				<div class="ccwps-sidebar-preview">
-					<div class="ccwps-sidebar-preview-title"><?php echo esc_html( $s->get( 'admin_preview_label', __( 'Náhľad:', 'advanced-cookie-consent-for-eu' ) ) ); ?></div>
+					<div class="ccwps-sidebar-preview-title"><?php echo esc_html( $s->get( 'admin_preview_label', __( 'Náhľad:', 'web-pixel-studio-cookie-consent-for-eu' ) ) ); ?></div>
 					<button type="button" class="button ccwps-btn-preview-full ccwps-btn-preview-action" id="ccwps-preview-banner">
-						👁 <?php echo esc_html( $s->get( 'admin_preview_banner', __( 'Zobraziť banner', 'advanced-cookie-consent-for-eu' ) ) ); ?>
+						👁 <?php echo esc_html( $s->get( 'admin_preview_banner', __( 'Zobraziť banner', 'web-pixel-studio-cookie-consent-for-eu' ) ) ); ?>
 					</button>
 					<button type="button" class="button ccwps-btn-preview-full ccwps-btn-preview-action" id="ccwps-preview-modal">
-						⚙️ <?php echo esc_html( $s->get( 'admin_preview_modal', __( 'Nastavenia cookies', 'advanced-cookie-consent-for-eu' ) ) ); ?>
+						⚙️ <?php echo esc_html( $s->get( 'admin_preview_modal', __( 'Nastavenia cookies', 'web-pixel-studio-cookie-consent-for-eu' ) ) ); ?>
 					</button>
 					<button type="button" class="button button-primary ccwps-save-settings ccwps-btn-primary-action ccwps-btn-preview-full ccwps-btn-sidebar-save" id="ccwps-sidebar-save-settings">
 						💾 <?php echo esc_html( $this->t( 'admin_sidebar_save_changes', 'Uložiť zmeny' ) ); ?>
@@ -234,11 +236,11 @@ class CCWPS_Admin {
 
 				<div class="ccwps-sidebar-footer">
 					<div class="ccwps-sidebar-powered">
-						<?php esc_html_e( 'Funguje na základe', 'advanced-cookie-consent-for-eu' ); ?>
+						<?php esc_html_e( 'Funguje na základe', 'web-pixel-studio-cookie-consent-for-eu' ); ?>
 						<a href="https://cookieconsent.orestbida.com/" target="_blank" rel="noopener">orest bida</a>
 					</div>
 					<div class="ccwps-sidebar-author">
-						<?php esc_html_e( 'Bezplatný plugin vytvoril:', 'advanced-cookie-consent-for-eu' ); ?><br>
+						<?php esc_html_e( 'Bezplatný plugin vytvoril:', 'web-pixel-studio-cookie-consent-for-eu' ); ?><br>
 						<a href="https://webpixelstudio.org" target="_blank" rel="noopener"><strong>Web Pixel Studio</strong></a>
 						<div class="ccwps-sidebar-social">
 							<a href="https://www.facebook.com/wps.sk/" target="_blank" rel="noopener" aria-label="Facebook">
@@ -275,9 +277,13 @@ class CCWPS_Admin {
 		</div>
 		<?php
 		$translated_html = $this->translate_admin_html( (string) ob_get_clean() );
+		$ob_started = false;
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Full admin markup is generated by this class and escaped at source.
 		echo $translated_html;
 		} finally {
+			if ( $ob_started ) {
+				ob_end_clean();
+			}
 			if ( $locale_switched ) {
 				restore_previous_locale();
 			}
@@ -299,15 +305,15 @@ class CCWPS_Admin {
 		<div class="ccwps-card">
 			<h2><?php echo esc_html( $this->t( 'admin_sect_banner_behavior', 'Správanie bannera' ) ); ?></h2>
 			<table class="ccwps-table">
-				<?php $this->trow_toggle( 'autorun', __( 'Automatické spustenie', 'advanced-cookie-consent-for-eu' ), __( 'Banner sa zobrazí automaticky pri načítaní stránky.', 'advanced-cookie-consent-for-eu' ), $s->get( 'autorun' ), __( '💡 Odporúčame zapnúť. Vypnuté = zobraziť manuálne cez <code>CookieConsentWPS.showBanner()</code>', 'advanced-cookie-consent-for-eu' ) ); ?>
-				<?php $this->trow_toggle( 'force_consent', __( 'Vynútený súhlas', 'advanced-cookie-consent-for-eu' ), __( 'Používateľ nemôže prehliadať web bez udelenia súhlasu.', 'advanced-cookie-consent-for-eu' ), $s->get( 'force_consent' ), __( '⚠️ GDPR neukladá povinnosť vynútiť súhlas. Odporúčame VYPNÚŤ – používateľ má právo odmietnuť.', 'advanced-cookie-consent-for-eu' ) ); ?>
-				<?php $this->trow_toggle( 'auto_clear_cookies', __( 'Automatické vymazanie cookies', 'advanced-cookie-consent-for-eu' ), __( 'Pri odvolaní súhlasu sa automaticky vymažú cookies danej kategórie.', 'advanced-cookie-consent-for-eu' ), $s->get( 'auto_clear_cookies' ), __( '💡 Funguje len pre cookies deklarované v záložke Cookies. Odporúčame zapnúť.', 'advanced-cookie-consent-for-eu' ) ); ?>
-				<?php $this->trow_toggle( 'page_scripts', __( 'Správa skriptov na stránke', 'advanced-cookie-consent-for-eu' ), __( 'Blokuje skripty tretích strán, kým používateľ neudelí súhlas.', 'advanced-cookie-consent-for-eu' ), $s->get( 'page_scripts' ), __( '💡 Definujte pravidlá v záložke "Blokovanie skriptov". Plugin zmení typ skriptu na text/plain.', 'advanced-cookie-consent-for-eu' ) ); ?>
-				<?php $this->trow_toggle( 'hide_from_bots', __( 'Skryť pre robotov', 'advanced-cookie-consent-for-eu' ), __( 'Banner sa nezobrazí vyhľadávačom a crawlerom.', 'advanced-cookie-consent-for-eu' ), $s->get( 'hide_from_bots' ), __( '💡 Odporúčame zapnúť. Zlepšuje SEO skóre webu.', 'advanced-cookie-consent-for-eu' ) ); ?>
-				<?php $this->trow_toggle( 'reconsent', __( 'Opätovný súhlas', 'advanced-cookie-consent-for-eu' ), __( 'Zobrazí banner znova, keď sa zmení zoznam cookies.', 'advanced-cookie-consent-for-eu' ), $s->get( 'reconsent' ), __( '💡 Odporúčame zapnúť – GDPR vyžaduje nový súhlas po zmene účelu spracovania.', 'advanced-cookie-consent-for-eu' ) ); ?>
-				<?php $this->trow_toggle( 'record_consents', __( 'Zaznamenávať súhlasy', 'advanced-cookie-consent-for-eu' ), __( 'Každý súhlas sa uloží do databázy (ID, IP, URL, čas).', 'advanced-cookie-consent-for-eu' ), $s->get( 'record_consents' ), __( '💡 Odporúčame zapnúť – záznamy slúžia ako dôkaz súhlasu pre GDPR audit.', 'advanced-cookie-consent-for-eu' ) ); ?>
-				<?php $this->trow_toggle( 'frontend_detect_visitor_language', __( 'Jazyk podľa návštevníka', 'advanced-cookie-consent-for-eu' ), __( 'Frontend cookie lišta sa pokúsi načítať jazyk návštevníka a zobraziť zodpovedajúci dostupný preklad.', 'advanced-cookie-consent-for-eu' ), $s->get( 'frontend_detect_visitor_language' ), __( '💡 Ak jazyk návštevníka nie je dostupný, plugin použije English (GB). Ak je voľba vypnutá, frontend používa aktuálne uložené texty bannera.', 'advanced-cookie-consent-for-eu' ) ); ?>
-				<?php $this->trow_toggle( 'hide_empty_categories', __( 'Skryť prázdne kategórie', 'advanced-cookie-consent-for-eu' ), __( 'V modáli preferencií sa skryjú kategórie bez deklarovaných cookies.', 'advanced-cookie-consent-for-eu' ), $s->get( 'hide_empty_categories' ), __( '💡 Zapnite, keď máte vyplnené všetky kategórie v záložke Cookies.', 'advanced-cookie-consent-for-eu' ) ); ?>
+				<?php $this->trow_toggle( 'autorun', __( 'Automatické spustenie', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Banner sa zobrazí automaticky pri načítaní stránky.', 'web-pixel-studio-cookie-consent-for-eu' ), $s->get( 'autorun' ), __( '💡 Odporúčame zapnúť. Vypnuté = zobraziť manuálne cez <code>CookieConsentWPS.showBanner()</code>', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?>
+				<?php $this->trow_toggle( 'force_consent', __( 'Vynútený súhlas', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Používateľ nemôže prehliadať web bez udelenia súhlasu.', 'web-pixel-studio-cookie-consent-for-eu' ), $s->get( 'force_consent' ), __( '⚠️ GDPR neukladá povinnosť vynútiť súhlas. Odporúčame VYPNÚŤ – používateľ má právo odmietnuť.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?>
+				<?php $this->trow_toggle( 'auto_clear_cookies', __( 'Automatické vymazanie cookies', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Pri odvolaní súhlasu sa automaticky vymažú cookies danej kategórie.', 'web-pixel-studio-cookie-consent-for-eu' ), $s->get( 'auto_clear_cookies' ), __( '💡 Funguje len pre cookies deklarované v záložke Cookies. Odporúčame zapnúť.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?>
+				<?php $this->trow_toggle( 'page_scripts', __( 'Správa skriptov na stránke', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Blokuje skripty tretích strán, kým používateľ neudelí súhlas.', 'web-pixel-studio-cookie-consent-for-eu' ), $s->get( 'page_scripts' ), __( '💡 Definujte pravidlá v záložke "Blokovanie skriptov". Plugin zmení typ skriptu na text/plain.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?>
+				<?php $this->trow_toggle( 'hide_from_bots', __( 'Skryť pre robotov', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Banner sa nezobrazí vyhľadávačom a crawlerom.', 'web-pixel-studio-cookie-consent-for-eu' ), $s->get( 'hide_from_bots' ), __( '💡 Odporúčame zapnúť. Zlepšuje SEO skóre webu.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?>
+				<?php $this->trow_toggle( 'reconsent', __( 'Opätovný súhlas', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Zobrazí banner znova, keď sa zmení zoznam cookies.', 'web-pixel-studio-cookie-consent-for-eu' ), $s->get( 'reconsent' ), __( '💡 Odporúčame zapnúť – GDPR vyžaduje nový súhlas po zmene účelu spracovania.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?>
+				<?php $this->trow_toggle( 'record_consents', __( 'Zaznamenávať súhlasy', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Každý súhlas sa uloží do databázy (ID, IP, URL, čas).', 'web-pixel-studio-cookie-consent-for-eu' ), $s->get( 'record_consents' ), __( '💡 Odporúčame zapnúť – záznamy slúžia ako dôkaz súhlasu pre GDPR audit.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?>
+				<?php $this->trow_toggle( 'frontend_detect_visitor_language', __( 'Jazyk podľa návštevníka', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Frontend cookie lišta sa pokúsi načítať jazyk návštevníka a zobraziť zodpovedajúci dostupný preklad.', 'web-pixel-studio-cookie-consent-for-eu' ), $s->get( 'frontend_detect_visitor_language' ), __( '💡 Ak jazyk návštevníka nie je dostupný, plugin použije English (GB). Ak je voľba vypnutá, frontend používa aktuálne uložené texty bannera.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?>
+				<?php $this->trow_toggle( 'hide_empty_categories', __( 'Skryť prázdne kategórie', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'V modáli preferencií sa skryjú kategórie bez deklarovaných cookies.', 'web-pixel-studio-cookie-consent-for-eu' ), $s->get( 'hide_empty_categories' ), __( '💡 Zapnite, keď máte vyplnené všetky kategórie v záložke Cookies.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?>
 			</table>
 		</div>
 
@@ -315,40 +321,40 @@ class CCWPS_Admin {
 			<h2><?php echo esc_html( $this->t( 'admin_sect_cookie_settings', 'Nastavenia cookie súhlasu' ) ); ?></h2>
 			<table class="ccwps-table">
 				<tr>
-					<th><label for="delay"><?php esc_html_e( 'Oneskorenie zobrazenia (ms)', 'advanced-cookie-consent-for-eu' ); ?></label><p class="desc"><?php esc_html_e( 'Čas v milisekundách pred zobrazením bannera.', 'advanced-cookie-consent-for-eu' ); ?></p></th>
-					<td><input type="number" name="delay" id="delay" value="<?php echo esc_attr( $s->get( 'delay' ) ); ?>" min="0" class="small-text"><?php $this->tip( __( '💡 Hodnota 0 = okamžite. Odporúčame 0–500 ms. Vyššie hodnoty môžu byť problém pri GDPR auditoch.', 'advanced-cookie-consent-for-eu' ) ); ?></td>
+					<th><label for="delay"><?php esc_html_e( 'Oneskorenie zobrazenia (ms)', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label><p class="desc"><?php esc_html_e( 'Čas v milisekundách pred zobrazením bannera.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p></th>
+					<td><input type="number" name="delay" id="delay" value="<?php echo esc_attr( $s->get( 'delay' ) ); ?>" min="0" class="small-text"><?php $this->tip( __( '💡 Hodnota 0 = okamžite. Odporúčame 0–500 ms. Vyššie hodnoty môžu byť problém pri GDPR auditoch.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?></td>
 				</tr>
 				<tr>
-					<th><label for="cookie_expiration"><?php esc_html_e( 'Platnosť súhlasu (dni)', 'advanced-cookie-consent-for-eu' ); ?></label><p class="desc"><?php esc_html_e( 'Po koľkých dňoch vyprší súhlas a banner sa zobrazí znova.', 'advanced-cookie-consent-for-eu' ); ?></p></th>
-					<td><input type="number" name="cookie_expiration" id="cookie_expiration" value="<?php echo esc_attr( $s->get( 'cookie_expiration' ) ); ?>" min="1" class="small-text"><?php $this->tip( __( '💡 GDPR odporúča max. 13 mesiacov (390 dní). Predvolených 182 dní (6 mes.) je bezpečná hodnota.', 'advanced-cookie-consent-for-eu' ) ); ?></td>
+					<th><label for="cookie_expiration"><?php esc_html_e( 'Platnosť súhlasu (dni)', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label><p class="desc"><?php esc_html_e( 'Po koľkých dňoch vyprší súhlas a banner sa zobrazí znova.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p></th>
+					<td><input type="number" name="cookie_expiration" id="cookie_expiration" value="<?php echo esc_attr( $s->get( 'cookie_expiration' ) ); ?>" min="1" class="small-text"><?php $this->tip( __( '💡 GDPR odporúča max. 13 mesiacov (390 dní). Predvolených 182 dní (6 mes.) je bezpečná hodnota.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?></td>
 				</tr>
 				<tr>
-					<th><label for="cookie_path"><?php esc_html_e( 'Cesta cookie', 'advanced-cookie-consent-for-eu' ); ?></label><p class="desc"><?php esc_html_e( 'Cesta, na ktorej bude cookie platná.', 'advanced-cookie-consent-for-eu' ); ?></p></th>
-					<td><input type="text" name="cookie_path" id="cookie_path" value="<?php echo esc_attr( $s->get( 'cookie_path' ) ); ?>" class="regular-text"><?php $this->tip( __( '💡 Nechajte "/" – cookie bude platná na celom webe.', 'advanced-cookie-consent-for-eu' ) ); ?></td>
+					<th><label for="cookie_path"><?php esc_html_e( 'Cesta cookie', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label><p class="desc"><?php esc_html_e( 'Cesta, na ktorej bude cookie platná.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p></th>
+					<td><input type="text" name="cookie_path" id="cookie_path" value="<?php echo esc_attr( $s->get( 'cookie_path' ) ); ?>" class="regular-text"><?php $this->tip( __( '💡 Nechajte "/" – cookie bude platná na celom webe.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?></td>
 				</tr>
 				<tr>
-					<th><label for="cookie_domain"><?php esc_html_e( 'Doména cookie', 'advanced-cookie-consent-for-eu' ); ?></label><p class="desc"><?php esc_html_e( 'Nechajte prázdne pre automatickú detekciu.', 'advanced-cookie-consent-for-eu' ); ?></p></th>
-					<td><input type="text" name="cookie_domain" id="cookie_domain" value="<?php echo esc_attr( $s->get( 'cookie_domain' ) ); ?>" class="regular-text" placeholder="<?php echo esc_attr( $this->get_home_url_host() ); ?>"><?php $this->tip( __( '💡 Vyplňte ".mojeweb.sk" (s bodkou) ak chcete zdieľať súhlas medzi subdoménami.', 'advanced-cookie-consent-for-eu' ) ); ?></td>
+					<th><label for="cookie_domain"><?php esc_html_e( 'Doména cookie', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label><p class="desc"><?php esc_html_e( 'Nechajte prázdne pre automatickú detekciu.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p></th>
+					<td><input type="text" name="cookie_domain" id="cookie_domain" value="<?php echo esc_attr( $s->get( 'cookie_domain' ) ); ?>" class="regular-text" placeholder="<?php echo esc_attr( $this->get_home_url_host() ); ?>"><?php $this->tip( __( '💡 Vyplňte ".mojeweb.sk" (s bodkou) ak chcete zdieľať súhlas medzi subdoménami.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?></td>
 				</tr>
 			</table>
 		</div>
 
 		<div class="ccwps-card">
-			<h2><?php esc_html_e( 'Google Consent Mode', 'advanced-cookie-consent-for-eu' ); ?></h2>
+			<h2><?php esc_html_e( 'Google Consent Mode', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h2>
 			<div class="ccwps-info-box">
-				<strong><?php esc_html_e( 'Čo je Consent Mode?', 'advanced-cookie-consent-for-eu' ); ?></strong>
-				<?php esc_html_e( ' Google Consent Mode umožňuje Googlu modelovať chýbajúce dáta, keď používatelia odmietnu analytické/reklamné cookies. Vaše kampane budú stále merateľné aj bez plného súhlasu.', 'advanced-cookie-consent-for-eu' ); ?>
+				<strong><?php esc_html_e( 'Čo je Consent Mode?', 'web-pixel-studio-cookie-consent-for-eu' ); ?></strong>
+				<?php esc_html_e( ' Google Consent Mode umožňuje Googlu modelovať chýbajúce dáta, keď používatelia odmietnu analytické/reklamné cookies. Vaše kampane budú stále merateľné aj bez plného súhlasu.', 'web-pixel-studio-cookie-consent-for-eu' ); ?>
 			</div>
 			<table class="ccwps-table">
 				<tr>
-					<th><?php esc_html_e( 'Verzia Consent Mode', 'advanced-cookie-consent-for-eu' ); ?></th>
+					<th><?php esc_html_e( 'Verzia Consent Mode', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th>
 					<td>
 						<div class="ccwps-radio-group">
 							<?php
 							$radio_opts = [
-								'off' => [ __( 'Vypnuté', 'advanced-cookie-consent-for-eu' ), __( 'Consent Mode sa nepoužíva. Vhodné ak nepoužívate Google Analytics ani Ads.', 'advanced-cookie-consent-for-eu' ), '' ],
-								'v2'  => [ __( 'Consent Mode v2', 'advanced-cookie-consent-for-eu' ), __( 'Štandard od marca 2024. Vyžadovaný pre Google Ads a GA4 v EÚ. Posiela signály ad_user_data a ad_personalization. Nutné pre remarketing a konverzie.', 'advanced-cookie-consent-for-eu' ), 'recommended' ],
-								'v3'  => [ __( 'Consent Mode v3', 'advanced-cookie-consent-for-eu' ), __( 'Rozšírenie v2 o developer ID signál. Zahŕňa všetky funkcie v2 + nastavenie developer_id pre presnejšie modelovanie konverzií. Vhodné pre pokročilé Google Marketing Platform funkcie.', 'advanced-cookie-consent-for-eu' ), 'new' ],
+								'off' => [ __( 'Vypnuté', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Consent Mode sa nepoužíva. Vhodné ak nepoužívate Google Analytics ani Ads.', 'web-pixel-studio-cookie-consent-for-eu' ), '' ],
+								'v2'  => [ __( 'Consent Mode v2', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Štandard od marca 2024. Vyžadovaný pre Google Ads a GA4 v EÚ. Posiela signály ad_user_data a ad_personalization. Nutné pre remarketing a konverzie.', 'web-pixel-studio-cookie-consent-for-eu' ), 'recommended' ],
+								'v3'  => [ __( 'Consent Mode v3', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Rozšírenie v2 o developer ID signál. Zahŕňa všetky funkcie v2 + nastavenie developer_id pre presnejšie modelovanie konverzií. Vhodné pre pokročilé Google Marketing Platform funkcie.', 'web-pixel-studio-cookie-consent-for-eu' ), 'new' ],
 							];
 							foreach ( $radio_opts as $val => [ $label, $desc, $badge ] ) :
 								$selected = $mode === $val ? 'selected' : '';
@@ -358,20 +364,20 @@ class CCWPS_Admin {
 								<div>
 									<strong>
 										<?php echo esc_html( $label ); ?>
-										<?php if ( $badge === 'recommended' ) : ?><span class="ccwps-badge-recommended"><?php esc_html_e( 'Odporúčané', 'advanced-cookie-consent-for-eu' ); ?></span><?php endif; ?>
-										<?php if ( $badge === 'new' ) : ?><span class="ccwps-badge-new"><?php esc_html_e( 'Nové', 'advanced-cookie-consent-for-eu' ); ?></span><?php endif; ?>
+										<?php if ( $badge === 'recommended' ) : ?><span class="ccwps-badge-recommended"><?php esc_html_e( 'Odporúčané', 'web-pixel-studio-cookie-consent-for-eu' ); ?></span><?php endif; ?>
+										<?php if ( $badge === 'new' ) : ?><span class="ccwps-badge-new"><?php esc_html_e( 'Nové', 'web-pixel-studio-cookie-consent-for-eu' ); ?></span><?php endif; ?>
 									</strong>
 									<span><?php echo esc_html( $desc ); ?></span>
 								</div>
 							</label>
 							<?php endforeach; ?>
 						</div>
-						<?php $this->tip( __( '💡 Pre väčšinu webov stačí v2. v3 použite ak využívate pokročilé Google Marketing Platform funkcie. Obe verzie vyžadujú GTM alebo manuálne načítanie gtag.js.', 'advanced-cookie-consent-for-eu' ) ); ?>
+						<?php $this->tip( __( '💡 Pre väčšinu webov stačí v2. v3 použite ak využívate pokročilé Google Marketing Platform funkcie. Obe verzie vyžadujú GTM alebo manuálne načítanie gtag.js.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?>
 					</td>
 				</tr>
 				<tr>
-					<th><label for="gtm_id"><?php esc_html_e( 'GTM Container ID', 'advanced-cookie-consent-for-eu' ); ?></label><p class="desc"><?php esc_html_e( 'Voliteľné: Plugin načíta GTM automaticky.', 'advanced-cookie-consent-for-eu' ); ?></p></th>
-					<td><input type="text" name="gtm_id" id="gtm_id" value="<?php echo esc_attr( $s->get( 'gtm_id' ) ); ?>" class="regular-text" placeholder="GTM-XXXXXXX"><?php $this->tip( __( '💡 Vyplňte len ak GTM nenačítavate iným spôsobom. Ak GTM máte v téme alebo inom plugine, nechajte prázdne.', 'advanced-cookie-consent-for-eu' ) ); ?></td>
+					<th><label for="gtm_id"><?php esc_html_e( 'GTM Container ID', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label><p class="desc"><?php esc_html_e( 'Voliteľné: Plugin načíta GTM automaticky.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p></th>
+					<td><input type="text" name="gtm_id" id="gtm_id" value="<?php echo esc_attr( $s->get( 'gtm_id' ) ); ?>" class="regular-text" placeholder="GTM-XXXXXXX"><?php $this->tip( __( '💡 Vyplňte len ak GTM nenačítavate iným spôsobom. Ak GTM máte v téme alebo inom plugine, nechajte prázdne.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?></td>
 				</tr>
 			</table>
 		</div>
@@ -462,7 +468,7 @@ class CCWPS_Admin {
 			<h2><?php echo esc_html( $this->t( 'admin_sect_layout', 'Rozloženie a poloha bannera' ) ); ?></h2>
 			<table class="ccwps-table">
 				<tr>
-					<th><label><?php esc_html_e( 'Typ bannera', 'advanced-cookie-consent-for-eu' ); ?></label></th>
+					<th><label><?php esc_html_e( 'Typ bannera', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label></th>
 					<td>
 						<div class="ccwps-layout-picker">
 							<?php foreach ( [ 'box' => '⬜ Box', 'bar' => '▬ Bar', 'cloud' => '☁️ Cloud' ] as $v => $l ) : ?>
@@ -472,21 +478,21 @@ class CCWPS_Admin {
 							</label>
 							<?php endforeach; ?>
 						</div>
-						<?php $this->tip( __( '💡 Box – kompaktný popup v rohu. Bar – horizontálny pruh cez celú šírku. Cloud – zaoblený popup s väčším tieňom.', 'advanced-cookie-consent-for-eu' ) ); ?>
+						<?php $this->tip( __( '💡 Box – kompaktný popup v rohu. Bar – horizontálny pruh cez celú šírku. Cloud – zaoblený popup s väčším tieňom.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?>
 					</td>
 				</tr>
 				<tr>
-					<th><label for="banner_position"><?php esc_html_e( 'Poloha bannera', 'advanced-cookie-consent-for-eu' ); ?></label></th>
+					<th><label for="banner_position"><?php esc_html_e( 'Poloha bannera', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label></th>
 					<td>
 						<select name="banner_position" id="banner_position">
 							<?php foreach ( [
-								'bottom-left'   => __( 'Dole vľavo', 'advanced-cookie-consent-for-eu' ),
-								'bottom-right'  => __( 'Dole vpravo', 'advanced-cookie-consent-for-eu' ),
-								'bottom-center' => __( 'Dole v strede', 'advanced-cookie-consent-for-eu' ),
-								'top-left'      => __( 'Hore vľavo', 'advanced-cookie-consent-for-eu' ),
-								'top-right'     => __( 'Hore vpravo', 'advanced-cookie-consent-for-eu' ),
-								'top-center'    => __( 'Hore v strede', 'advanced-cookie-consent-for-eu' ),
-								'middle-center' => __( 'Stred obrazovky', 'advanced-cookie-consent-for-eu' ),
+								'bottom-left'   => __( 'Dole vľavo', 'web-pixel-studio-cookie-consent-for-eu' ),
+								'bottom-right'  => __( 'Dole vpravo', 'web-pixel-studio-cookie-consent-for-eu' ),
+								'bottom-center' => __( 'Dole v strede', 'web-pixel-studio-cookie-consent-for-eu' ),
+								'top-left'      => __( 'Hore vľavo', 'web-pixel-studio-cookie-consent-for-eu' ),
+								'top-right'     => __( 'Hore vpravo', 'web-pixel-studio-cookie-consent-for-eu' ),
+								'top-center'    => __( 'Hore v strede', 'web-pixel-studio-cookie-consent-for-eu' ),
+								'middle-center' => __( 'Stred obrazovky', 'web-pixel-studio-cookie-consent-for-eu' ),
 							] as $v => $l ) : ?>
 								<option value="<?php echo esc_attr( $v ); ?>" <?php selected( $s->get( 'banner_position' ), $v ); ?>><?php echo esc_html( $l ); ?></option>
 							<?php endforeach; ?>
@@ -499,19 +505,20 @@ class CCWPS_Admin {
 		<div class="ccwps-card">
 			<h2><?php echo esc_html( $this->t( 'admin_sect_floating_icon', 'Plávajúca ikona' ) ); ?></h2>
 			<table class="ccwps-table">
-				<?php $this->trow_toggle( 'banner_show_icon', __( 'Zobraziť plávajúcu ikonu', 'advanced-cookie-consent-for-eu' ), __( 'Po udelení súhlasu sa zobrazí ikona na opätovnú správu preferencií.', 'advanced-cookie-consent-for-eu' ), $s->get( 'banner_show_icon' ), __( '💡 Odporúčame zapnúť – GDPR vyžaduje, aby mohol používateľ kedykoľvek odvolať súhlas. Po kliknutí na ikonu sa zobrazí panel s ID súhlasu a tlačidlami.', 'advanced-cookie-consent-for-eu' ) ); ?>
+				<?php $this->trow_toggle( 'banner_show_icon', __( 'Zobraziť plávajúcu ikonu', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Po udelení súhlasu sa zobrazí ikona na opätovnú správu preferencií.', 'web-pixel-studio-cookie-consent-for-eu' ), $s->get( 'banner_show_icon' ), __( '💡 Odporúčame zapnúť – GDPR vyžaduje, aby mohol používateľ kedykoľvek odvolať súhlas. Po kliknutí na ikonu sa zobrazí panel s ID súhlasu a tlačidlami.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?>
+				<?php $this->trow_toggle( 'floating_show_powered_by', $this->tx( 'Podporte nás nenápadným odkazom v plávajúcej ikone' ), '', $s->get( 'floating_show_powered_by', 0 ) ); ?>
 				<tr>
-					<th><label for="icon_position"><?php esc_html_e( 'Poloha ikony', 'advanced-cookie-consent-for-eu' ); ?></label></th>
+					<th><label for="icon_position"><?php esc_html_e( 'Poloha ikony', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label></th>
 					<td>
 						<select name="icon_position" id="icon_position">
-							<?php foreach ( [ 'bottom-right' => __( 'Dole vpravo', 'advanced-cookie-consent-for-eu' ), 'bottom-left' => __( 'Dole vľavo', 'advanced-cookie-consent-for-eu' ), 'top-right' => __( 'Hore vpravo', 'advanced-cookie-consent-for-eu' ), 'top-left' => __( 'Hore vľavo', 'advanced-cookie-consent-for-eu' ) ] as $v => $l ) : ?>
+							<?php foreach ( [ 'bottom-right' => __( 'Dole vpravo', 'web-pixel-studio-cookie-consent-for-eu' ), 'bottom-left' => __( 'Dole vľavo', 'web-pixel-studio-cookie-consent-for-eu' ), 'top-right' => __( 'Hore vpravo', 'web-pixel-studio-cookie-consent-for-eu' ), 'top-left' => __( 'Hore vľavo', 'web-pixel-studio-cookie-consent-for-eu' ) ] as $v => $l ) : ?>
 								<option value="<?php echo esc_attr( $v ); ?>" <?php selected( $s->get( 'icon_position' ), $v ); ?>><?php echo esc_html( $l ); ?></option>
 							<?php endforeach; ?>
 						</select>
 					</td>
 				</tr>
 				<tr>
-					<th><label for="icon_type"><?php esc_html_e( 'Typ ikony', 'advanced-cookie-consent-for-eu' ); ?></label></th>
+					<th><label for="icon_type"><?php esc_html_e( 'Typ ikony', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label></th>
 					<td>
 						<select name="icon_type" id="icon_type" class="ccwps-icon-type-select">
 							<?php foreach ( [
@@ -519,7 +526,7 @@ class CCWPS_Admin {
 								'shield'  => '🛡 Štít',
 								'settings'=> '⚙️ Nastavenia',
 								'lock'    => '🔒 Zámok',
-								'custom'  => __( '🖼 Vlastná ikona (obrázok)', 'advanced-cookie-consent-for-eu' ),
+								'custom'  => __( '🖼 Vlastná ikona (obrázok)', 'web-pixel-studio-cookie-consent-for-eu' ),
 							] as $v => $l ) : ?>
 								<option value="<?php echo esc_attr( $v ); ?>" <?php selected( $s->get( 'icon_type' ), $v ); ?>><?php echo esc_html( $l ); ?></option>
 							<?php endforeach; ?>
@@ -528,7 +535,7 @@ class CCWPS_Admin {
 				</tr>
 				<tr id="ccwps-custom-icon-row" style="<?php echo $s->get( 'icon_type' ) === 'custom' ? '' : 'display:none;'; ?>">
 					<th>
-						<label><?php esc_html_e( 'Vlastná ikona', 'advanced-cookie-consent-for-eu' ); ?></label>
+						<label><?php esc_html_e( 'Vlastná ikona', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label>
 						<p class="desc"><?php echo esc_html( $this->tx( 'Nahrajte alebo vyberte obrázok z knižnice médií. Odporúčaná veľkosť: 50×50 px. Podporované formáty: obrázky povolené vo WordPress (napr. JPG, JPEG, PNG, GIF, WebP). SVG iba ak je povolené vo WordPress.' ) ); ?></p>
 					</th>
 					<td>
@@ -536,25 +543,25 @@ class CCWPS_Admin {
 							<?php $custom_url = $s->get( 'icon_custom_url' ); ?>
 							<?php if ( $custom_url ) : ?>
 								<div class="ccwps-icon-preview" id="ccwps-icon-preview">
-									<img src="<?php echo esc_url( $custom_url ); ?>" alt="<?php esc_attr_e( 'Vlastná ikona', 'advanced-cookie-consent-for-eu' ); ?>">
+									<img src="<?php echo esc_url( $custom_url ); ?>" alt="<?php esc_attr_e( 'Vlastná ikona', 'web-pixel-studio-cookie-consent-for-eu' ); ?>">
 								</div>
 							<?php else : ?>
 								<div class="ccwps-icon-preview ccwps-icon-preview--empty" id="ccwps-icon-preview">
-									<span><?php esc_html_e( 'Žiadny obrázok', 'advanced-cookie-consent-for-eu' ); ?></span>
+									<span><?php esc_html_e( 'Žiadny obrázok', 'web-pixel-studio-cookie-consent-for-eu' ); ?></span>
 								</div>
 							<?php endif; ?>
 							<input type="hidden" name="icon_custom_url" id="icon_custom_url" value="<?php echo esc_url( $custom_url ); ?>">
 							<div class="ccwps-icon-upload-btns">
 								<button type="button" class="button" id="ccwps-icon-upload-btn">
-									<?php esc_html_e( '📂 Vybrať / nahrať obrázok', 'advanced-cookie-consent-for-eu' ); ?>
+									<?php esc_html_e( '📂 Vybrať / nahrať obrázok', 'web-pixel-studio-cookie-consent-for-eu' ); ?>
 								</button>
 								<?php if ( $custom_url ) : ?>
 									<button type="button" class="button button-link-delete" id="ccwps-icon-remove-btn">
-										<?php esc_html_e( 'Odstrániť', 'advanced-cookie-consent-for-eu' ); ?>
+										<?php esc_html_e( 'Odstrániť', 'web-pixel-studio-cookie-consent-for-eu' ); ?>
 									</button>
 								<?php else : ?>
 									<button type="button" class="button button-link-delete" id="ccwps-icon-remove-btn" style="display:none;">
-										<?php esc_html_e( 'Odstrániť', 'advanced-cookie-consent-for-eu' ); ?>
+										<?php esc_html_e( 'Odstrániť', 'web-pixel-studio-cookie-consent-for-eu' ); ?>
 									</button>
 								<?php endif; ?>
 							</div>
@@ -563,11 +570,11 @@ class CCWPS_Admin {
 					</td>
 				</tr>
 				<?php foreach ( [
-					'floating_icon_bg'    => [ __( 'Pozadie floating ikony', 'advanced-cookie-consent-for-eu' ), __( 'Farba kruhu floating ikony.', 'advanced-cookie-consent-for-eu' ), '#1a73e8' ],
-					'floating_icon_bg_hv' => [ __( 'Pozadie floating ikony (hover)', 'advanced-cookie-consent-for-eu' ), __( 'Farba kruhu floating ikony po prejdení myšou.', 'advanced-cookie-consent-for-eu' ), '#1557b0' ],
-					'floating_icon_color' => [ __( 'Farba obsahu floating ikony', 'advanced-cookie-consent-for-eu' ), __( 'Farba SVG ikony alebo obsahu vo floating ikone.', 'advanced-cookie-consent-for-eu' ), '#ffffff' ],
-					'floating_popup_bg'   => [ __( 'Pozadie popupu floating ikony', 'advanced-cookie-consent-for-eu' ), __( 'Farba pozadia popupu po kliknutí na floating ikonu.', 'advanced-cookie-consent-for-eu' ), '#ffffff' ],
-					'floating_popup_text' => [ __( 'Farba textu popupu floating ikony', 'advanced-cookie-consent-for-eu' ), __( 'Farba textu a obsahu popupu po kliknutí na floating ikonu.', 'advanced-cookie-consent-for-eu' ), '#111827' ],
+					'floating_icon_bg'    => [ __( 'Pozadie floating ikony', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Farba kruhu floating ikony.', 'web-pixel-studio-cookie-consent-for-eu' ), '#1a73e8' ],
+					'floating_icon_bg_hv' => [ __( 'Pozadie floating ikony (hover)', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Farba kruhu floating ikony po prejdení myšou.', 'web-pixel-studio-cookie-consent-for-eu' ), '#1557b0' ],
+					'floating_icon_color' => [ __( 'Farba obsahu floating ikony', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Farba SVG ikony alebo obsahu vo floating ikone.', 'web-pixel-studio-cookie-consent-for-eu' ), '#ffffff' ],
+					'floating_popup_bg'   => [ __( 'Pozadie popupu floating ikony', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Farba pozadia popupu po kliknutí na floating ikonu.', 'web-pixel-studio-cookie-consent-for-eu' ), '#ffffff' ],
+					'floating_popup_text' => [ __( 'Farba textu popupu floating ikony', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Farba textu a obsahu popupu po kliknutí na floating ikonu.', 'web-pixel-studio-cookie-consent-for-eu' ), '#111827' ],
 				] as $k => [ $lbl, $desc, $def ] ) : ?>
 				<tr>
 					<th><label for="<?php echo esc_attr( $k ); ?>"><?php echo esc_html( $lbl ); ?></label><p class="desc"><?php echo esc_html( $desc ); ?></p></th>
@@ -580,10 +587,10 @@ class CCWPS_Admin {
 		<div class="ccwps-card">
 			<h2><?php echo esc_html( $this->t( 'admin_sect_banner_logo', 'Logo v banneri' ) ); ?></h2>
 			<table class="ccwps-table">
-				<?php $this->trow_toggle( 'banner_logo_show', __( 'Zobraziť logo v banneri', 'advanced-cookie-consent-for-eu' ), __( 'V pravom hornom rohu cookie lišty sa zobrazí vaše logo.', 'advanced-cookie-consent-for-eu' ), $s->get( 'banner_logo_show' ) ); ?>
+				<?php $this->trow_toggle( 'banner_logo_show', __( 'Zobraziť logo v banneri', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'V pravom hornom rohu cookie lišty sa zobrazí vaše logo.', 'web-pixel-studio-cookie-consent-for-eu' ), $s->get( 'banner_logo_show' ) ); ?>
 				<tr id="ccwps-banner-logo-fields" style="<?php echo $s->get( 'banner_logo_show' ) ? '' : 'display:none;'; ?>">
 					<th>
-						<label><?php esc_html_e( 'Logo bannera', 'advanced-cookie-consent-for-eu' ); ?></label>
+						<label><?php esc_html_e( 'Logo bannera', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label>
 						<p class="desc"><?php echo esc_html( $this->t( 'admin_banner_logo_desc', 'Nahrajte alebo vyberte logo z knižnice médií.' ) ); ?></p>
 						<p class="desc" style="color: #666; font-size: 12px;"><?php echo esc_html( $this->tx( 'Podporované formáty: obrázky povolené vo WordPress (napr. JPG, JPEG, PNG, GIF, WebP). SVG iba ak je povolené vo WordPress.' ) ); ?></p>
 					</th>
@@ -592,20 +599,20 @@ class CCWPS_Admin {
 							<?php $logo_url = $s->get( 'banner_logo_url' ); ?>
 							<?php if ( $logo_url ) : ?>
 								<div class="ccwps-icon-preview" id="ccwps-banner-logo-preview" style="max-width: 200px; max-height: 200px;">
-									<img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php esc_attr_e( 'Logo bannera', 'advanced-cookie-consent-for-eu' ); ?>" style="max-width: 100%; max-height: 100%;">
+									<img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php esc_attr_e( 'Logo bannera', 'web-pixel-studio-cookie-consent-for-eu' ); ?>" style="max-width: 100%; max-height: 100%;">
 								</div>
 							<?php else : ?>
 								<div class="ccwps-icon-preview ccwps-icon-preview--empty" id="ccwps-banner-logo-preview">
-									<span><?php esc_html_e( 'Žiadny obrázok', 'advanced-cookie-consent-for-eu' ); ?></span>
+									<span><?php esc_html_e( 'Žiadny obrázok', 'web-pixel-studio-cookie-consent-for-eu' ); ?></span>
 								</div>
 							<?php endif; ?>
 							<input type="hidden" name="banner_logo_url" id="banner_logo_url" value="<?php echo esc_url( $logo_url ); ?>">
 							<div class="ccwps-icon-upload-btns">
 								<button type="button" class="button" id="ccwps-banner-logo-upload-btn">
-									<?php esc_html_e( '📂 Vybrať / nahrať obrázok', 'advanced-cookie-consent-for-eu' ); ?>
+									<?php esc_html_e( '📂 Vybrať / nahrať obrázok', 'web-pixel-studio-cookie-consent-for-eu' ); ?>
 								</button>
 								<button type="button" class="button button-link-delete" id="ccwps-banner-logo-remove-btn" <?php echo $logo_url ? '' : 'style="display:none;"'; ?>>
-									<?php esc_html_e( 'Odstrániť', 'advanced-cookie-consent-for-eu' ); ?>
+									<?php esc_html_e( 'Odstrániť', 'web-pixel-studio-cookie-consent-for-eu' ); ?>
 								</button>
 							</div>
 						</div>
@@ -622,12 +629,12 @@ class CCWPS_Admin {
 					</td>
 				</tr>
 				<tr id="ccwps-banner-logo-width-row" style="<?php echo $s->get( 'banner_logo_show' ) ? '' : 'display:none;'; ?>">
-					<th><label for="banner_logo_width"><?php esc_html_e( 'Šírka loga (px)', 'advanced-cookie-consent-for-eu' ); ?></label></th>
+					<th><label for="banner_logo_width"><?php esc_html_e( 'Šírka loga (px)', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label></th>
 					<td>
 						<input type="number" name="banner_logo_width" id="banner_logo_width"
 							value="<?php echo esc_attr( $s->get( 'banner_logo_width' ) ?: 40 ); ?>"
 							min="20" max="100" class="small-text">
-						<?php $this->tip( __( '💡 Šírka loga v pixeloch (20–100 px). Výška sa prispôsobí automaticky.', 'advanced-cookie-consent-for-eu' ) ); ?>
+						<?php $this->tip( __( '💡 Šírka loga v pixeloch (20–100 px). Výška sa prispôsobí automaticky.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?>
 					</td>
 				</tr>
 			</table>
@@ -637,7 +644,7 @@ class CCWPS_Admin {
 			<h2><?php echo esc_html( $this->t( 'admin_sect_typography', 'Typografia a zaoblenie' ) ); ?></h2>
 			<table class="ccwps-table">
 				<tr>
-					<th><label for="font_family"><?php esc_html_e( 'Font', 'advanced-cookie-consent-for-eu' ); ?></label><p class="desc"><?php esc_html_e( 'CSS font-family hodnota', 'advanced-cookie-consent-for-eu' ); ?></p></th>
+					<th><label for="font_family"><?php esc_html_e( 'Font', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label><p class="desc"><?php esc_html_e( 'CSS font-family hodnota', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p></th>
 					<td>
 						<select name="font_family" id="font_family" class="regular-text">
 							<?php foreach ( $this->get_font_choice_group_labels() as $group_key => $group_label ) : ?>
@@ -651,30 +658,30 @@ class CCWPS_Admin {
 								</optgroup>
 							<?php endforeach; ?>
 						</select>
-						<p class="description" style="margin-top:8px;"><?php esc_html_e( 'Pole ponúka iba detegované fonty z témy, theme.json, Elementora a frontend CSS.', 'advanced-cookie-consent-for-eu' ); ?></p>
-						<?php $this->tip( __( '💡 V zozname sa zobrazuje iba názov fontu. Po výbere sa uloží kompletná font-family hodnota detegovaná na stránke. Voľba "Použiť font témy" zodpovedá hodnote inherit.', 'advanced-cookie-consent-for-eu' ) ); ?>
+						<p class="description" style="margin-top:8px;"><?php esc_html_e( 'Pole ponúka iba detegované fonty z témy, theme.json, Elementora a frontend CSS.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
+						<?php $this->tip( __( '💡 V zozname sa zobrazuje iba názov fontu. Po výbere sa uloží kompletná font-family hodnota detegovaná na stránke. Voľba "Použiť font témy" zodpovedá hodnote inherit.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?>
 					</td>
 				</tr>
 				<tr>
-					<th><label for="btn_border_radius"><?php esc_html_e( 'Zaoblenie tlačidiel (px)', 'advanced-cookie-consent-for-eu' ); ?></label></th>
-					<td><input type="number" name="btn_border_radius" id="btn_border_radius" value="<?php echo esc_attr( $s->get( 'btn_border_radius' ) ); ?>" min="0" max="50" class="small-text"><?php $this->tip( __( '💡 0 = hranaté, 8 = mierne zaoblené, 24+ = "pill" tvar.', 'advanced-cookie-consent-for-eu' ) ); ?></td>
+					<th><label for="btn_border_radius"><?php esc_html_e( 'Zaoblenie tlačidiel (px)', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label></th>
+					<td><input type="number" name="btn_border_radius" id="btn_border_radius" value="<?php echo esc_attr( $s->get( 'btn_border_radius' ) ); ?>" min="0" max="50" class="small-text"><?php $this->tip( __( '💡 0 = hranaté, 8 = mierne zaoblené, 24+ = "pill" tvar.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?></td>
 				</tr>
 				<tr>
-					<th><label for="banner_border_radius"><?php esc_html_e( 'Zaoblenie bannera / modálu (px)', 'advanced-cookie-consent-for-eu' ); ?></label></th>
-					<td><input type="number" name="banner_border_radius" id="banner_border_radius" value="<?php echo esc_attr( $s->get( 'banner_border_radius' ) ?: 12 ); ?>" min="0" max="40" class="small-text"><?php $this->tip( __( '💡 Zaoblenie rohov bannera aj modálu. Predvolené: 12 px.', 'advanced-cookie-consent-for-eu' ) ); ?></td>
+					<th><label for="banner_border_radius"><?php esc_html_e( 'Zaoblenie bannera / modálu (px)', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label></th>
+					<td><input type="number" name="banner_border_radius" id="banner_border_radius" value="<?php echo esc_attr( $s->get( 'banner_border_radius' ) ?: 12 ); ?>" min="0" max="40" class="small-text"><?php $this->tip( __( '💡 Zaoblenie rohov bannera aj modálu. Predvolené: 12 px.', 'web-pixel-studio-cookie-consent-for-eu' ) ); ?></td>
 				</tr>
 			</table>
 		</div>
 
 		<div class="ccwps-card">
-			<h2><?php esc_html_e( 'Farby bannera', 'advanced-cookie-consent-for-eu' ); ?></h2>
-			<p class="description" style="margin-bottom:14px;"><?php esc_html_e( 'Nastavte farby pre pozadie a text cookie lišty (bannera).', 'advanced-cookie-consent-for-eu' ); ?></p>
+			<h2><?php esc_html_e( 'Farby bannera', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h2>
+			<p class="description" style="margin-bottom:14px;"><?php esc_html_e( 'Nastavte farby pre pozadie a text cookie lišty (bannera).', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 			<table class="ccwps-table">
 				<?php foreach ( [
-					'bg_color'    => [ __( 'Pozadie bannera', 'advanced-cookie-consent-for-eu' ),    __( 'Farba pozadia cookie lišty.', 'advanced-cookie-consent-for-eu' ), '#ffffff' ],
-					'banner_title_color' => [ __( 'Farba nadpisu bannera', 'advanced-cookie-consent-for-eu' ), __( 'Farba hlavného nadpisu v banneri.', 'advanced-cookie-consent-for-eu' ), '#111827' ],
-					'text_color'  => [ __( 'Farba textu bannera', 'advanced-cookie-consent-for-eu' ), __( 'Farba popisu a bežného textu v banneri.', 'advanced-cookie-consent-for-eu' ), '#111827' ],
-					'primary_color' => [ __( 'Primárna / akcentová farba', 'advanced-cookie-consent-for-eu' ), __( 'Používa sa ako fallback farba pre tlačidlá a zvýraznenia.', 'advanced-cookie-consent-for-eu' ), '#1a73e8' ],
+					'bg_color'    => [ __( 'Pozadie bannera', 'web-pixel-studio-cookie-consent-for-eu' ),    __( 'Farba pozadia cookie lišty.', 'web-pixel-studio-cookie-consent-for-eu' ), '#ffffff' ],
+					'banner_title_color' => [ __( 'Farba nadpisu bannera', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Farba hlavného nadpisu v banneri.', 'web-pixel-studio-cookie-consent-for-eu' ), '#111827' ],
+					'text_color'  => [ __( 'Farba textu bannera', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Farba popisu a bežného textu v banneri.', 'web-pixel-studio-cookie-consent-for-eu' ), '#111827' ],
+					'primary_color' => [ __( 'Primárna / akcentová farba', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Používa sa ako fallback farba pre tlačidlá a zvýraznenia.', 'web-pixel-studio-cookie-consent-for-eu' ), '#1a73e8' ],
 				] as $k => [ $lbl, $desc, $def ] ) : ?>
 				<tr>
 					<th><label for="<?php echo esc_attr( $k ); ?>"><?php echo esc_html( $lbl ); ?></label><p class="desc"><?php echo esc_html( $desc ); ?></p></th>
@@ -682,22 +689,22 @@ class CCWPS_Admin {
 				</tr>
 				<?php endforeach; ?>
 				<tr>
-					<th><label for="cloud_bg_opacity"><?php esc_html_e( 'Priesvitnosť bannera Cloud (%)', 'advanced-cookie-consent-for-eu' ); ?></label><p class="desc"><?php esc_html_e( 'Platí iba pre typ bannera Cloud. 0 = maximálne priehľadný, 100 = najmenej priehľadný.', 'advanced-cookie-consent-for-eu' ); ?></p></th>
+					<th><label for="cloud_bg_opacity"><?php esc_html_e( 'Priesvitnosť bannera Cloud (%)', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label><p class="desc"><?php esc_html_e( 'Platí iba pre typ bannera Cloud. 0 = maximálne priehľadný, 100 = najmenej priehľadný.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p></th>
 					<td><input type="number" name="cloud_bg_opacity" id="cloud_bg_opacity" value="<?php echo esc_attr( $s->get( 'cloud_bg_opacity' ) ?: 70 ); ?>" min="0" max="100" class="small-text"></td>
 				</tr>
 			</table>
 		</div>
 
 		<div class="ccwps-card">
-			<h2><?php esc_html_e( 'Tlačidlo "Prijať všetky" (primárne)', 'advanced-cookie-consent-for-eu' ); ?></h2>
-			<p class="description" style="margin-bottom:14px;"><?php esc_html_e( 'Farebné nastavenia pre hlavné modré tlačidlo súhlasu. Prázdne pole = použije sa primárna farba.', 'advanced-cookie-consent-for-eu' ); ?></p>
+			<h2><?php esc_html_e( 'Tlačidlo "Prijať všetky" (primárne)', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h2>
+			<p class="description" style="margin-bottom:14px;"><?php esc_html_e( 'Farebné nastavenia pre hlavné modré tlačidlo súhlasu. Prázdne pole = použije sa primárna farba.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 			<table class="ccwps-table">
 				<?php
 				$btn_primary = [
-					'btn_primary_bg'     => [ __( 'Pozadie', 'advanced-cookie-consent-for-eu' ),           '#1a73e8' ],
-					'btn_primary_bg_hv'  => [ __( 'Pozadie (hover)', 'advanced-cookie-consent-for-eu' ),    '#1557b0' ],
-					'btn_primary_txt'    => [ __( 'Farba textu', 'advanced-cookie-consent-for-eu' ),         '#ffffff' ],
-					'btn_text_color'     => [ __( 'Farba textu (hover)', 'advanced-cookie-consent-for-eu' ), '#ffffff' ],
+					'btn_primary_bg'     => [ __( 'Pozadie', 'web-pixel-studio-cookie-consent-for-eu' ),           '#1a73e8' ],
+					'btn_primary_bg_hv'  => [ __( 'Pozadie (hover)', 'web-pixel-studio-cookie-consent-for-eu' ),    '#1557b0' ],
+					'btn_primary_txt'    => [ __( 'Farba textu', 'web-pixel-studio-cookie-consent-for-eu' ),         '#ffffff' ],
+					'btn_text_color'     => [ __( 'Farba textu (hover)', 'web-pixel-studio-cookie-consent-for-eu' ), '#ffffff' ],
 				];
 				foreach ( $btn_primary as $k => [ $lbl, $def ] ) : ?>
 				<tr>
@@ -709,15 +716,15 @@ class CCWPS_Admin {
 		</div>
 
 		<div class="ccwps-card">
-			<h2><?php esc_html_e( 'Tlačidlo "Odmietnuť všetky" (primárne)', 'advanced-cookie-consent-for-eu' ); ?></h2>
-			<p class="description" style="margin-bottom:14px;"><?php esc_html_e( 'Farebné nastavenia pre tlačidlo odmietnutia. Možnosti sú zjednotené s tlačidlom "Prijať všetky".', 'advanced-cookie-consent-for-eu' ); ?></p>
+			<h2><?php esc_html_e( 'Tlačidlo "Odmietnuť všetky" (primárne)', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h2>
+			<p class="description" style="margin-bottom:14px;"><?php esc_html_e( 'Farebné nastavenia pre tlačidlo odmietnutia. Možnosti sú zjednotené s tlačidlom "Prijať všetky".', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 			<table class="ccwps-table">
 				<?php
 				$btn_ghost = [
-					'btn_ghost_bg'     => [ __( 'Pozadie', 'advanced-cookie-consent-for-eu' ),           '#1a73e8' ],
-					'btn_ghost_bg_hv'  => [ __( 'Pozadie (hover)', 'advanced-cookie-consent-for-eu' ),    '#1557b0' ],
-					'btn_ghost_txt'    => [ __( 'Farba textu', 'advanced-cookie-consent-for-eu' ),         '#ffffff' ],
-					'btn_ghost_txt_hv' => [ __( 'Farba textu (hover)', 'advanced-cookie-consent-for-eu' ), '#ffffff' ],
+					'btn_ghost_bg'     => [ __( 'Pozadie', 'web-pixel-studio-cookie-consent-for-eu' ),           '#1a73e8' ],
+					'btn_ghost_bg_hv'  => [ __( 'Pozadie (hover)', 'web-pixel-studio-cookie-consent-for-eu' ),    '#1557b0' ],
+					'btn_ghost_txt'    => [ __( 'Farba textu', 'web-pixel-studio-cookie-consent-for-eu' ),         '#ffffff' ],
+					'btn_ghost_txt_hv' => [ __( 'Farba textu (hover)', 'web-pixel-studio-cookie-consent-for-eu' ), '#ffffff' ],
 				];
 				foreach ( $btn_ghost as $k => [ $lbl, $def ] ) : ?>
 				<tr>
@@ -729,15 +736,15 @@ class CCWPS_Admin {
 		</div>
 
 		<div class="ccwps-card">
-			<h2><?php esc_html_e( 'Tlačidlo "Spravovať nastavenia" (outline)', 'advanced-cookie-consent-for-eu' ); ?></h2>
-			<p class="description" style="margin-bottom:14px;"><?php esc_html_e( 'Farebné nastavenia pre tlačidlo správy preferencií.', 'advanced-cookie-consent-for-eu' ); ?></p>
+			<h2><?php esc_html_e( 'Tlačidlo "Spravovať nastavenia" (outline)', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h2>
+			<p class="description" style="margin-bottom:14px;"><?php esc_html_e( 'Farebné nastavenia pre tlačidlo správy preferencií.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 			<table class="ccwps-table">
 				<?php
 				$btn_outline = [
-					'btn_outline_bg'     => [ __( 'Pozadie', 'advanced-cookie-consent-for-eu' ),           'transparent' ],
-					'btn_outline_bg_hv'  => [ __( 'Pozadie (hover)', 'advanced-cookie-consent-for-eu' ),   '#1a73e8' ],
-					'btn_outline_txt'    => [ __( 'Farba textu', 'advanced-cookie-consent-for-eu' ),         '#1a73e8' ],
-					'btn_outline_border' => [ __( 'Farba ohraničenia', 'advanced-cookie-consent-for-eu' ),   '#1a73e8' ],
+					'btn_outline_bg'     => [ __( 'Pozadie', 'web-pixel-studio-cookie-consent-for-eu' ),           'transparent' ],
+					'btn_outline_bg_hv'  => [ __( 'Pozadie (hover)', 'web-pixel-studio-cookie-consent-for-eu' ),   '#1a73e8' ],
+					'btn_outline_txt'    => [ __( 'Farba textu', 'web-pixel-studio-cookie-consent-for-eu' ),         '#1a73e8' ],
+					'btn_outline_border' => [ __( 'Farba ohraničenia', 'web-pixel-studio-cookie-consent-for-eu' ),   '#1a73e8' ],
 				];
 				foreach ( $btn_outline as $k => [ $lbl, $def ] ) : ?>
 				<tr>
@@ -746,7 +753,7 @@ class CCWPS_Admin {
 						<?php if ( $k === 'btn_outline_bg' ) : ?>
 							<div class="ccwps-color-with-transparent">
 								<?php $this->render_color_picker_with_reset( $k, (string) ( $s->get( $k ) ?: $def ), $def ); ?>
-								<label style="margin-left:8px;font-size:12px;color:#6b7280;"><input type="checkbox" class="ccwps-transparent-check" data-target="<?php echo esc_attr( $k ); ?>" <?php checked( !$s->get( $k ) || $s->get( $k ) === 'transparent', true ); ?>> <?php esc_html_e( 'Priehľadné', 'advanced-cookie-consent-for-eu' ); ?></label>
+								<label style="margin-left:8px;font-size:12px;color:#6b7280;"><input type="checkbox" class="ccwps-transparent-check" data-target="<?php echo esc_attr( $k ); ?>" <?php checked( !$s->get( $k ) || $s->get( $k ) === 'transparent', true ); ?>> <?php esc_html_e( 'Priehľadné', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label>
 							</div>
 						<?php else : ?>
 							<?php $this->render_color_picker_with_reset( $k, (string) ( $s->get( $k ) ?: $def ), $def ); ?>
@@ -758,21 +765,21 @@ class CCWPS_Admin {
 		</div>
 
 		<div class="ccwps-card">
-			<h2><?php esc_html_e( 'Okno modálu (Spravovať súhlas)', 'advanced-cookie-consent-for-eu' ); ?></h2>
-			<p class="description" style="margin-bottom:14px;"><?php esc_html_e( 'Farby pre okno nastavenia cookies, ktoré sa otvorí po kliknutí na "Spravovať nastavenia".', 'advanced-cookie-consent-for-eu' ); ?></p>
+			<h2><?php esc_html_e( 'Okno modálu (Spravovať súhlas)', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h2>
+			<p class="description" style="margin-bottom:14px;"><?php esc_html_e( 'Farby pre okno nastavenia cookies, ktoré sa otvorí po kliknutí na "Spravovať nastavenia".', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 			<table class="ccwps-table">
 				<?php
 				$modal_colors = [
-					'modal_bg'         => [ __( 'Pozadie modálu', 'advanced-cookie-consent-for-eu' ),          '#ffffff' ],
-					'modal_text'       => [ __( 'Farba textu', 'advanced-cookie-consent-for-eu' ),               '#111827' ],
-					'modal_consent_id_color' => [ __( 'Farba identifikátora súhlasu', 'advanced-cookie-consent-for-eu' ), '#111827' ],
-					'modal_header_bg'  => [ __( 'Pozadie hlavičky', 'advanced-cookie-consent-for-eu' ),         '#ffffff' ],
-					'modal_footer_bg'  => [ __( 'Pozadie päty', 'advanced-cookie-consent-for-eu' ),             '#f9fafb' ],
-					'modal_border'     => [ __( 'Farba ohraničení', 'advanced-cookie-consent-for-eu' ),          '#e5e7eb' ],
-					'cat_header_bg'    => [ __( 'Pozadie kategórie', 'advanced-cookie-consent-for-eu' ),         '#f9fafb' ],
-					'cat_header_bg_hv' => [ __( 'Pozadie kategórie (hover)', 'advanced-cookie-consent-for-eu' ),'#f0f2f5' ],
-					'toggle_on_color'  => [ __( 'Farba prepínača (zapnutý)', 'advanced-cookie-consent-for-eu' ), '#1a73e8' ],
-					'always_on_color'  => [ __( 'Farba textu "Vždy aktívne"', 'advanced-cookie-consent-for-eu' ),'#1a73e8' ],
+					'modal_bg'         => [ __( 'Pozadie modálu', 'web-pixel-studio-cookie-consent-for-eu' ),          '#ffffff' ],
+					'modal_text'       => [ __( 'Farba textu', 'web-pixel-studio-cookie-consent-for-eu' ),               '#111827' ],
+					'modal_consent_id_color' => [ __( 'Farba identifikátora súhlasu', 'web-pixel-studio-cookie-consent-for-eu' ), '#111827' ],
+					'modal_header_bg'  => [ __( 'Pozadie hlavičky', 'web-pixel-studio-cookie-consent-for-eu' ),         '#ffffff' ],
+					'modal_footer_bg'  => [ __( 'Pozadie päty', 'web-pixel-studio-cookie-consent-for-eu' ),             '#f9fafb' ],
+					'modal_border'     => [ __( 'Farba ohraničení', 'web-pixel-studio-cookie-consent-for-eu' ),          '#e5e7eb' ],
+					'cat_header_bg'    => [ __( 'Pozadie kategórie', 'web-pixel-studio-cookie-consent-for-eu' ),         '#f9fafb' ],
+					'cat_header_bg_hv' => [ __( 'Pozadie kategórie (hover)', 'web-pixel-studio-cookie-consent-for-eu' ),'#f0f2f5' ],
+					'toggle_on_color'  => [ __( 'Farba prepínača (zapnutý)', 'web-pixel-studio-cookie-consent-for-eu' ), '#1a73e8' ],
+					'always_on_color'  => [ __( 'Farba textu "Vždy aktívne"', 'web-pixel-studio-cookie-consent-for-eu' ),'#1a73e8' ],
 				];
 				foreach ( $modal_colors as $k => [ $lbl, $def ] ) : ?>
 				<tr>
@@ -781,7 +788,7 @@ class CCWPS_Admin {
 				</tr>
 				<?php endforeach; ?>
 				<tr>
-					<th><label for="modal_border_radius"><?php esc_html_e( 'Zaoblenie modálu (px)', 'advanced-cookie-consent-for-eu' ); ?></label></th>
+					<th><label for="modal_border_radius"><?php esc_html_e( 'Zaoblenie modálu (px)', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label></th>
 					<td><input type="number" name="modal_border_radius" id="modal_border_radius" value="<?php echo esc_attr( $s->get( 'modal_border_radius' ) ?: 12 ); ?>" min="0" max="40" class="small-text"></td>
 				</tr>
 			</table>
@@ -800,6 +807,7 @@ class CCWPS_Admin {
 			'banner_layout'       => 'box',
 			'banner_position'     => 'middle-center',
 			'banner_show_icon'    => '1',
+			'floating_show_powered_by' => '0',
 			'icon_position'       => 'bottom-left',
 			'icon_type'           => 'cookie',
 			'icon_custom_url'     => '',
@@ -875,7 +883,7 @@ class CCWPS_Admin {
 	private function tab_translations(): void {
 		$s = $this->settings;
 		$fields = [
-			__( 'Banner', 'advanced-cookie-consent-for-eu' ) => [
+			__( 'Banner', 'web-pixel-studio-cookie-consent-for-eu' ) => [
 				'lang_banner_title'       => $this->t( 'admin_trans_banner_title', 'Nadpis bannera' ),
 				'lang_banner_description' => $this->t( 'admin_trans_banner_desc', 'Popis bannera' ),
 				'lang_accept_all'         => $this->t( 'admin_trans_accept_all', 'Tlačidlo "Prijať všetky"' ),
@@ -911,7 +919,7 @@ class CCWPS_Admin {
 
 		<div class="ccwps-card">
 			<h2><?php echo esc_html( $this->t( 'admin_sect_lang_presets', 'Rýchle jazykové predvoľby' ) ); ?></h2>
-			<p class="description" style="margin-bottom:12px;"><?php esc_html_e( 'Kliknite na jazyk – všetky polia sa vyplnia automaticky. Potom kliknite Uložiť.', 'advanced-cookie-consent-for-eu' ); ?></p>
+			<p class="description" style="margin-bottom:12px;"><?php esc_html_e( 'Kliknite na jazyk – všetky polia sa vyplnia automaticky. Potom kliknite Uložiť.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 			<div class="ccwps-lang-grid">
 				<?php foreach ( CCWPS_Language_Presets::get_all() as $code => $data ) : ?>
 					<button type="button" class="ccwps-lang-btn button" data-lang="<?php echo esc_attr( $code ); ?>">
@@ -966,7 +974,7 @@ class CCWPS_Admin {
 			</div>
 		</div>
 		<div class="ccwps-card">
-			<p class="description" style="margin-bottom:14px;"><?php esc_html_e( 'Popis cookie je viditeľný návštevníkom v modáli preferencií – pomáha im pochopiť, na čo daná cookie slúži.', 'advanced-cookie-consent-for-eu' ); ?></p>
+			<p class="description" style="margin-bottom:14px;"><?php esc_html_e( 'Popis cookie je viditeľný návštevníkom v modáli preferencií – pomáha im pochopiť, na čo daná cookie slúži.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 			<div class="ccwps-bulk-actions" id="ccwps-cookies-bulk-actions" style="margin-bottom:12px;display:none;">
 				<button type="button" class="button button-link-delete ccwps-btn-danger-action" id="ccwps-delete-cookies-bulk"><?php echo esc_html( $this->tx( '🗑️ Odstrániť vybrané' ) ); ?></button>
 				<span class="ccwps-bulk-count" id="ccwps-cookies-bulk-count"></span>
@@ -978,14 +986,14 @@ class CCWPS_Admin {
 						<th><?php echo esc_html( $this->t( 'admin_col_name', 'Názov' ) ); ?></th>
 						<th><?php echo esc_html( $this->t( 'admin_col_domain', 'Doména' ) ); ?></th>
 						<th><?php echo esc_html( $this->t( 'admin_col_expiry', 'Platnosť' ) ); ?></th>
-						<th><?php echo esc_html( $this->t( 'admin_col_description', 'Popis' ) ); ?> <span class="ccwps-tag-info"><?php esc_html_e( 'viditeľný návštevníkom', 'advanced-cookie-consent-for-eu' ); ?></span></th>
+						<th><?php echo esc_html( $this->t( 'admin_col_description', 'Popis' ) ); ?> <span class="ccwps-tag-info"><?php esc_html_e( 'viditeľný návštevníkom', 'web-pixel-studio-cookie-consent-for-eu' ); ?></span></th>
 						<th><?php echo esc_html( $this->t( 'admin_col_category', 'Kategória' ) ); ?></th>
-						<th><?php esc_html_e( 'Regex', 'advanced-cookie-consent-for-eu' ); ?></th>
+						<th><?php esc_html_e( 'Regex', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th>
 						<th><?php echo esc_html( $this->t( 'admin_col_actions', 'Akcie' ) ); ?></th>
 					</tr></thead>
 					<tbody>
 					<?php if ( empty( $cookies ) ) : ?>
-						<tr><td colspan="8" style="text-align:center;padding:24px;"><?php esc_html_e( 'Žiadne cookies. Kliknite "+ Pridať cookie".', 'advanced-cookie-consent-for-eu' ); ?></td></tr>
+						<tr><td colspan="8" style="text-align:center;padding:24px;"><?php esc_html_e( 'Žiadne cookies. Kliknite "+ Pridať cookie".', 'web-pixel-studio-cookie-consent-for-eu' ); ?></td></tr>
 					<?php else : foreach ( $cookies as $c ) : ?>
 						<tr class="ccwps-cookies-row" data-cookie-name="<?php echo esc_attr( $c['name'] ); ?>">
 							<td style="width:40px;"><input type="checkbox" class="ccwps-cookie-checkbox" data-id="<?php echo esc_attr( $c['id'] ); ?>"></td>
@@ -1014,13 +1022,13 @@ class CCWPS_Admin {
 					<input type="hidden" id="ccwps-cookie-id">
 					<table class="ccwps-table">
 						<tr><th><label for="c-preset"><?php echo esc_html( $this->tx( 'Predpripravené predvoľby' ) ); ?></label></th><td><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><select id="c-preset" style="min-width:260px;"><option value=""><?php echo esc_html( $this->tx( 'Vyberte predvoľbu' ) ); ?></option><option value="google_necessary"><?php echo esc_html( $this->tx( 'Google Necessary' ) ); ?></option><option value="google_analytics"><?php echo esc_html( $this->tx( 'GA4 + GTM' ) ); ?></option><option value="google_targeting"><?php echo esc_html( $this->tx( 'Google Targeting' ) ); ?></option><option value="google_preferences"><?php echo esc_html( $this->tx( 'Google Preferences' ) ); ?></option><option value="google_ads"><?php echo esc_html( $this->tx( 'Google Ads' ) ); ?></option><option value="facebook_pixel"><?php echo esc_html( $this->tx( 'Facebook Pixel' ) ); ?></option><option value="pixel_your_site"><?php echo esc_html( $this->tx( 'Pixel Your Site' ) ); ?></option><option value="matomo_analytics"><?php echo esc_html( $this->tx( 'Matomo Analytics' ) ); ?></option><option value="matomo_tag_manager"><?php echo esc_html( $this->tx( 'Matomo Tag Manager' ) ); ?></option></select><button type="button" class="button button-primary ccwps-btn-primary-action" id="ccwps-apply-cookie-preset"><?php echo esc_html( $this->tx( 'Použiť predvoľbu' ) ); ?></button></div></td></tr>
-						<tr><th><label for="c-name"><?php esc_html_e( 'Názov', 'advanced-cookie-consent-for-eu' ); ?> <span class="required">*</span></label></th><td><input type="text" id="c-name" class="regular-text" placeholder="napr. _ga"></td></tr>
-						<tr><th><label for="c-domain"><?php esc_html_e( 'Doména', 'advanced-cookie-consent-for-eu' ); ?></label></th><td><input type="text" id="c-domain" class="regular-text" placeholder="<?php echo esc_attr( $this->get_home_url_host() ); ?>"></td></tr>
-						<tr><th><label for="c-expiration"><?php esc_html_e( 'Platnosť', 'advanced-cookie-consent-for-eu' ); ?></label></th><td><input type="text" id="c-expiration" class="regular-text" placeholder="napr. 2 roky, Relácia"></td></tr>
-						<tr><th><label for="c-path"><?php esc_html_e( 'Cesta', 'advanced-cookie-consent-for-eu' ); ?></label></th><td><input type="text" id="c-path" class="regular-text" value="/"></td></tr>
-						<tr><th><label for="c-description"><?php esc_html_e( 'Popis', 'advanced-cookie-consent-for-eu' ); ?></label><p class="desc"><?php esc_html_e( 'Viditeľný návštevníkom v modáli preferencií.', 'advanced-cookie-consent-for-eu' ); ?></p></th><td><textarea id="c-description" rows="3" class="large-text" placeholder="<?php esc_attr_e( 'napr. Používa sa Google Analytics na rozlíšenie návštevníkov.', 'advanced-cookie-consent-for-eu' ); ?>"></textarea></td></tr>
-						<tr><th><label for="c-category"><?php esc_html_e( 'Kategória', 'advanced-cookie-consent-for-eu' ); ?></label></th><td><select id="c-category"><?php foreach ( $categories as $cat ) : ?><option value="<?php echo esc_attr( $cat ); ?>"><?php echo esc_html( ucfirst( $cat ) ); ?></option><?php endforeach; ?></select></td></tr>
-						<tr><th><label for="c-is-regex"><?php esc_html_e( 'Je Regex?', 'advanced-cookie-consent-for-eu' ); ?></label></th><td><label class="ccwps-toggle"><input type="checkbox" id="c-is-regex"><span class="ccwps-toggle-slider"></span></label></td></tr>
+						<tr><th><label for="c-name"><?php esc_html_e( 'Názov', 'web-pixel-studio-cookie-consent-for-eu' ); ?> <span class="required">*</span></label></th><td><input type="text" id="c-name" class="regular-text" placeholder="napr. _ga"></td></tr>
+						<tr><th><label for="c-domain"><?php esc_html_e( 'Doména', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label></th><td><input type="text" id="c-domain" class="regular-text" placeholder="<?php echo esc_attr( $this->get_home_url_host() ); ?>"></td></tr>
+						<tr><th><label for="c-expiration"><?php esc_html_e( 'Platnosť', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label></th><td><input type="text" id="c-expiration" class="regular-text" placeholder="napr. 2 roky, Relácia"></td></tr>
+						<tr><th><label for="c-path"><?php esc_html_e( 'Cesta', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label></th><td><input type="text" id="c-path" class="regular-text" value="/"></td></tr>
+						<tr><th><label for="c-description"><?php esc_html_e( 'Popis', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label><p class="desc"><?php esc_html_e( 'Viditeľný návštevníkom v modáli preferencií.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p></th><td><textarea id="c-description" rows="3" class="large-text" placeholder="<?php esc_attr_e( 'napr. Používa sa Google Analytics na rozlíšenie návštevníkov.', 'web-pixel-studio-cookie-consent-for-eu' ); ?>"></textarea></td></tr>
+						<tr><th><label for="c-category"><?php esc_html_e( 'Kategória', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label></th><td><select id="c-category"><?php foreach ( $categories as $cat ) : ?><option value="<?php echo esc_attr( $cat ); ?>"><?php echo esc_html( ucfirst( $cat ) ); ?></option><?php endforeach; ?></select></td></tr>
+						<tr><th><label for="c-is-regex"><?php esc_html_e( 'Je Regex?', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label></th><td><label class="ccwps-toggle"><input type="checkbox" id="c-is-regex"><span class="ccwps-toggle-slider"></span></label></td></tr>
 					</table>
 				</div>
 				<div class="ccwps-modal-footer"><button type="button" class="button ccwps-modal-close ccwps-btn-secondary-action"><?php echo esc_html( $this->t( 'admin_btn_cancel', 'Zrušiť' ) ); ?></button><button type="button" class="button button-primary ccwps-btn-primary-action" id="ccwps-save-cookie"><?php echo esc_html( $this->t( 'admin_btn_save', 'Uložiť' ) ); ?></button></div>
@@ -1034,15 +1042,15 @@ class CCWPS_Admin {
 				<div class="ccwps-modal-body">
 					<table class="ccwps-table">
 						<tr>
-							<th><label for="ccwps-request-email"><?php esc_html_e( 'Email', 'advanced-cookie-consent-for-eu' ); ?> <span class="required">*</span></label></th>
+							<th><label for="ccwps-request-email"><?php esc_html_e( 'Email', 'web-pixel-studio-cookie-consent-for-eu' ); ?> <span class="required">*</span></label></th>
 							<td><input type="email" id="ccwps-request-email" class="regular-text" placeholder="name@example.com" maxlength="190"></td>
 						</tr>
 						<tr>
-							<th><label for="ccwps-request-subject"><?php esc_html_e( 'Predmet', 'advanced-cookie-consent-for-eu' ); ?> <span class="required">*</span></label></th>
+							<th><label for="ccwps-request-subject"><?php esc_html_e( 'Predmet', 'web-pixel-studio-cookie-consent-for-eu' ); ?> <span class="required">*</span></label></th>
 							<td><input type="text" id="ccwps-request-subject" class="large-text" maxlength="150" placeholder="napr. Nová predvoľba: LinkedIn Insight Tag"></td>
 						</tr>
 						<tr>
-							<th><label for="ccwps-request-message"><?php esc_html_e( 'Text', 'advanced-cookie-consent-for-eu' ); ?> <span class="required">*</span></label></th>
+							<th><label for="ccwps-request-message"><?php esc_html_e( 'Text', 'web-pixel-studio-cookie-consent-for-eu' ); ?> <span class="required">*</span></label></th>
 							<td><textarea id="ccwps-request-message" rows="6" class="large-text" maxlength="4000" placeholder="Opíšte, akú predvoľbu potrebujete, cookies alebo script source domény."></textarea></td>
 						</tr>
 					</table>
@@ -1056,7 +1064,7 @@ class CCWPS_Admin {
 		<!-- Cookie list preview modal -->
 		<div id="ccwps-cookie-list-modal" class="ccwps-modal" style="display:none;">
 			<div class="ccwps-modal-inner" style="width:720px;max-width:95vw;">
-				<div class="ccwps-modal-header"><h3><?php esc_html_e( 'Náhľad zoznamu cookies', 'advanced-cookie-consent-for-eu' ); ?></h3><button type="button" class="ccwps-modal-close">×</button></div>
+				<div class="ccwps-modal-header"><h3><?php esc_html_e( 'Náhľad zoznamu cookies', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h3><button type="button" class="ccwps-modal-close">×</button></div>
 				<div class="ccwps-modal-body" id="ccwps-cookie-list-preview"></div>
 			</div>
 		</div>
@@ -1075,16 +1083,16 @@ class CCWPS_Admin {
 			<button type="button" class="button button-primary ccwps-btn-primary-action" id="ccwps-add-block">+ <?php echo esc_html( $this->t( 'admin_btn_add_rule', 'Pridať pravidlo' ) ); ?></button>
 		</div>
 		<div class="ccwps-card">
-			<div class="ccwps-info-box"><?php esc_html_e( 'Definujte zdroje skriptov, ktoré sa majú blokovať, kým používateľ neudelí súhlas pre danú kategóriu. Plugin zmení typ skriptu na text/plain, čo zabrání jeho spusteniu.', 'advanced-cookie-consent-for-eu' ); ?></div>
+			<div class="ccwps-info-box"><?php esc_html_e( 'Definujte zdroje skriptov, ktoré sa majú blokovať, kým používateľ neudelí súhlas pre danú kategóriu. Plugin zmení typ skriptu na text/plain, čo zabrání jeho spusteniu.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></div>
 			<div class="ccwps-bulk-actions" id="ccwps-blocks-bulk-actions" style="margin-bottom:12px;display:none;">
 				<button type="button" class="button button-link-delete ccwps-btn-danger-action" id="ccwps-delete-blocks-bulk"><?php echo esc_html( $this->tx( '🗑️ Odstrániť vybrané' ) ); ?></button>
 				<span class="ccwps-bulk-count" id="ccwps-blocks-bulk-count"></span>
 			</div>
 			<table class="wp-list-table widefat striped ccwps-data-table">
-				<thead><tr><th style="width:40px;"><input type="checkbox" class="ccwps-blocks-select-all" title="<?php echo esc_attr( $this->tx( 'Vybrať všetko / Zrušiť výber' ) ); ?>"></th><th><?php echo esc_html( $this->t( 'admin_col_script_source', 'Zdroj skriptu' ) ); ?></th><th style="width:130px"><?php echo esc_html( $this->t( 'admin_col_category', 'Kategória' ) ); ?></th><th style="width:70px"><?php esc_html_e( 'Regex', 'advanced-cookie-consent-for-eu' ); ?></th><th style="width:120px"><?php echo esc_html( $this->t( 'admin_col_actions', 'Akcie' ) ); ?></th></tr></thead>
+				<thead><tr><th style="width:40px;"><input type="checkbox" class="ccwps-blocks-select-all" title="<?php echo esc_attr( $this->tx( 'Vybrať všetko / Zrušiť výber' ) ); ?>"></th><th><?php echo esc_html( $this->t( 'admin_col_script_source', 'Zdroj skriptu' ) ); ?></th><th style="width:130px"><?php echo esc_html( $this->t( 'admin_col_category', 'Kategória' ) ); ?></th><th style="width:70px"><?php esc_html_e( 'Regex', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th><th style="width:120px"><?php echo esc_html( $this->t( 'admin_col_actions', 'Akcie' ) ); ?></th></tr></thead>
 				<tbody>
 				<?php if ( empty( $rules ) ) : ?>
-					<tr><td colspan="5" style="text-align:center;padding:24px;"><?php esc_html_e( 'Žiadne pravidlá blokovania.', 'advanced-cookie-consent-for-eu' ); ?></td></tr>
+					<tr><td colspan="5" style="text-align:center;padding:24px;"><?php esc_html_e( 'Žiadne pravidlá blokovania.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></td></tr>
 				<?php else : foreach ( $rules as $r ) : ?>
 					<tr class="ccwps-blocks-row">
 						<td style="width:40px;"><input type="checkbox" class="ccwps-block-checkbox" data-id="<?php echo esc_attr( $r['id'] ); ?>"></td>
@@ -1104,9 +1112,9 @@ class CCWPS_Admin {
 					<input type="hidden" id="ccwps-block-id">
 					<table class="ccwps-table">
 						<tr><th><label for="b-preset"><?php echo esc_html( $this->tx( 'Predpripravené predvoľby' ) ); ?></label></th><td><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><select id="b-preset" style="min-width:260px;"><option value=""><?php echo esc_html( $this->tx( 'Vyberte predvoľbu' ) ); ?></option><option value="ga"><?php echo esc_html( $this->tx( 'Google Analytics' ) ); ?></option><option value="gtm"><?php echo esc_html( $this->tx( 'Google Tag Manager' ) ); ?></option><option value="g_targeting"><?php echo esc_html( $this->tx( 'Google Targeting' ) ); ?></option><option value="g_preferences"><?php echo esc_html( $this->tx( 'Google Preferences' ) ); ?></option><option value="gads"><?php echo esc_html( $this->tx( 'Google Ads' ) ); ?></option><option value="fb"><?php echo esc_html( $this->tx( 'Facebook Pixel' ) ); ?></option><option value="pys"><?php echo esc_html( $this->tx( 'Pixel Your Site' ) ); ?></option><option value="mtm_analytics"><?php echo esc_html( $this->tx( 'Matomo Analytics' ) ); ?></option><option value="mtm_tag_manager"><?php echo esc_html( $this->tx( 'Matomo Tag Manager' ) ); ?></option></select><button type="button" class="button button-primary ccwps-btn-primary-action" id="ccwps-apply-block-preset"><?php echo esc_html( $this->tx( 'Použiť predvoľbu' ) ); ?></button></div></td></tr>
-						<tr><th><label for="b-source"><?php esc_html_e( 'Zdroj skriptu', 'advanced-cookie-consent-for-eu' ); ?> <span class="required">*</span></label><p class="desc"><?php esc_html_e( 'Fragment URL, napr. "google-analytics.com"', 'advanced-cookie-consent-for-eu' ); ?></p></th><td><input type="text" id="b-source" class="large-text" placeholder="napr. google-analytics.com"></td></tr>
-						<tr><th><label for="b-category"><?php esc_html_e( 'Kategória', 'advanced-cookie-consent-for-eu' ); ?></label></th><td><select id="b-category"><?php foreach ( $categories as $cat ) : ?><option value="<?php echo esc_attr( $cat ); ?>"><?php echo esc_html( ucfirst( $cat ) ); ?></option><?php endforeach; ?></select></td></tr>
-						<tr><th><label for="b-is-regex"><?php esc_html_e( 'Je Regex?', 'advanced-cookie-consent-for-eu' ); ?></label></th><td><label class="ccwps-toggle"><input type="checkbox" id="b-is-regex"><span class="ccwps-toggle-slider"></span></label></td></tr>
+						<tr><th><label for="b-source"><?php esc_html_e( 'Zdroj skriptu', 'web-pixel-studio-cookie-consent-for-eu' ); ?> <span class="required">*</span></label><p class="desc"><?php esc_html_e( 'Fragment URL, napr. "google-analytics.com"', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p></th><td><input type="text" id="b-source" class="large-text" placeholder="napr. google-analytics.com"></td></tr>
+						<tr><th><label for="b-category"><?php esc_html_e( 'Kategória', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label></th><td><select id="b-category"><?php foreach ( $categories as $cat ) : ?><option value="<?php echo esc_attr( $cat ); ?>"><?php echo esc_html( ucfirst( $cat ) ); ?></option><?php endforeach; ?></select></td></tr>
+						<tr><th><label for="b-is-regex"><?php esc_html_e( 'Je Regex?', 'web-pixel-studio-cookie-consent-for-eu' ); ?></label></th><td><label class="ccwps-toggle"><input type="checkbox" id="b-is-regex"><span class="ccwps-toggle-slider"></span></label></td></tr>
 					</table>
 				</div>
 				<div class="ccwps-modal-footer"><button type="button" class="button ccwps-modal-close ccwps-btn-secondary-action"><?php echo esc_html( $this->t( 'admin_btn_cancel', 'Zrušiť' ) ); ?></button><button type="button" class="button button-primary ccwps-btn-primary-action" id="ccwps-save-block"><?php echo esc_html( $this->t( 'admin_btn_save', 'Uložiť' ) ); ?></button></div>
@@ -1134,7 +1142,7 @@ class CCWPS_Admin {
 		</div>
 		<div class="ccwps-card">
 			<?php if ( empty( $records ) ) : ?>
-				<p style="padding:16px;"><?php esc_html_e( 'Žiadne záznamy súhlasov.', 'advanced-cookie-consent-for-eu' ); ?></p>
+				<p style="padding:16px;"><?php esc_html_e( 'Žiadne záznamy súhlasov.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 			<?php else : ?>
 				<div class="ccwps-table-scroll">
 					<table class="wp-list-table widefat striped ccwps-data-table ccwps-log-table">
@@ -1143,10 +1151,10 @@ class CCWPS_Admin {
 							<th><?php echo esc_html( $this->t( 'admin_col_consent_id', 'ID súhlasu' ) ); ?></th>
 							<th>URL</th>
 							<th><?php echo esc_html( $this->t( 'admin_col_ip', 'IP adresa' ) ); ?></th>
-							<th><?php esc_html_e( 'Nev.', 'advanced-cookie-consent-for-eu' ); ?></th>
-							<th><?php esc_html_e( 'Anal.', 'advanced-cookie-consent-for-eu' ); ?></th>
-							<th><?php esc_html_e( 'Market.', 'advanced-cookie-consent-for-eu' ); ?></th>
-							<th><?php esc_html_e( 'Pref.', 'advanced-cookie-consent-for-eu' ); ?></th>
+							<th><?php esc_html_e( 'Nev.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th>
+							<th><?php esc_html_e( 'Anal.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th>
+							<th><?php esc_html_e( 'Market.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th>
+							<th><?php esc_html_e( 'Pref.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th>
 							<th><?php echo esc_html( $this->t( 'admin_col_updated', 'Aktualizácia' ) ); ?></th>
 						</tr></thead>
 						<tbody>
@@ -1183,36 +1191,36 @@ class CCWPS_Admin {
 	   ================================================ */
 	private function tab_shortcodes(): void {
 		?>
-		<div class="ccwps-page-header"><h1><?php esc_html_e( 'Shortcodes', 'advanced-cookie-consent-for-eu' ); ?></h1></div>
+		<div class="ccwps-page-header"><h1><?php esc_html_e( 'Shortcodes', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h1></div>
 		<div class="ccwps-card">
-			<h2><?php esc_html_e( 'ID súhlasu návštevníka', 'advanced-cookie-consent-for-eu' ); ?></h2>
-			<p><?php esc_html_e( 'Zobrazí jedinečné ID súhlasu aktuálneho návštevníka. Vhodné pre zásady ochrany osobných údajov – umožní používateľovi preukázať, kedy a ako súhlasil.', 'advanced-cookie-consent-for-eu' ); ?></p>
+			<h2><?php esc_html_e( 'ID súhlasu návštevníka', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h2>
+			<p><?php esc_html_e( 'Zobrazí jedinečné ID súhlasu aktuálneho návštevníka. Vhodné pre zásady ochrany osobných údajov – umožní používateľovi preukázať, kedy a ako súhlasil.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 			<div class="ccwps-shortcode-box"><code>[ccwps_consent_id]</code><button class="button button-small ccwps-copy-btn" data-copy="[ccwps_consent_id]"><?php echo esc_html( $this->t( 'admin_btn_copy', 'Kopírovať' ) ); ?></button></div>
-			<table class="ccwps-sc-params"><thead><tr><th><?php esc_html_e( 'Parameter', 'advanced-cookie-consent-for-eu' ); ?></th><th><?php esc_html_e( 'Predvolené', 'advanced-cookie-consent-for-eu' ); ?></th><th><?php esc_html_e( 'Popis', 'advanced-cookie-consent-for-eu' ); ?></th></tr></thead>
+			<table class="ccwps-sc-params"><thead><tr><th><?php esc_html_e( 'Parameter', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th><th><?php esc_html_e( 'Predvolené', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th><th><?php esc_html_e( 'Popis', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th></tr></thead>
 			<tbody>
-				<tr><td><code>label</code></td><td><code><?php echo esc_html( $this->tx( (string) $this->settings->get( 'lang_consent_id_label', 'ID vášho súhlasu' ) ) ); ?></code></td><td><?php esc_html_e( 'Text pred ID.', 'advanced-cookie-consent-for-eu' ); ?></td></tr>
-				<tr><td><code>wrapper</code></td><td><code>p</code></td><td><?php esc_html_e( 'HTML obal (p, div, span…)', 'advanced-cookie-consent-for-eu' ); ?></td></tr>
+				<tr><td><code>label</code></td><td><code><?php echo esc_html( $this->tx( (string) $this->settings->get( 'lang_consent_id_label', 'ID vášho súhlasu' ) ) ); ?></code></td><td><?php esc_html_e( 'Text pred ID.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></td></tr>
+				<tr><td><code>wrapper</code></td><td><code>p</code></td><td><?php esc_html_e( 'HTML obal (p, div, span…)', 'web-pixel-studio-cookie-consent-for-eu' ); ?></td></tr>
 			</tbody></table>
 		</div>
 		<div class="ccwps-card">
-			<h2><?php esc_html_e( 'Zoznam cookies používaných na webe', 'advanced-cookie-consent-for-eu' ); ?></h2>
-			<p><?php esc_html_e( 'Automaticky zobrazí prehľadnú tabuľku všetkých deklarovaných cookies, rozdelenú podľa kategórií. Vložte na stránku s cookie politikou.', 'advanced-cookie-consent-for-eu' ); ?></p>
+			<h2><?php esc_html_e( 'Zoznam cookies používaných na webe', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h2>
+			<p><?php esc_html_e( 'Automaticky zobrazí prehľadnú tabuľku všetkých deklarovaných cookies, rozdelenú podľa kategórií. Vložte na stránku s cookie politikou.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 			<div class="ccwps-shortcode-box"><code>[ccwps_cookie_list]</code><button class="button button-small ccwps-copy-btn" data-copy="[ccwps_cookie_list]"><?php echo esc_html( $this->t( 'admin_btn_copy', 'Kopírovať' ) ); ?></button></div>
-			<table class="ccwps-sc-params"><thead><tr><th><?php esc_html_e( 'Parameter', 'advanced-cookie-consent-for-eu' ); ?></th><th><?php esc_html_e( 'Predvolené', 'advanced-cookie-consent-for-eu' ); ?></th><th><?php esc_html_e( 'Popis', 'advanced-cookie-consent-for-eu' ); ?></th></tr></thead>
+			<table class="ccwps-sc-params"><thead><tr><th><?php esc_html_e( 'Parameter', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th><th><?php esc_html_e( 'Predvolené', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th><th><?php esc_html_e( 'Popis', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th></tr></thead>
 			<tbody>
-				<tr><td><code>category</code></td><td><code>(všetky)</code></td><td><?php esc_html_e( 'Filtruj: necessary, analytics, targeting, preferences', 'advanced-cookie-consent-for-eu' ); ?></td></tr>
+				<tr><td><code>category</code></td><td><code>(všetky)</code></td><td><?php esc_html_e( 'Filtruj: necessary, analytics, targeting, preferences', 'web-pixel-studio-cookie-consent-for-eu' ); ?></td></tr>
 			</tbody></table>
 		</div>
 
 		<div class="ccwps-card">
-			<h2><?php esc_html_e( 'Tlačidlo správy súhlasu', 'advanced-cookie-consent-for-eu' ); ?></h2>
-			<p><?php esc_html_e( 'Vloží tlačidlo, ktoré otvorí modál nastavenia cookies. Vhodné pre stránky so zásadami ochrany osobných údajov a právne dokumenty – umožní návštevníkovi kedykoľvek zmeniť preferencie.', 'advanced-cookie-consent-for-eu' ); ?></p>
+			<h2><?php esc_html_e( 'Tlačidlo správy súhlasu', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h2>
+			<p><?php esc_html_e( 'Vloží tlačidlo, ktoré otvorí modál nastavenia cookies. Vhodné pre stránky so zásadami ochrany osobných údajov a právne dokumenty – umožní návštevníkovi kedykoľvek zmeniť preferencie.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 			<div class="ccwps-shortcode-box"><code>[ccwps_manage_consent]</code><button class="button button-small ccwps-copy-btn" data-copy="[ccwps_manage_consent]"><?php echo esc_html( $this->t( 'admin_btn_copy', 'Kopírovať' ) ); ?></button></div>
-			<table class="ccwps-sc-params"><thead><tr><th><?php esc_html_e( 'Parameter', 'advanced-cookie-consent-for-eu' ); ?></th><th><?php esc_html_e( 'Predvolené', 'advanced-cookie-consent-for-eu' ); ?></th><th><?php esc_html_e( 'Popis', 'advanced-cookie-consent-for-eu' ); ?></th></tr></thead>
+			<table class="ccwps-sc-params"><thead><tr><th><?php esc_html_e( 'Parameter', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th><th><?php esc_html_e( 'Predvolené', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th><th><?php esc_html_e( 'Popis', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th></tr></thead>
 			<tbody>
-				<tr><td><code>label</code></td><td><code><?php echo esc_html( $this->tx( (string) $this->settings->get( 'lang_manage_preferences', 'Customize' ) ) ); ?></code></td><td><?php esc_html_e( 'Text tlačidla (predvolene: text z nastavení Prekladov).', 'advanced-cookie-consent-for-eu' ); ?></td></tr>
-				<tr><td><code>class</code></td><td><code>ccwps-manage-consent-btn</code></td><td><?php esc_html_e( 'CSS trieda pre vlastné štýlovanie.', 'advanced-cookie-consent-for-eu' ); ?></td></tr>
-				<tr><td><code>id</code></td><td><code>(prázdne)</code></td><td><?php esc_html_e( 'Voliteľné HTML id atribút.', 'advanced-cookie-consent-for-eu' ); ?></td></tr>
+				<tr><td><code>label</code></td><td><code><?php echo esc_html( $this->tx( (string) $this->settings->get( 'lang_manage_preferences', 'Customize' ) ) ); ?></code></td><td><?php esc_html_e( 'Text tlačidla (predvolene: text z nastavení Prekladov).', 'web-pixel-studio-cookie-consent-for-eu' ); ?></td></tr>
+				<tr><td><code>class</code></td><td><code>ccwps-manage-consent-btn</code></td><td><?php esc_html_e( 'CSS trieda pre vlastné štýlovanie.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></td></tr>
+				<tr><td><code>id</code></td><td><code>(prázdne)</code></td><td><?php esc_html_e( 'Voliteľné HTML id atribút.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></td></tr>
 			</tbody></table>
 		</div>
 		<?php
@@ -1228,18 +1236,18 @@ class CCWPS_Admin {
 		<div class="ccwps-tools-grid">
 			<div class="ccwps-card">
 				<h2><?php echo esc_html( $this->t( 'admin_sect_export', 'Export nastavení' ) ); ?></h2>
-				<p class="description"><?php esc_html_e( 'Exportuje všetky nastavenia do JSON súboru. Vhodné pre presun medzi servermi alebo zálohu.', 'advanced-cookie-consent-for-eu' ); ?></p>
+				<p class="description"><?php esc_html_e( 'Exportuje všetky nastavenia do JSON súboru. Vhodné pre presun medzi servermi alebo zálohu.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 				<div class="ccwps-tool-action"><a href="<?php echo esc_url( $export_url ); ?>" class="button button-primary">⬇ <?php echo esc_html( $this->t( 'admin_btn_export_json', 'Stiahnuť settings.json' ) ); ?></a></div>
 			</div>
 			<div class="ccwps-card">
 				<h2><?php echo esc_html( $this->t( 'admin_sect_import', 'Import nastavení' ) ); ?></h2>
-				<p class="description"><?php esc_html_e( 'Nahrajte predtým exportovaný settings.json. Prepisuje aktuálnu konfiguráciu.', 'advanced-cookie-consent-for-eu' ); ?></p>
+				<p class="description"><?php esc_html_e( 'Nahrajte predtým exportovaný settings.json. Prepisuje aktuálnu konfiguráciu.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">
 					<?php wp_nonce_field( 'ccwps_import_settings', '_wpnonce_import' ); ?>
 					<input type="hidden" name="action" value="ccwps_import_settings">
 					<div class="ccwps-file-drop" id="ccwps-file-drop">
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-						<span id="ccwps-file-name"><?php esc_html_e( 'Kliknite alebo presuňte settings.json sem', 'advanced-cookie-consent-for-eu' ); ?></span>
+						<span id="ccwps-file-name"><?php esc_html_e( 'Kliknite alebo presuňte settings.json sem', 'web-pixel-studio-cookie-consent-for-eu' ); ?></span>
 						<input type="file" id="ccwps-import-file" name="ccwps_import_file" accept=".json,application/json">
 					</div>
 					<div class="ccwps-tool-action"><button type="submit" class="button button-primary" id="ccwps-import-btn" disabled>⬆ <?php echo esc_html( $this->t( 'admin_btn_import_json', 'Importovať nastavenia' ) ); ?></button></div>
@@ -1247,18 +1255,18 @@ class CCWPS_Admin {
 			</div>
 			<div class="ccwps-card">
 				<h2 style="color:#dc2626;"><?php echo esc_html( $this->t( 'admin_sect_reset', 'Reset na predvolené' ) ); ?></h2>
-				<p class="description"><?php esc_html_e( 'Resetuje všetky nastavenia na predvolené hodnoty (SK jazyk, predvolený vzhľad). Deklarácie cookies, pravidlá blokovania a záznamy súhlasov nie sú ovplyvnené.', 'advanced-cookie-consent-for-eu' ); ?></p>
+				<p class="description"><?php esc_html_e( 'Resetuje všetky nastavenia na predvolené hodnoty (SK jazyk, predvolený vzhľad). Deklarácie cookies, pravidlá blokovania a záznamy súhlasov nie sú ovplyvnené.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 				<div class="ccwps-tool-action"><button type="button" class="button" id="ccwps-reset-defaults" style="border-color:#dc2626;color:#dc2626;">↺ <?php echo esc_html( $this->t( 'admin_btn_reset', 'Resetovať nastavenia' ) ); ?></button></div>
 			</div>
 			<div class="ccwps-card">
 				<h2><?php echo esc_html( $this->t( 'admin_sect_plugin_info', 'Informácie o plugine' ) ); ?></h2>
 				<table class="ccwps-table">
-					<tr><th><?php esc_html_e( 'Verzia', 'advanced-cookie-consent-for-eu' ); ?></th><td><strong><?php echo esc_html( CCWPS_VERSION ); ?></strong></td></tr>
+					<tr><th><?php esc_html_e( 'Verzia', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th><td><strong><?php echo esc_html( CCWPS_VERSION ); ?></strong></td></tr>
 					<tr><th>WordPress</th><td><?php echo esc_html( get_bloginfo( 'version' ) ); ?></td></tr>
 					<tr><th>PHP</th><td><?php echo esc_html( PHP_VERSION ); ?></td></tr>
-					<tr><th><?php esc_html_e( 'Záznamy súhlasov', 'advanced-cookie-consent-for-eu' ); ?></th><td><?php echo esc_html( number_format( $this->log->count() ) ); ?></td></tr>
-					<tr><th><?php esc_html_e( 'Deklarácie cookies', 'advanced-cookie-consent-for-eu' ); ?></th><td><?php echo esc_html( count( $this->cookie_manager->get_all() ) ); ?></td></tr>
-					<tr><th><?php esc_html_e( 'Pravidlá blokovania', 'advanced-cookie-consent-for-eu' ); ?></th><td><?php echo esc_html( count( $this->block_manager->get_all() ) ); ?></td></tr>
+					<tr><th><?php esc_html_e( 'Záznamy súhlasov', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th><td><?php echo esc_html( number_format( $this->log->count() ) ); ?></td></tr>
+					<tr><th><?php esc_html_e( 'Deklarácie cookies', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th><td><?php echo esc_html( count( $this->cookie_manager->get_all() ) ); ?></td></tr>
+					<tr><th><?php esc_html_e( 'Pravidlá blokovania', 'web-pixel-studio-cookie-consent-for-eu' ); ?></th><td><?php echo esc_html( count( $this->block_manager->get_all() ) ); ?></td></tr>
 				</table>
 			</div>
 		</div>
@@ -1269,8 +1277,8 @@ class CCWPS_Admin {
 	   GTM TEMPLATE TAB
 	   ================================================ */
 	private function tab_gtm_template(): void {
-		$v2_url       = CCWPS_PLUGIN_URL . 'gtm-template/advanced-cookie-consent-for-eu.tpl';
-		$v3_url       = CCWPS_PLUGIN_URL . 'gtm-template/advanced-cookie-consent-for-eu-v3.tpl';
+		$v2_url       = CCWPS_PLUGIN_URL . 'gtm-template/web-pixel-studio-cookie-consent-for-eu.tpl';
+		$v3_url       = CCWPS_PLUGIN_URL . 'gtm-template/web-pixel-studio-cookie-consent-for-eu-v3.tpl';
 		$settings_url = admin_url( 'admin.php?page=ccwps&tab=settings' );
 		$screenshots  = $this->get_gtm_screenshot_urls();
 		?>
@@ -1385,32 +1393,32 @@ class CCWPS_Admin {
 	   ================================================ */
 	private function tab_about(): void {
 		?>
-		<div class="ccwps-page-header"><h1><?php esc_html_e( 'O plugine Advanced Cookie Consent for EU', 'advanced-cookie-consent-for-eu' ); ?></h1></div>
+		<div class="ccwps-page-header"><h1><?php esc_html_e( 'O plugine Web Pixel Studio Cookie Consent for EU', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h1></div>
 
 		<div class="ccwps-card">
-			<h2><?php esc_html_e( 'Popis pluginu', 'advanced-cookie-consent-for-eu' ); ?></h2>
-			<p><?php esc_html_e( 'Advanced Cookie Consent for EU je bezplatný WordPress plugin pre správu súhlasov s cookies (GDPR / ePrivacy). Poskytuje plne prispôsobiteľný banner a modál preferencií, zaznamenáva súhlasy pre GDPR audit, blokuje skripty tretích strán a podporuje Google Consent Mode v2 a v3.', 'advanced-cookie-consent-for-eu' ); ?></p>
-			<p style="margin-top:10px;"><?php esc_html_e( 'Plugin je postavený na knižnici orest bida (cookieconsent) a rozširuje ju o WordPress admin panel, databázové záznamy súhlasov a blokovanie skriptov.', 'advanced-cookie-consent-for-eu' ); ?></p>
+			<h2><?php esc_html_e( 'Popis pluginu', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h2>
+			<p><?php esc_html_e( 'Web Pixel Studio Cookie Consent for EU je bezplatný WordPress plugin pre správu súhlasov s cookies (GDPR / ePrivacy). Poskytuje plne prispôsobiteľný banner a modál preferencií, zaznamenáva súhlasy pre GDPR audit, blokuje skripty tretích strán a podporuje Google Consent Mode v2 a v3.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
+			<p style="margin-top:10px;"><?php esc_html_e( 'Plugin je postavený na knižnici orest bida (cookieconsent) a rozširuje ju o WordPress admin panel, databázové záznamy súhlasov a blokovanie skriptov.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 		</div>
 
 		<div class="ccwps-card">
-			<h2><?php esc_html_e( 'Hlavné funkcie', 'advanced-cookie-consent-for-eu' ); ?></h2>
+			<h2><?php esc_html_e( 'Hlavné funkcie', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h2>
 			<table class="ccwps-table">
 				<?php
 				$features = [
-					[ '🍪', __( 'Cookie banner', 'advanced-cookie-consent-for-eu' ),            __( 'Prispôsobiteľný popup/bar/cloud banner s výberom polohy na stránke.', 'advanced-cookie-consent-for-eu' ) ],
-					[ '⚙️', __( 'Modál preferencií', 'advanced-cookie-consent-for-eu' ),         __( 'Používateľ si môže zvoliť, ktoré kategórie cookies povolí (nevyhnutné, analytické, marketingové, preferenčné).', 'advanced-cookie-consent-for-eu' ) ],
-					[ '📋', __( 'Záznamy súhlasov', 'advanced-cookie-consent-for-eu' ),          __( 'Každý súhlas sa uloží do databázy s ID, IP adresou, URL a časovou pečiatkou. Export do CSV.', 'advanced-cookie-consent-for-eu' ) ],
-					[ '🚫', __( 'Blokovanie skriptov', 'advanced-cookie-consent-for-eu' ),       __( 'Skripty tretích strán (napr. Google Analytics, Meta Pixel) sa zablokujú, kým používateľ neudelí súhlas.', 'advanced-cookie-consent-for-eu' ) ],
-					[ '🧩', __( 'Predpripravené sady cookies a skriptov', 'advanced-cookie-consent-for-eu' ), __( 'Hotové predvoľby jedným kliknutím doplnia bežné Google a Meta cookies spolu so súvisiacimi pravidlami blokovania.', 'advanced-cookie-consent-for-eu' ) ],
-					[ '🌐', __( 'Consent Mode v2 / v3', 'advanced-cookie-consent-for-eu' ),      __( 'Automaticky nastaví default denied stav a aktualizuje Google signály po udelení súhlasu.', 'advanced-cookie-consent-for-eu' ) ],
-					[ '🎨', __( 'Plné prispôsobenie vzhľadu', 'advanced-cookie-consent-for-eu' ),__( 'Farby, font, zaoblenie tlačidiel, rozloženie bannera, poloha floating ikony.', 'advanced-cookie-consent-for-eu' ) ],
-					[ '🌍', __( '9 jazykových predvolieb', 'advanced-cookie-consent-for-eu' ),   __( 'SK, EN, CS, DE, FR, ES, PL, HU, IT. Všetky texty sú plne editovateľné z admin panelu.', 'advanced-cookie-consent-for-eu' ) ],
-					[ '🔗', __( 'Shortcodes', 'advanced-cookie-consent-for-eu' ),                __( '[ccwps_consent_id] – zobrazí ID súhlasu návštevníka. [ccwps_cookie_list] – tabuľka deklarovaných cookies. [ccwps_manage_consent] – tlačidlo na správu súhlasu.', 'advanced-cookie-consent-for-eu' ) ],
-					[ '💾', __( 'Export/Import nastavení', 'advanced-cookie-consent-for-eu' ),   __( 'Nastavenia je možné exportovať do JSON a importovať na inom webe.', 'advanced-cookie-consent-for-eu' ) ],
-					[ '🤖', __( 'Detekcia robotov', 'advanced-cookie-consent-for-eu' ),          __( 'Banner sa automaticky skryje pred vyhľadávačmi a crawlermi.', 'advanced-cookie-consent-for-eu' ) ],
-					[ '🔄', __( 'Opätovný súhlas', 'advanced-cookie-consent-for-eu' ),           __( 'Ak sa zmení zoznam cookies, plugin automaticky požiada o nový súhlas.', 'advanced-cookie-consent-for-eu' ) ],
-					[ '🛡', __( 'Floating ikona', 'advanced-cookie-consent-for-eu' ),             __( 'Plávajúca ikona umožní používateľovi kedykoľvek zmeniť preferencie. Po kliknutí zobrazí ID súhlasu a dátum.', 'advanced-cookie-consent-for-eu' ) ],
+					[ '🍪', __( 'Cookie banner', 'web-pixel-studio-cookie-consent-for-eu' ),            __( 'Prispôsobiteľný popup/bar/cloud banner s výberom polohy na stránke.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+					[ '⚙️', __( 'Modál preferencií', 'web-pixel-studio-cookie-consent-for-eu' ),         __( 'Používateľ si môže zvoliť, ktoré kategórie cookies povolí (nevyhnutné, analytické, marketingové, preferenčné).', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+					[ '📋', __( 'Záznamy súhlasov', 'web-pixel-studio-cookie-consent-for-eu' ),          __( 'Každý súhlas sa uloží do databázy s ID, IP adresou, URL a časovou pečiatkou. Export do CSV.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+					[ '🚫', __( 'Blokovanie skriptov', 'web-pixel-studio-cookie-consent-for-eu' ),       __( 'Skripty tretích strán (napr. Google Analytics, Meta Pixel) sa zablokujú, kým používateľ neudelí súhlas.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+					[ '🧩', __( 'Predpripravené sady cookies a skriptov', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Hotové predvoľby jedným kliknutím doplnia bežné Google a Meta cookies spolu so súvisiacimi pravidlami blokovania.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+					[ '🌐', __( 'Consent Mode v2 / v3', 'web-pixel-studio-cookie-consent-for-eu' ),      __( 'Automaticky nastaví default denied stav a aktualizuje Google signály po udelení súhlasu.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+					[ '🎨', __( 'Plné prispôsobenie vzhľadu', 'web-pixel-studio-cookie-consent-for-eu' ),__( 'Farby, font, zaoblenie tlačidiel, rozloženie bannera, poloha floating ikony.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+					[ '🌍', __( '9 jazykových predvolieb', 'web-pixel-studio-cookie-consent-for-eu' ),   __( 'SK, EN, CS, DE, FR, ES, PL, HU, IT. Všetky texty sú plne editovateľné z admin panelu.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+					[ '🔗', __( 'Shortcodes', 'web-pixel-studio-cookie-consent-for-eu' ),                __( '[ccwps_consent_id] – zobrazí ID súhlasu návštevníka. [ccwps_cookie_list] – tabuľka deklarovaných cookies. [ccwps_manage_consent] – tlačidlo na správu súhlasu.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+					[ '💾', __( 'Export/Import nastavení', 'web-pixel-studio-cookie-consent-for-eu' ),   __( 'Nastavenia je možné exportovať do JSON a importovať na inom webe.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+					[ '🤖', __( 'Detekcia robotov', 'web-pixel-studio-cookie-consent-for-eu' ),          __( 'Banner sa automaticky skryje pred vyhľadávačmi a crawlermi.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+					[ '🔄', __( 'Opätovný súhlas', 'web-pixel-studio-cookie-consent-for-eu' ),           __( 'Ak sa zmení zoznam cookies, plugin automaticky požiada o nový súhlas.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+					[ '🛡', __( 'Floating ikona', 'web-pixel-studio-cookie-consent-for-eu' ),             __( 'Plávajúca ikona umožní používateľovi kedykoľvek zmeniť preferencie. Po kliknutí zobrazí ID súhlasu a dátum.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
 				];
 				foreach ( $features as [ $icon, $title, $desc ] ) :
 				?>
@@ -1423,16 +1431,16 @@ class CCWPS_Admin {
 		</div>
 
 		<div class="ccwps-card">
-			<h2><?php esc_html_e( 'Postup nastavenia', 'advanced-cookie-consent-for-eu' ); ?></h2>
+			<h2><?php esc_html_e( 'Postup nastavenia', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h2>
 			<?php
 			$steps = [
-				[ '1', __( 'Nastavenia', 'advanced-cookie-consent-for-eu' ), __( 'V záložke Nastavenia zapnite Zaznamenávať súhlasy, Opätovný súhlas, Skryť pre robotov a Automatické spustenie. Vyberte verziu Consent Mode (v2 pre väčšinu webov). Ak používate GTM, vyplňte GTM Container ID.', 'advanced-cookie-consent-for-eu' ) ],
-				[ '2', __( 'Preklady', 'advanced-cookie-consent-for-eu' ), __( 'V záložke Preklady vyberte jazyk pomocou rýchlych predvolieb alebo upravte texty manuálne. Kliknite Uložiť preklady.', 'advanced-cookie-consent-for-eu' ) ],
-				[ '3', __( 'Vzhľad', 'advanced-cookie-consent-for-eu' ), __( 'V záložke Vzhľad nastavte farby, rozloženie bannera a polohu plávajúcej ikony. Použite tlačidlá Náhľad na overenie zmien.', 'advanced-cookie-consent-for-eu' ) ],
-				[ '4', __( 'Deklarácia cookies', 'advanced-cookie-consent-for-eu' ), __( 'V záložke Cookies pridajte všetky cookies, ktoré váš web používa. Pre každú cookie vyplňte názov, doménu, platnosť, popis a kategóriu. Popis bude viditeľný návštevníkovi.', 'advanced-cookie-consent-for-eu' ) ],
-				[ '5', __( 'Blokovanie skriptov', 'advanced-cookie-consent-for-eu' ), __( 'V záložke Blokovanie skriptov pridajte pravidlá pre skripty, ktoré chcete blokovať. Napr. pre Google Analytics pridajte "google-analytics.com" → kategória Analytické.', 'advanced-cookie-consent-for-eu' ) ],
-				[ '6', __( 'Cookie politika', 'advanced-cookie-consent-for-eu' ), __( 'Na stránku s Cookie politikou vložte [ccwps_cookie_list] pre automatickú tabuľku cookies, [ccwps_consent_id] pre zobrazenie ID súhlasu a [ccwps_manage_consent] pre tlačidlo zmeny preferencií.', 'advanced-cookie-consent-for-eu' ) ],
-				[ '7', __( 'Overenie', 'advanced-cookie-consent-for-eu' ), __( 'Otvorte web v incognito okne a overte, že sa banner zobrazí, súhlas sa zaznamená v záložke Záznamy súhlasov a floating ikona funguje správne.', 'advanced-cookie-consent-for-eu' ) ],
+				[ '1', __( 'Nastavenia', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'V záložke Nastavenia zapnite Zaznamenávať súhlasy, Opätovný súhlas, Skryť pre robotov a Automatické spustenie. Vyberte verziu Consent Mode (v2 pre väčšinu webov). Ak používate GTM, vyplňte GTM Container ID.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+				[ '2', __( 'Preklady', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'V záložke Preklady vyberte jazyk pomocou rýchlych predvolieb alebo upravte texty manuálne. Kliknite Uložiť preklady.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+				[ '3', __( 'Vzhľad', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'V záložke Vzhľad nastavte farby, rozloženie bannera a polohu plávajúcej ikony. Použite tlačidlá Náhľad na overenie zmien.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+				[ '4', __( 'Deklarácia cookies', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'V záložke Cookies pridajte všetky cookies, ktoré váš web používa. Pre každú cookie vyplňte názov, doménu, platnosť, popis a kategóriu. Popis bude viditeľný návštevníkovi.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+				[ '5', __( 'Blokovanie skriptov', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'V záložke Blokovanie skriptov pridajte pravidlá pre skripty, ktoré chcete blokovať. Napr. pre Google Analytics pridajte "google-analytics.com" → kategória Analytické.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+				[ '6', __( 'Cookie politika', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Na stránku s Cookie politikou vložte [ccwps_cookie_list] pre automatickú tabuľku cookies, [ccwps_consent_id] pre zobrazenie ID súhlasu a [ccwps_manage_consent] pre tlačidlo zmeny preferencií.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
+				[ '7', __( 'Overenie', 'web-pixel-studio-cookie-consent-for-eu' ), __( 'Otvorte web v incognito okne a overte, že sa banner zobrazí, súhlas sa zaznamená v záložke Záznamy súhlasov a floating ikona funguje správne.', 'web-pixel-studio-cookie-consent-for-eu' ) ],
 			];
 			foreach ( $steps as [ $num, $title, $desc ] ) :
 			?>
@@ -1447,23 +1455,23 @@ class CCWPS_Admin {
 		</div>
 
 		<div class="ccwps-card">
-			<h2><?php esc_html_e( 'Nastavenie Google Tag Manager + Consent Mode', 'advanced-cookie-consent-for-eu' ); ?></h2>
+			<h2><?php esc_html_e( 'Nastavenie Google Tag Manager + Consent Mode', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h2>
 			<div class="ccwps-about-steps">
 				<div class="ccwps-about-step">
-					<h4><?php esc_html_e( 'Možnosť A: Plugin načíta GTM automaticky', 'advanced-cookie-consent-for-eu' ); ?></h4>
-					<p><?php esc_html_e( 'V záložke Nastavenia vyplňte GTM Container ID (napr. GTM-XXXXXXX). Plugin automaticky vloží GTM kód do hlavičky stránky spolu s Consent Mode default stavom (všetky signály = denied). Po udelení súhlasu sa GTM aktualizuje pomocou gtag(\'consent\', \'update\', ...).', 'advanced-cookie-consent-for-eu' ); ?></p>
+					<h4><?php esc_html_e( 'Možnosť A: Plugin načíta GTM automaticky', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h4>
+					<p><?php esc_html_e( 'V záložke Nastavenia vyplňte GTM Container ID (napr. GTM-XXXXXXX). Plugin automaticky vloží GTM kód do hlavičky stránky spolu s Consent Mode default stavom (všetky signály = denied). Po udelení súhlasu sa GTM aktualizuje pomocou gtag(\'consent\', \'update\', ...).', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 				</div>
 				<div class="ccwps-about-step">
-					<h4><?php esc_html_e( 'Možnosť B: GTM máte nainštalovaný inak (téma, iný plugin)', 'advanced-cookie-consent-for-eu' ); ?></h4>
-					<p><?php esc_html_e( 'Nechajte GTM Container ID prázdne. Plugin automaticky vloží Consent Mode default stav pred GTM kód, takže default denied signály sa nastavia skôr, ako GTM spustí akékoľvek tagy. Toto je správne správanie podľa Google dokumentácie.', 'advanced-cookie-consent-for-eu' ); ?></p>
+					<h4><?php esc_html_e( 'Možnosť B: GTM máte nainštalovaný inak (téma, iný plugin)', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h4>
+					<p><?php esc_html_e( 'Nechajte GTM Container ID prázdne. Plugin automaticky vloží Consent Mode default stav pred GTM kód, takže default denied signály sa nastavia skôr, ako GTM spustí akékoľvek tagy. Toto je správne správanie podľa Google dokumentácie.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 				</div>
 				<div class="ccwps-about-step">
-					<h4><?php esc_html_e( 'Nastavenie tagov v GTM', 'advanced-cookie-consent-for-eu' ); ?></h4>
-					<p><?php esc_html_e( 'V GTM nastavte pre každý tag Consent Settings. Pre Google Analytics (GA4): analytics_storage = Required. Pre Google Ads: ad_storage, ad_user_data, ad_personalization = Required. Tagy sa spustia len po udelení príslušného súhlasu.', 'advanced-cookie-consent-for-eu' ); ?></p>
+					<h4><?php esc_html_e( 'Nastavenie tagov v GTM', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h4>
+					<p><?php esc_html_e( 'V GTM nastavte pre každý tag Consent Settings. Pre Google Analytics (GA4): analytics_storage = Required. Pre Google Ads: ad_storage, ad_user_data, ad_personalization = Required. Tagy sa spustia len po udelení príslušného súhlasu.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 				</div>
 				<div class="ccwps-about-step">
-					<h4><?php esc_html_e( 'Overenie pomocou Google Tag Assistant', 'advanced-cookie-consent-for-eu' ); ?></h4>
-					<p><?php esc_html_e( 'Otvorte Google Tag Assistant a overte, že pri odmietnutí cookies sú tagy v stave "Consent Blocked" a po udelení súhlasu sa aktivujú. Skontrolujte tiež Google Analytics Realtime report.', 'advanced-cookie-consent-for-eu' ); ?></p>
+					<h4><?php esc_html_e( 'Overenie pomocou Google Tag Assistant', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h4>
+					<p><?php esc_html_e( 'Otvorte Google Tag Assistant a overte, že pri odmietnutí cookies sú tagy v stave "Consent Blocked" a po udelení súhlasu sa aktivujú. Skontrolujte tiež Google Analytics Realtime report.', 'web-pixel-studio-cookie-consent-for-eu' ); ?></p>
 				</div>
 			</div>
 		</div>
@@ -1488,9 +1496,9 @@ class CCWPS_Admin {
 		</div>
 
 		<div class="ccwps-card">
-			<h2><?php esc_html_e( 'Autor a podpora', 'advanced-cookie-consent-for-eu' ); ?></h2>
-			<p><?php esc_html_e( 'Plugin vytvoril Web Pixel Studio. Pre otázky, návrhy alebo hlásenie chýb nás kontaktujte na:', 'advanced-cookie-consent-for-eu' ); ?> <a href="https://wps.sk" target="_blank" rel="noopener">wps.sk</a></p>
-			<p style="margin-top:8px;"><?php esc_html_e( 'Plugin je bezplatný a open-source pod licenciou GPL-2.0. Postavený na:', 'advanced-cookie-consent-for-eu' ); ?> <a href="https://cookieconsent.orestbida.com/" target="_blank" rel="noopener">cookieconsent.orestbida.com</a></p>
+			<h2><?php esc_html_e( 'Autor a podpora', 'web-pixel-studio-cookie-consent-for-eu' ); ?></h2>
+			<p><?php esc_html_e( 'Plugin vytvoril Web Pixel Studio. Pre otázky, návrhy alebo hlásenie chýb nás kontaktujte na:', 'web-pixel-studio-cookie-consent-for-eu' ); ?> <a href="https://wps.sk" target="_blank" rel="noopener">wps.sk</a></p>
+			<p style="margin-top:8px;"><?php esc_html_e( 'Plugin je bezplatný a open-source pod licenciou GPL-2.0. Postavený na:', 'web-pixel-studio-cookie-consent-for-eu' ); ?> <a href="https://cookieconsent.orestbida.com/" target="_blank" rel="noopener">cookieconsent.orestbida.com</a></p>
 		</div>
 		<?php
 	}
@@ -1859,7 +1867,7 @@ class CCWPS_Admin {
 
 	private function get_font_family_choice_label( string $value ): string {
 		if ( 'inherit' === $value ) {
-			return (string) __( 'Použiť font témy', 'advanced-cookie-consent-for-eu' );
+			return (string) __( 'Použiť font témy', 'web-pixel-studio-cookie-consent-for-eu' );
 		}
 
 		$parts = array_map( 'trim', explode( ',', $value ) );
@@ -1972,7 +1980,7 @@ class CCWPS_Admin {
 					continue;
 				}
 
-			if ( false !== stripos( $css_url, '/advanced-cookie-consent-for-eu/' ) ) {
+			if ( false !== stripos( $css_url, '/web-pixel-studio-cookie-consent-for-eu/' ) ) {
 
 				$asset_host = (string) wp_parse_url( $css_url, PHP_URL_HOST );
 				if ( '' !== $asset_host && '' !== $home_host && $asset_host !== $home_host && 'fonts.googleapis.com' !== $asset_host ) {
@@ -2112,7 +2120,7 @@ class CCWPS_Admin {
 			'autorun', 'force_consent', 'auto_clear_cookies', 'page_scripts',
 			'hide_from_bots', 'reconsent', 'record_consents',
 			'frontend_detect_visitor_language', 'hide_empty_categories',
-			'banner_show_icon', 'banner_logo_show', 'matomo_anonymous_without_consent',
+			'banner_show_icon', 'floating_show_powered_by', 'banner_logo_show', 'matomo_anonymous_without_consent',
 		];
 		
 		// Integer keys (positive integers)
@@ -2270,7 +2278,8 @@ class CCWPS_Admin {
 		check_admin_referer( 'ccwps_export_settings' );
 		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorized' );
 		$data = [
-			'_plugin' => 'advanced-cookie-consent-for-eu',
+			'_plugin' => 'web-pixel-studio-cookie-consent-for-eu',
+			'_plugin_aliases' => $this->get_supported_import_plugin_ids(),
 			'_version' => CCWPS_VERSION,
 			'_date' => gmdate( 'c' ),
 			'_site' => home_url(),
@@ -2293,17 +2302,22 @@ class CCWPS_Admin {
 		if ( '' === $tmp_name || ! is_uploaded_file( $tmp_name ) ) { wp_safe_redirect( $redirect . '&ccwps_imported=0' ); exit; }
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$decoded = json_decode( file_get_contents( $tmp_name ), true );
-		if ( ! is_array( $decoded ) || ( $decoded['_plugin'] ?? '' ) !== 'advanced-cookie-consent-for-eu' || empty( $decoded['settings'] ) ) { wp_safe_redirect( $redirect . '&ccwps_imported=0' ); exit; }
+		if ( ! is_array( $decoded ) ) { wp_safe_redirect( $redirect . '&ccwps_imported=0' ); exit; }
+
+		$payload = $this->normalize_import_payload( $decoded );
+		if ( null === $payload || empty( $payload['settings'] ) ) { wp_safe_redirect( $redirect . '&ccwps_imported=0' ); exit; }
 
 		$import_ok = true;
 
-		foreach ( (array) $decoded['settings'] as $key => $value ) {
-			if ( ! $this->is_valid_import_setting_key( $key ) ) {
+		foreach ( (array) $payload['settings'] as $key => $value ) {
+			$normalized_key = $this->map_legacy_import_setting_key( $key );
+
+			if ( ! $this->is_valid_import_setting_key( $normalized_key ) ) {
 				continue;
 			}
 
-			$sanitized_value = $this->sanitize_import_setting_value( $key, $value );
-			$this->settings->set( $key, $sanitized_value );
+			$sanitized_value = $this->sanitize_import_setting_value( $normalized_key, $value );
+			$this->settings->set( $normalized_key, $sanitized_value );
 		}
 
 		if ( 'bar' === (string) $this->settings->get( 'banner_layout', 'box' ) ) {
@@ -2315,14 +2329,95 @@ class CCWPS_Admin {
 			}
 		}
 
-		if ( isset( $decoded['cookies'] ) && is_array( $decoded['cookies'] ) ) {
-			$import_ok = $this->cookie_manager->replace_all( $decoded['cookies'] ) && $import_ok;
+		if ( ! empty( $payload['cookies'] ) ) {
+			$import_ok = $this->cookie_manager->replace_all( $payload['cookies'] ) && $import_ok;
 		}
 
-		if ( isset( $decoded['block_rules'] ) && is_array( $decoded['block_rules'] ) ) {
-			$import_ok = $this->block_manager->replace_all( $decoded['block_rules'] ) && $import_ok;
+		if ( ! empty( $payload['block_rules'] ) ) {
+			$import_ok = $this->block_manager->replace_all( $payload['block_rules'] ) && $import_ok;
 		}
 
 		wp_safe_redirect( $redirect . '&ccwps_imported=' . ( $import_ok ? '1' : '0' ) ); exit;
+	}
+
+	private function get_supported_import_plugin_ids(): array {
+		return [
+			'web-pixel-studio-cookie-consent-for-eu',
+			'cookie-consent-webpixelstudio',
+			'advanced-cookie-consent-for-eu',
+		];
+	}
+
+	private function normalize_import_payload( array $decoded ): ?array {
+		$plugin_raw = isset( $decoded['_plugin'] ) && is_scalar( $decoded['_plugin'] )
+			? (string) $decoded['_plugin']
+			: '';
+		$plugin_id = sanitize_key( $plugin_raw );
+
+		if ( '' !== $plugin_id && ! in_array( $plugin_id, $this->get_supported_import_plugin_ids(), true ) ) {
+			return null;
+		}
+
+		$settings = [];
+		if ( isset( $decoded['settings'] ) && is_array( $decoded['settings'] ) ) {
+			$settings = $decoded['settings'];
+		} elseif ( isset( $decoded['options'] ) && is_array( $decoded['options'] ) ) {
+			$settings = $decoded['options'];
+		} else {
+			$ignored = [
+				'_plugin', '_plugin_aliases', '_version', '_date', '_site',
+				'settings', 'options', 'cookies', 'cookie_declarations',
+				'block_rules', 'blocks', 'rules',
+			];
+
+			foreach ( $decoded as $key => $value ) {
+				if ( ! is_string( $key ) || in_array( $key, $ignored, true ) ) {
+					continue;
+				}
+
+				$settings[ $key ] = $value;
+			}
+		}
+
+		if ( empty( $settings ) ) {
+			return null;
+		}
+
+		$cookies = [];
+		if ( isset( $decoded['cookies'] ) && is_array( $decoded['cookies'] ) ) {
+			$cookies = $decoded['cookies'];
+		} elseif ( isset( $decoded['cookie_declarations'] ) && is_array( $decoded['cookie_declarations'] ) ) {
+			$cookies = $decoded['cookie_declarations'];
+		}
+
+		$block_rules = [];
+		if ( isset( $decoded['block_rules'] ) && is_array( $decoded['block_rules'] ) ) {
+			$block_rules = $decoded['block_rules'];
+		} elseif ( isset( $decoded['blocks'] ) && is_array( $decoded['blocks'] ) ) {
+			$block_rules = $decoded['blocks'];
+		} elseif ( isset( $decoded['rules'] ) && is_array( $decoded['rules'] ) ) {
+			$block_rules = $decoded['rules'];
+		}
+
+		return [
+			'settings' => $settings,
+			'cookies' => $cookies,
+			'block_rules' => $block_rules,
+		];
+	}
+
+	private function map_legacy_import_setting_key( $key ): string {
+		if ( ! is_string( $key ) ) {
+			return '';
+		}
+
+		$legacy_map = [
+			'banner_show_powered_by' => 'floating_show_powered_by',
+			'floating_show_powered'  => 'floating_show_powered_by',
+			'banner_icon_show'       => 'banner_show_icon',
+			'hide_empty_cats'        => 'hide_empty_categories',
+		];
+
+		return $legacy_map[ $key ] ?? $key;
 	}
 }

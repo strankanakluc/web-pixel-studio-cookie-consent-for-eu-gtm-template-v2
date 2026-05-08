@@ -474,15 +474,201 @@
 		};
 	}
 
+	function getAddonPresetCookieDescriptionTranslations() {
+		return {
+			sk: {
+				'^_hjSessionUser_': 'Cookie služby Hotjar, ktorá rozpoznáva používateľa pri opakovaných návštevách na účely analytiky a zlepšovania používateľského zážitku.',
+				'^_hjSession_': 'Cookie služby Hotjar používaná na identifikáciu aktuálnej relácie používateľa a analýzu používania webu.',
+				'^_hjIncludedInSessionSample_?$': 'Cookie služby Hotjar určujúca, či je návšteva používateľa zahrnutá do vzorky analytického merania a analýzy používania webu.',
+				_hjOptOut: 'Cookie služby Hotjar ukladajúca informáciu, že používateľ si neželá byť sledovaný analytickými nástrojmi Hotjar.',
+				sbjs_first: 'Údaje o úplne prvom zdroji návštevy (odkiaľ prišiel používateľ prvýkrát).',
+				sbjs_current: 'Ukladá informácie o aktuálnom zdroji návštevy webu (napr. vyhľadávač, reklama alebo priama návšteva) pre analytiku a meranie kampaní.',
+				sbjs_first_add: 'Doplnkové dáta o prvej návšteve (dátum, počet stránok, vstupná URL).',
+				sbjs_current_add: 'Doplnkové dáta o aktuálnej relácii (rovnaké ako pri first_add, ale pre aktuálnu návštevu).',
+				sbjs_udata: 'Ukladá anonymizované technické a navigačné údaje o používateľovi pre analytiku návštevnosti.',
+				sbjs_session: 'Určuje, či stále trvá jedna návšteva alebo začala nová (relácia).',
+				sbjs_migrations: 'Pomocná cookie používaná na správne spracovanie a migráciu analytických údajov medzi verziami sledovania.'
+			},
+			en: {
+				'^_hjSessionUser_': 'Hotjar cookie that recognizes the user on repeat visits for analytics and user-experience improvement.',
+				'^_hjSession_': 'Hotjar cookie used to identify the current user session and analyze website usage.',
+				'^_hjIncludedInSessionSample_?$': 'Hotjar cookie that determines whether the user visit is included in the analytics measurement sample.',
+				_hjOptOut: 'Hotjar cookie storing the information that the user does not want to be tracked by Hotjar analytics.',
+				sbjs_first: 'Data about the very first traffic source (where the visitor originally came from).',
+				sbjs_current: 'Stores information about the current website traffic source (for example search, ad, or direct visit).',
+				sbjs_first_add: 'Additional metadata about the first visit (date, page count, entry URL).',
+				sbjs_current_add: 'Additional metadata about the current visit (same as first_add, but for the active session).',
+				sbjs_udata: 'Stores anonymized technical and navigation data for traffic analytics.',
+				sbjs_session: 'Determines whether one visit is still active or a new session has started.',
+				sbjs_migrations: 'Helper cookie used to process and migrate Sourcebuster tracking data between versions.'
+			},
+			cs: {
+				'^_hjSessionUser_': 'Cookie služby Hotjar, která rozpozná uživatele při opakovaných návštěvách pro analytiku a zlepšování uživatelského zážitku.',
+				'^_hjSession_': 'Cookie služby Hotjar používaná k identifikaci aktuální relace uživatele a analýze používání webu.',
+				'^_hjIncludedInSessionSample_?$': 'Cookie služby Hotjar určující, zda je návštěva uživatele zahrnuta do vzorku analytického měření.',
+				_hjOptOut: 'Cookie služby Hotjar ukládající informaci, že uživatel nechce být sledován analytickými nástroji Hotjar.',
+				sbjs_first: 'Údaje o úplně prvním zdroji návštěvy (odkud uživatel přišel poprvé).',
+				sbjs_current: 'Ukládá informace o aktuálním zdroji návštěvy webu (např. vyhledávač, reklama nebo přímá návštěva) pro analytiku kampaní.',
+				sbjs_first_add: 'Doplňková data o první návštěvě (datum, počet stránek, vstupní URL).',
+				sbjs_current_add: 'Doplňková data o aktuální relaci (stejná jako first_add, ale pro aktuální návštěvu).',
+				sbjs_udata: 'Ukládá anonymizované technické a navigační údaje o uživateli pro analytiku návštěvnosti.',
+				sbjs_session: 'Určuje, zda stále trvá jedna návštěva, nebo začala nová relace.',
+				sbjs_migrations: 'Pomocná cookie pro správné zpracování a migraci analytických dat mezi verzemi sledování.'
+			},
+			de: {
+				'^_hjSessionUser_': 'Hotjar-Cookie zur Wiedererkennung von Nutzern bei erneuten Besuchen für Analytik und UX-Verbesserung.',
+				'^_hjSession_': 'Hotjar-Cookie zur Identifizierung der aktuellen Nutzersitzung und Analyse der Website-Nutzung.',
+				'^_hjIncludedInSessionSample_?$': 'Hotjar-Cookie, das bestimmt, ob der Besuch in die Analyse-Stichprobe aufgenommen wird.',
+				_hjOptOut: 'Hotjar-Cookie, das speichert, dass der Nutzer nicht von Hotjar-Analysewerkzeugen verfolgt werden möchte.',
+				sbjs_first: 'Daten zur allerersten Besuchsquelle (woher der Nutzer ursprünglich kam).',
+				sbjs_current: 'Speichert Informationen zur aktuellen Besuchsquelle (z. B. Suche, Anzeige oder Direktzugriff) für Kampagnenanalyse.',
+				sbjs_first_add: 'Zusatzdaten zum ersten Besuch (Datum, Seitenanzahl, Einstiegs-URL).',
+				sbjs_current_add: 'Zusatzdaten zur aktuellen Sitzung (wie first_add, aber für den aktuellen Besuch).',
+				sbjs_udata: 'Speichert anonymisierte technische und Navigationsdaten für Traffic-Analysen.',
+				sbjs_session: 'Bestimmt, ob eine Sitzung noch aktiv ist oder eine neue Sitzung begonnen hat.',
+				sbjs_migrations: 'Hilfs-Cookie zur korrekten Verarbeitung und Migration von Sourcebuster-Trackingdaten zwischen Versionen.'
+			},
+			fr: {
+				'^_hjSessionUser_': 'Cookie Hotjar qui reconnaît l’utilisateur lors de visites répétées à des fins d’analyse et d’amélioration UX.',
+				'^_hjSession_': 'Cookie Hotjar utilisé pour identifier la session utilisateur en cours et analyser l’utilisation du site.',
+				'^_hjIncludedInSessionSample_?$': 'Cookie Hotjar qui détermine si la visite est incluse dans l’échantillon de mesure analytique.',
+				_hjOptOut: 'Cookie Hotjar enregistrant que l’utilisateur ne souhaite pas être suivi par les outils analytiques Hotjar.',
+				sbjs_first: 'Données sur la toute première source de visite (provenance initiale de l’utilisateur).',
+				sbjs_current: 'Stocke des informations sur la source de visite actuelle (moteur, publicité ou accès direct) pour l’analyse.',
+				sbjs_first_add: 'Données complémentaires sur la première visite (date, nombre de pages, URL d’entrée).',
+				sbjs_current_add: 'Données complémentaires sur la session actuelle (identiques à first_add mais pour la visite en cours).',
+				sbjs_udata: 'Stocke des données techniques et de navigation anonymisées pour l’analyse du trafic.',
+				sbjs_session: 'Indique si la même visite est toujours active ou si une nouvelle session a commencé.',
+				sbjs_migrations: 'Cookie d’assistance utilisé pour traiter et migrer correctement les données de suivi entre versions.'
+			},
+			es: {
+				'^_hjSessionUser_': 'Cookie de Hotjar que reconoce al usuario en visitas repetidas para analítica y mejora de experiencia.',
+				'^_hjSession_': 'Cookie de Hotjar usada para identificar la sesión actual del usuario y analizar el uso del sitio.',
+				'^_hjIncludedInSessionSample_?$': 'Cookie de Hotjar que determina si la visita se incluye en la muestra de medición analítica.',
+				_hjOptOut: 'Cookie de Hotjar que guarda que el usuario no desea ser rastreado por las herramientas analíticas de Hotjar.',
+				sbjs_first: 'Datos sobre la primera fuente de visita (de dónde llegó el usuario por primera vez).',
+				sbjs_current: 'Guarda información sobre la fuente actual de visita (buscador, anuncio o visita directa) para analítica.',
+				sbjs_first_add: 'Datos adicionales de la primera visita (fecha, número de páginas, URL de entrada).',
+				sbjs_current_add: 'Datos adicionales de la sesión actual (igual que first_add, pero para la visita actual).',
+				sbjs_udata: 'Guarda datos técnicos y de navegación anonimizados para analítica de tráfico.',
+				sbjs_session: 'Determina si la visita actual sigue activa o si comenzó una nueva sesión.',
+				sbjs_migrations: 'Cookie auxiliar para el procesamiento y migración correctos de datos de seguimiento entre versiones.'
+			},
+			pl: {
+				'^_hjSessionUser_': 'Cookie Hotjar rozpoznające użytkownika podczas ponownych wizyt do celów analityki i poprawy UX.',
+				'^_hjSession_': 'Cookie Hotjar używane do identyfikacji bieżącej sesji użytkownika i analizy korzystania z witryny.',
+				'^_hjIncludedInSessionSample_?$': 'Cookie Hotjar określające, czy wizyta użytkownika jest włączona do próbki analitycznej.',
+				_hjOptOut: 'Cookie Hotjar zapisujące informację, że użytkownik nie chce być śledzony przez narzędzia analityczne Hotjar.',
+				sbjs_first: 'Dane o pierwszym źródle wizyty (skąd użytkownik przyszedł po raz pierwszy).',
+				sbjs_current: 'Przechowuje informacje o aktualnym źródle wizyty (wyszukiwarka, reklama lub wejście bezpośrednie) do analityki.',
+				sbjs_first_add: 'Dodatkowe dane o pierwszej wizycie (data, liczba stron, URL wejścia).',
+				sbjs_current_add: 'Dodatkowe dane o bieżącej sesji (jak first_add, ale dla aktualnej wizyty).',
+				sbjs_udata: 'Przechowuje zanonimizowane dane techniczne i nawigacyjne użytkownika do analityki ruchu.',
+				sbjs_session: 'Określa, czy trwa ta sama wizyta, czy rozpoczęła się nowa sesja.',
+				sbjs_migrations: 'Pomocnicze cookie do prawidłowego przetwarzania i migracji danych śledzenia między wersjami.'
+			},
+			hu: {
+				'^_hjSessionUser_': 'Hotjar cookie, amely visszatero latogatasokkor felismeri a felhasznalot analitikahoz es UX javitashoz.',
+				'^_hjSession_': 'Hotjar cookie az aktualis felhasznaloi munkamenet azonositasahoz es a webhelyhasznalat elemzesehez.',
+				'^_hjIncludedInSessionSample_?$': 'Hotjar cookie, amely meghatarozza, hogy a latogatas bekerul-e az analitikai mintaba.',
+				_hjOptOut: 'Hotjar cookie, amely tarolja, hogy a felhasznalo nem szeretne Hotjar analitikai kovetest.',
+				sbjs_first: 'Adatok a legelso forgalmi forrasrol (honnan erkezett a felhasznalo eloszor).',
+				sbjs_current: 'Az aktualis latogatasi forras adatait tarolja (kereso, hirdetes vagy kozvetlen forgalom) analitikahoz.',
+				sbjs_first_add: 'Kiegeszito adatok az elso latogatasrol (datum, oldalszam, belepo URL).',
+				sbjs_current_add: 'Kiegeszito adatok az aktualis munkamenetrol (mint a first_add, de az aktualis latogatashoz).',
+				sbjs_udata: 'Anonimizalt technikai es navigacios adatokat tarol forgalmi analitikahoz.',
+				sbjs_session: 'Meghatarozza, hogy ugyanaz a latogatas tart-e, vagy uj munkamenet indult.',
+				sbjs_migrations: 'Segedcookie a kovetesi adatok verzioik kozotti helyes feldolgozasahoz es migraciojahoz.'
+			},
+			it: {
+				'^_hjSessionUser_': 'Cookie Hotjar che riconosce l’utente nelle visite ripetute per analisi e miglioramento UX.',
+				'^_hjSession_': 'Cookie Hotjar usato per identificare la sessione utente corrente e analizzare l’uso del sito.',
+				'^_hjIncludedInSessionSample_?$': 'Cookie Hotjar che determina se la visita è inclusa nel campione di misurazione analitica.',
+				_hjOptOut: 'Cookie Hotjar che memorizza che l’utente non desidera essere tracciato dagli strumenti analitici Hotjar.',
+				sbjs_first: 'Dati sulla primissima fonte di visita (da dove l’utente è arrivato la prima volta).',
+				sbjs_current: 'Memorizza informazioni sulla fonte di visita corrente (motore, annuncio o accesso diretto) per analisi.',
+				sbjs_first_add: 'Dati aggiuntivi sulla prima visita (data, numero pagine, URL di ingresso).',
+				sbjs_current_add: 'Dati aggiuntivi sulla sessione corrente (come first_add, ma per la visita attuale).',
+				sbjs_udata: 'Memorizza dati tecnici e di navigazione anonimizzati per analisi del traffico.',
+				sbjs_session: 'Determina se la visita corrente è ancora attiva o se è iniziata una nuova sessione.',
+				sbjs_migrations: 'Cookie di supporto usato per la corretta elaborazione e migrazione dei dati di tracciamento tra versioni.'
+			}
+		};
+	}
+
+	function getPresetCookieExpirationTranslations() {
+		return {
+			'1 year':      { sk: '1 rok', en: '1 year', cs: '1 rok', de: '1 Jahr', fr: '1 an', es: '1 año', pl: '1 rok', hu: '1 év', it: '1 anno' },
+			'1 hour':      { sk: '1 hodina', en: '1 hour', cs: '1 hodina', de: '1 Stunde', fr: '1 heure', es: '1 hora', pl: '1 godzina', hu: '1 ora', it: '1 ora' },
+			'1 month':     { sk: '1 mesiac', en: '1 month', cs: '1 měsíc', de: '1 Monat', fr: '1 mois', es: '1 mes', pl: '1 miesiąc', hu: '1 hónap', it: '1 mese' },
+			'2 years':     { sk: '2 roky', en: '2 years', cs: '2 roky', de: '2 Jahre', fr: '2 ans', es: '2 años', pl: '2 lata', hu: '2 év', it: '2 anni' },
+			'3 months':    { sk: '3 mesiace', en: '3 months', cs: '3 měsíce', de: '3 Monate', fr: '3 mois', es: '3 meses', pl: '3 miesiące', hu: '3 hónap', it: '3 mesi' },
+			'6 months':    { sk: '6 mesiacov', en: '6 months', cs: '6 měsíců', de: '6 Monate', fr: '6 mois', es: '6 meses', pl: '6 miesięcy', hu: '6 hónap', it: '6 mesi' },
+			'13 months':   { sk: '13 mesiacov', en: '13 months', cs: '13 měsíců', de: '13 Monate', fr: '13 mois', es: '13 meses', pl: '13 miesięcy', hu: '13 hónap', it: '13 mesi' },
+			'30 minutes':  { sk: '30 minút', en: '30 minutes', cs: '30 minut', de: '30 Minuten', fr: '30 minutes', es: '30 minutos', pl: '30 minut', hu: '30 perc', it: '30 minuti' },
+			'Session':     { sk: 'Relácia', en: 'Session', cs: 'Relace', de: 'Sitzung', fr: 'Session', es: 'Sesión', pl: 'Sesja', hu: 'Munkamenet', it: 'Sessione' }
+		};
+	}
+
 	function getLocalizedCookieDescription(cookie) {
 		if (!cookie || !cookie.name) return cookie && cookie.desc ? cookie.desc : '';
 
 		var allTranslations = getPresetCookieDescriptionTranslations();
+		var addonTranslations = getAddonPresetCookieDescriptionTranslations();
 		var normalized = normalizeLangCode(activeFrontendLang);
 		var base = normalized.split('-')[0];
 		var byLang = allTranslations[normalized] || allTranslations[base] || allTranslations.en || {};
+		var byLangAddon = addonTranslations[normalized] || addonTranslations[base] || addonTranslations.en || {};
 
-		return byLang[cookie.name] || cookie.desc || '';
+		return byLang[cookie.name] || byLangAddon[cookie.name] || cookie.desc || '';
+	}
+
+	function getLocalizedCookieExpiration(rawExpiration) {
+		var value = String(rawExpiration || '').trim();
+		if (!value) return '';
+
+		var all = getPresetCookieExpirationTranslations();
+		var variants = all[value] || null;
+		if (!variants) return value;
+
+		var normalized = normalizeLangCode(activeFrontendLang);
+		var base = normalized.split('-')[0];
+		return variants[normalized] || variants[base] || variants.en || value;
+	}
+
+	function localizeShortcodeCookieListTables() {
+		var tables = document.querySelectorAll('.ccwps-cl-table');
+		if (!tables || !tables.length) return;
+
+		for (var ti = 0; ti < tables.length; ti++) {
+			var table = tables[ti];
+			var ths = table.querySelectorAll('thead th');
+			if (ths.length >= 4) {
+				ths[0].textContent = i18n.cookieName || ths[0].textContent;
+				ths[1].textContent = i18n.cookieDomain || ths[1].textContent;
+				ths[2].textContent = i18n.cookieExpiration || ths[2].textContent;
+				ths[3].textContent = i18n.cookieDescription || ths[3].textContent;
+			}
+
+			var rows = table.querySelectorAll('tbody tr');
+			for (var ri = 0; ri < rows.length; ri++) {
+				var cells = rows[ri].children;
+				if (!cells || cells.length < 4) continue;
+
+				var codeEl = cells[0].querySelector('code');
+				var cookieName = codeEl ? String(codeEl.textContent || '').trim() : String(cells[0].textContent || '').trim();
+
+				var expText = String(cells[2].textContent || '').trim();
+				if (expText && '—' !== expText) {
+					cells[2].textContent = getLocalizedCookieExpiration(expText);
+				}
+
+				var descText = String(cells[3].textContent || '').trim();
+				if (descText && '—' !== descText) {
+					cells[3].textContent = getLocalizedCookieDescription({ name: cookieName, desc: descText });
+				}
+			}
+		}
 	}
 
 	/* ============================================
@@ -1098,7 +1284,7 @@
 					rows += '<tr>' +
 						'<td>' + esc(ck.name) + '</td>' +
 						'<td>' + (esc(ck.domain) || '—') + '</td>' +
-						'<td>' + (esc(ck.expiration) || '—') + '</td>' +
+						'<td>' + (esc(getLocalizedCookieExpiration(ck.expiration)) || '—') + '</td>' +
 						'<td>' + (esc(getLocalizedCookieDescription(ck)) || '—') + '</td>' +
 					'</tr>';
 				}
@@ -1493,6 +1679,7 @@
 		blockScripts();
 		renderConsentIdTargets();
 		bindManageConsentButtons();
+		localizeShortcodeCookieListTables();
 
 		var consent = getConsent();
 		if (consent) {

@@ -4,7 +4,7 @@ Tags: cookie consent, GDPR, cookie banner, ePrivacy, google consent mode
 Requires at least: 5.9
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,7 +100,7 @@ Supports:
 - Regex matching
 - Automatic script type conversion
 - Category-based unlocking
-- Google & Matomo presets
+- Google, Meta, Matomo, Hotjar & Sourcebuster presets
 
 ---
 
@@ -125,6 +125,8 @@ Quickly configure popular services:
 - Facebook Pixel
 - Matomo Analytics
 - Matomo Tag Manager
+- Hotjar
+- Sourcebuster (sbjs)
 
 Presets can automatically add:
 - Cookies
@@ -347,6 +349,13 @@ No. The cookie is intentionally readable by frontend scripts so user preferences
 
 == Changelog ==
 
+= 1.0.8 =
+* Added new cookie presets for Hotjar and Sourcebuster (sbjs), including default domain placeholders, categories, and expiration values.
+* Added new script-blocking presets for Hotjar and Sourcebuster with precise regex-based source matching.
+* Added preset description and expiration translations for all 9 supported languages.
+* Improved frontend localization for cookie preset texts: preset descriptions and expiration values are now localized in the consent modal and in the [ccwps_cookie_list] output.
+* Updated language behavior: when visitor language detection is enabled, frontend preset texts follow visitor language; when disabled, they follow configured frontend/admin translation settings.
+
 = 1.0.7 =
 * Switched to local Poppins font (Regular, Medium, SemiBold) – removed all Google Fonts dependencies. No external font requests are made by the plugin.
 * Added upgrade migration: existing installations with empty or inherited font setting are automatically updated to the Poppins stack.
@@ -358,6 +367,9 @@ No. The cookie is intentionally readable by frontend scripts so user preferences
 * Renamed GTM template files and POT file to match the corrected plugin slug.
 
 == Upgrade Notice ==
+
+= 1.0.8 =
+Adds Hotjar and Sourcebuster cookie/blocking presets, expands localized preset descriptions and expirations across all supported languages, and improves frontend language behavior for preset texts in both consent modal and cookie list output.
 
 = 1.0.7 =
 Removes Google Fonts dependency, improves compliance, updates text domain naming consistency, and adds required external services disclosure for WordPress.org.

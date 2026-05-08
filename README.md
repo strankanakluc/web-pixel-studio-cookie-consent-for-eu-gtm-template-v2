@@ -10,7 +10,7 @@
 **Tags:** cookie consent, GDPR, cookie banner, ePrivacy, google consent mode  
 **Requires at least:** 5.9  
 **Tested up to:** 6.9  
-**Stable tag:** 1.0.7  
+**Stable tag:** 1.0.8  
 **License:** GPL-2.0-or-later  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -30,7 +30,7 @@ If you want a consent plugin that looks professional, gives visitors clear choic
 - Detailed preferences modal with category-level consent
 - Google Consent Mode v2 and v3 integration ready for GA4 and Google Ads
 - Script blocking before consent with simple rules or regex
-- Prebuilt cookie and script presets for Google Analytics, Google Ads, Facebook Pixel, and Matomo (Analytics + Tag Manager)
+- Prebuilt cookie and script presets for Google Analytics, Google Ads, Facebook Pixel, Matomo (Analytics + Tag Manager), Hotjar, and Sourcebuster (sbjs)
 - **Matomo Analytics support** — connect your self-hosted Matomo instance directly in plugin settings; choose between strict no-tracking after reject or optional anonymous cookieless measurement, with automatic switch to full tracking on later consent
 - **No dependency on Google** — works equally well with Matomo as your only analytics platform, keeping all visitor data on your own infrastructure
 - Built-in consent log with exportable records
@@ -72,7 +72,7 @@ If you want a consent plugin that looks professional, gives visitors clear choic
 - floating icon type and position
 - cookie categories and declared cookies
 - script blocking rules by category
-- prebuilt Google and Meta presets for cookies and script blocking
+- prebuilt Google, Meta, Matomo, Hotjar, and Sourcebuster (sbjs) presets for cookies and script blocking
 - visitor language detection for frontend texts
 - consent logging, re-consent behavior, and bot hiding
 
@@ -205,6 +205,14 @@ Yes. The plugin includes shortcodes for the cookie list and for displaying the c
 
 ## Changelog
 
+### 1.0.8
+
+- Added new cookie presets for Hotjar and Sourcebuster (sbjs), including default domain placeholders, categories, and expiration values
+- Added new script-blocking presets for Hotjar and Sourcebuster with precise regex-based source matching
+- Added preset description and expiration translations for all 9 supported languages
+- Improved frontend localization for cookie preset texts: preset descriptions and expiration values are now localized in the consent modal and in the `[ccwps_cookie_list]` output
+- Updated language behavior: when visitor language detection is enabled, frontend preset texts follow visitor language; when disabled, they follow configured frontend/admin translation settings
+
 ### 1.0.7
 
 - Switched to local Poppins font (Regular, Medium, SemiBold) and removed all Google Fonts dependencies; no external font requests are made by the plugin
@@ -288,6 +296,10 @@ Yes. The plugin includes shortcodes for the cookie list and for displaying the c
 - Added predefined cookie and blocking presets for Google Analytics, Google Ads, and Facebook Pixel
 
 ## Upgrade Notice
+
+### 1.0.8
+
+Adds Hotjar and Sourcebuster cookie/blocking presets, expands localized preset descriptions and expirations across all supported languages, and improves frontend language behavior for preset texts in both consent modal and cookie list output.
 
 ### 1.0.7
 

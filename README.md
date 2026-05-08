@@ -205,6 +205,13 @@ Yes. The plugin includes shortcodes for the cookie list and for displaying the c
 
 ## Changelog
 
+### 1.0.9
+
+- Added translations for all 34 admin UI messages (Settings saved, errors, confirmations, button labels, etc.) across all 8 supported languages
+- Improved localization of the `[ccwps_cookie_list]` shortcode to use detected visitor language when "Language by visitor" is enabled
+- Added data attributes to shortcode output to support dynamic language switching in JavaScript
+- Enhanced frontend i18n initialization to detect and apply visitor language early when detection is active
+
 ### 1.0.8
 
 - Added new cookie presets for Hotjar and Sourcebuster (sbjs), including default domain placeholders, categories, and expiration values

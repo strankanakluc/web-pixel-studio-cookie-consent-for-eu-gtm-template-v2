@@ -332,5 +332,6 @@ return [
 	'Vybrať všetko / Zrušiť výber' => 'Alle auswählen / Auswahl löschen',
 	'Screenshoty inštalácie Matomo' => 'Screenshots der Matomo-Installation',
 	'Náhľady krokov inštalácie Matomo Tag v administrácii Matomo.' => 'Vorschau der Installationsschritte des Matomo-Tags in der Matomo-Verwaltung.',
+	'Detekovať použité fonty' => 'Verwendete Schriftarten erkennen',
+	'Detegované fonty boli aktualizované.' => 'Erkannte Schriftarten wurden aktualisiert.',
 ];
-

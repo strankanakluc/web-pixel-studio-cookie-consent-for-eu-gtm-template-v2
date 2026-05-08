@@ -679,7 +679,7 @@
 			'--ccwps-border:     ' + modalBorder + ';',
 			'--ccwps-surface:    ' + catBg + ';',
 			'--ccwps-surface2:   ' + catBgHv + ';',
-			'--ccwps-font:       ' + (C.fontFamily || '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif') + ';',
+			'--ccwps-font:       ' + (C.fontFamily || '\'Poppins\', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif') + ';',
 			// Border radii
 			'--ccwps-r:          ' + rBn + 'px;',
 			'--ccwps-r-sm:       ' + r + 'px;',

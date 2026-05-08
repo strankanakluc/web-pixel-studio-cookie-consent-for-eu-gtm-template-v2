@@ -1,8 +1,8 @@
 # Web Pixel Studio Cookie Consent for EU
 ![Plugin for](https://img.shields.io/badge/WordPress-21759B?style=flat&logo=wordpress&logoColor=white)
-![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/web-pixel-studio-cookie-consent-for-eu?style=flat)
-![WordPress Plugin Rating](https://img.shields.io/wordpress/plugin/r/web-pixel-studio-cookie-consent-for-eu?style=flat)
-![WordPress Plugin Active Installs](https://img.shields.io/wordpress/plugin/i/web-pixel-studio-cookie-consent-for-eu?style=flat)
+![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/web-pixel-studio-cookie-consent-eu?style=flat)
+![WordPress Plugin Rating](https://img.shields.io/wordpress/plugin/r/web-pixel-studio-cookie-consent-eu?style=flat)
+![WordPress Plugin Active Installs](https://img.shields.io/wordpress/plugin/i/web-pixel-studio-cookie-consent-eu?style=flat)
 [![Facebook](https://img.shields.io/badge/Facebook-0866FF?style=flat&logo=facebook&logoColor=white)](https://www.facebook.com/wps.sk)
 [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=flat&logo=instagram&logoColor=white)](https://www.instagram.com/tvorbawebov/)
 
@@ -10,7 +10,7 @@
 **Tags:** cookie consent, GDPR, cookie banner, ePrivacy, consent mode  
 **Requires at least:** 5.9  
 **Tested up to:** 6.9  
-**Stable tag:** 1.0.6  
+**Stable tag:** 1.0.7  
 **License:** GPL-2.0-or-later  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -88,9 +88,32 @@ The plugin helps you build a cleaner compliance workflow directly inside WordPre
 
 This plugin is built to support GDPR and ePrivacy requirements, but legal compliance always depends on your actual implementation and jurisdiction.
 
+## External Services
+
+### Google Tag Manager (optional)
+
+The plugin loads Google Tag Manager only if you explicitly set a GTM Container ID in plugin settings. If the GTM field is empty, no GTM requests are made by the plugin.
+
+When enabled, the browser requests resources from Google domains (for example `www.googletagmanager.com`) and sends standard technical request data required by HTTP, typically including IP address, user agent, referrer, and request metadata.
+
+- Service provider: Google Ireland Limited / Google LLC
+- Terms of Service: https://policies.google.com/terms
+- Privacy Policy: https://policies.google.com/privacy
+
+### Matomo Tracking Script (optional)
+
+The plugin loads Matomo only if you configure Matomo URL and Site ID in plugin settings. The script source is the Matomo endpoint you provide.
+
+When enabled, the browser requests Matomo script resources and sends tracking requests (for example page views) to the configured Matomo server according to your Matomo setup and current consent state.
+
+- Service provider: your configured Matomo host (self-hosted or Matomo Cloud)
+- Terms: depends on your Matomo provider
+- Privacy: depends on your Matomo provider
+- Matomo legal docs (Matomo Cloud reference): https://matomo.org/terms/ and https://matomo.org/privacy-policy/
+
 ## Installation
 
-1. Upload the plugin files to the /wp-content/plugins/web-pixel-studio-cookie-consent-for-eu directory, or install the plugin through the WordPress plugins screen.
+1. Upload the plugin files to the /wp-content/plugins/web-pixel-studio-cookie-consent-eu directory, or install the plugin through the WordPress plugins screen.
 2. Activate the plugin through the Plugins screen in WordPress.
 3. Open Cookie Consent in the WordPress admin menu.
 4. Configure Consent Mode, banner texts, cookie categories, script blocking, and appearance settings.
@@ -182,6 +205,17 @@ Yes. The plugin includes shortcodes for the cookie list and for displaying the c
 
 ## Changelog
 
+### 1.0.7
+
+- Switched to local Poppins font (Regular, Medium, SemiBold) and removed all Google Fonts dependencies; no external font requests are made by the plugin
+- Added upgrade migration: existing installations with empty or inherited font setting are automatically updated to the Poppins stack
+- Changed font detection in the Appearance tab to manual-only: fonts are detected only when the admin clicks "Detect used fonts", preventing automatic remote requests on every page load
+- Added "Detect used fonts" button with nonce protection and per-click result cache
+- Added translations for new font-detection UI across all 9 supported admin languages
+- Updated text domain slug to match the WordPress.org plugin directory slug (web-pixel-studio-cookie-consent-eu)
+- Added "External services" section to readme disclosing optional GTM and Matomo remote resource loading, as required by WordPress.org guidelines
+- Renamed GTM template files and POT file to match the corrected plugin slug
+
 ### 1.0.6
 
 - Updated plugin display name for consistency across the admin panel and WordPress plugin repository
@@ -254,6 +288,10 @@ Yes. The plugin includes shortcodes for the cookie list and for displaying the c
 - Added predefined cookie and blocking presets for Google Analytics, Google Ads, and Facebook Pixel
 
 ## Upgrade Notice
+
+### 1.0.7
+
+Compliance and font update: removes Google Fonts dependency (uses local Poppins instead), switches font detection to manual-only to prevent automatic remote requests, corrects text domain slug for WordPress.org, and adds required external services disclosure.
 
 ### 1.0.6
 

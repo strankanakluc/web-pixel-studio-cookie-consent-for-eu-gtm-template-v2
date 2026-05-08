@@ -332,5 +332,6 @@ return [
 	'Vybrať všetko / Zrušiť výber' => 'Összes kijelölése / Kijelölés törlése',
 	'Screenshoty inštalácie Matomo' => 'Matomo telepítés képernyőképek',
 	'Náhľady krokov inštalácie Matomo Tag v administrácii Matomo.' => 'A Matomo Tag telepítési lépéseinek előnézete a Matomo adminisztrációban.',
+	'Detekovať použité fonty' => 'Hasznalt betutipusok felismerese',
+	'Detegované fonty boli aktualizované.' => 'Az eszlelt betutipusok frissitve lettek.',
 ];
-

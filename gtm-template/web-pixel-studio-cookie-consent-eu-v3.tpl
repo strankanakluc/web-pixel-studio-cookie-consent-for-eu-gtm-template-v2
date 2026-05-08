@@ -1,9 +1,9 @@
 ___INFO___
 
 {
-  "displayName": "Web Pixel Studio Cookie Consent for EU",
-  "description": "Nastaví predvolený stav Google Consent Mode (všetko odmietnuté) a okamžite aktualizuje súhlas podľa uloženého cookie ccwps_consent z pluginu Web Pixel Studio Cookie Consent for EU.",
-  "id": "cvt_cookie_consent_wps",
+  "displayName": "Web Pixel Studio Cookie Consent for EU v3",
+  "description": "Consent Mode v3 šablóna: nastaví default denied stav, aktivuje developer_id signál a okamžite aktualizuje súhlas podľa cookie ccwps_consent.",
+  "id": "cvt_cookie_consent_wps_v3",
   "type": "TAG",
   "version": 1,
   "containerContexts": ["WEB"]
@@ -46,6 +46,10 @@ ___WEB_PERMISSIONS___
               {
                 "type": 1,
                 "string": "url_passthrough"
+              },
+              {
+                "type": 1,
+                "string": "developer_id.dZTNiMT"
               }
             ]
           }
@@ -236,9 +240,10 @@ setDefaultConsentState({
   'wait_for_update':         waitMs
 });
 
-// 1b. Additional consent-mode controls (also used by plugin frontend snippet)
+// 1b. Consent Mode v3 signály (rovnaké správanie ako vo WordPress snippete)
 gtagSet('ads_data_redaction', true);
 gtagSet('url_passthrough', true);
+gtagSet('developer_id.dZTNiMT', true);
 
 // 2. Prečítať existujúci consent cookie a okamžite aktualizovať stav
 var cookieValues = getCookieValues(cookieName);
@@ -272,8 +277,8 @@ ___NOTES___
 ## Návod na použitie
 
 1. GTM → Šablóny → Šablóny tagov → Nová
-2. Tri bodky (⋮) → Importovať → nahrať súbor `web-pixel-studio-cookie-consent-for-eu.tpl`
-3. Tagy → Nový → zvoliť "Web Pixel Studio Cookie Consent for EU"
+2. Tri bodky (⋮) → Importovať → nahrať súbor `web-pixel-studio-cookie-consent-eu-v3.tpl`
+3. Tagy → Nový → zvoliť "Web Pixel Studio Cookie Consent for EU v3"
 4. Trigger: **Inicializácia súhlasu – všetky stránky** (Consent Initialization – All Pages)
 5. Uložiť a publikovať
 
@@ -281,7 +286,7 @@ ___NOTES___
 
 Šablóna beží PRED ostatnými tagmi (Consent Initialization fáza):
 1. Nastaví všetky consent signály na `denied` (predvolené odmietnutie)
-2. Nastaví doplnkové signály `ads_data_redaction` a `url_passthrough`
+2. Nastaví v3 doplnkové signály `ads_data_redaction`, `url_passthrough` a `developer_id.dZTNiMT`
 3. Ak návštevník už má uložený cookie `ccwps_consent`, okamžite aktualizuje stav podľa jeho preferencií – bez načítania stránky
 4. Keď návštevník interaguje s bannerom, plugin zavolá `gtag('consent','update',…)` a GTM okamžite reaguje
 

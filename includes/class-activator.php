@@ -10,7 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class CCWPS_Activator {
-	private const SCHEMA_VERSION = '3';
+	private const SCHEMA_VERSION = '4';
+	private const DEFAULT_FONT_FAMILY = '\'Poppins\', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
 	public static function activate(): void {
 		self::maybe_upgrade();
@@ -26,7 +27,21 @@ class CCWPS_Activator {
 
 		self::create_tables();
 		self::set_default_options();
+		self::migrate_legacy_font_family();
 		update_option( 'ccwps_schema_version', self::SCHEMA_VERSION );
+	}
+
+	private static function migrate_legacy_font_family(): void {
+		$font_family = get_option( 'ccwps_font_family', null );
+
+		if ( null === $font_family ) {
+			return;
+		}
+
+		$normalized = is_string( $font_family ) ? strtolower( trim( $font_family ) ) : '';
+		if ( '' === $normalized || 'inherit' === $normalized ) {
+			update_option( 'ccwps_font_family', self::DEFAULT_FONT_FAMILY );
+		}
 	}
 
 	private static function create_tables(): void {
@@ -140,7 +155,7 @@ class CCWPS_Activator {
 			'cloud_bg_opacity'     => 70,
 			'btn_text_color'       => '#ffffff',
 			'btn_border_radius'    => 8,
-			'font_family'          => 'inherit',
+			'font_family'          => self::DEFAULT_FONT_FAMILY,
 			// Banner box shape
 			'banner_border_radius' => 12,
 			'banner_shadow'        => '',

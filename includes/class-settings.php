@@ -265,7 +265,7 @@ class CCWPS_Settings {
 				'toggleOnColor'     => $s['toggle_on_color']    ?: $s['primary_color'],
 				'alwaysOnColor'     => $s['always_on_color']    ?: $s['primary_color'],
 			],
-			'fontFamily' => $s['font_family'],
+			'fontFamily' => (string) $opt( $s, 'font_family', '\'Poppins\', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' ),
 			'i18n' => $current_i18n,
 			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 			'nonce'   => wp_create_nonce( 'ccwps_consent' ),

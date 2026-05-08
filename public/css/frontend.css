@@ -3,6 +3,30 @@
    All selectors scoped, no global leaks
    ============================================ */
 
+@font-face {
+	font-family: 'Poppins';
+	src: url('../fonts/Poppins-Regular.ttf') format('truetype');
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Poppins';
+	src: url('../fonts/Poppins-Medium.ttf') format('truetype');
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Poppins';
+	src: url('../fonts/Poppins-SemiBold.ttf') format('truetype');
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+}
+
 /* --- Default CSS variables --- */
 :root {
 	--ccwps-primary:    #1a73e8;
@@ -27,7 +51,7 @@
 	--ccwps-overlay:    rgba(17,24,39,.52);
 	--ccwps-r:          12px;
 	--ccwps-r-sm:       8px;
-	--ccwps-font:       -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+	--ccwps-font:       'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 /* --- Scoped resets (only inside our containers) --- */

@@ -4,7 +4,7 @@ Tags: cookie consent, GDPR, cookie banner, ePrivacy, consent mode
 Requires at least: 5.9
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,9 +74,32 @@ Automatically asks users to re-consent when the cookie list changes, keeping you
 
 This plugin is designed to help you comply with GDPR, ePrivacy Directive and similar legislation. However, compliance ultimately depends on your specific implementation and jurisdiction. We recommend consulting a legal professional.
 
+== External services ==
+
+= Google Tag Manager (optional) =
+
+This plugin can load Google Tag Manager only when you provide a GTM Container ID in plugin settings. If the field is empty, the plugin does not load GTM.
+
+When enabled, the browser requests resources from Google domains (for example `www.googletagmanager.com`) and sends standard technical request data required by HTTP, typically including IP address, user agent, referrer, and request metadata.
+
+Service provider: Google Ireland Limited / Google LLC
+Terms of Service: https://policies.google.com/terms
+Privacy Policy: https://policies.google.com/privacy
+
+= Matomo tracking script (optional) =
+
+This plugin can load Matomo only when you configure Matomo URL and Site ID in plugin settings. The script source is your configured Matomo endpoint.
+
+When enabled, the browser requests Matomo script resources and sends tracking requests (such as page view events) to the configured Matomo server according to your Matomo setup and consent state.
+
+Service provider: your configured Matomo host (self-hosted or Matomo Cloud)
+Terms: depends on your Matomo provider
+Privacy: depends on your Matomo provider
+Matomo legal docs (for Matomo Cloud reference): https://matomo.org/terms/ and https://matomo.org/privacy-policy/
+
 == Installation ==
 
-1. Upload the `web-pixel-studio-cookie-consent-for-eu` folder to `/wp-content/plugins/`, or install through the WordPress Plugins screen.
+1. Upload the `web-pixel-studio-cookie-consent-eu` folder to `/wp-content/plugins/`, or install through the WordPress Plugins screen.
 2. Activate the plugin.
 3. Go to **Cookie Consent** in your WordPress admin menu.
 4. In **Nastavenia** (Settings): enable consent logging, bot detection and re-consent. Select your Consent Mode version. Enter your GTM Container ID if applicable.
@@ -123,6 +146,16 @@ The consent cookie is set client-side (not httpOnly) so the frontend can read it
 10. Admin – About tab
 
 == Changelog ==
+
+= 1.0.7 =
+* Switched to local Poppins font (Regular, Medium, SemiBold) – removed all Google Fonts dependencies. No external font requests are made by the plugin.
+* Added upgrade migration: existing installations with empty or inherited font setting are automatically updated to the Poppins stack.
+* Changed font detection in Appearance tab to manual-only: fonts are detected only when the admin clicks "Detect used fonts", preventing automatic remote requests on page load.
+* Added "Detect used fonts" button with nonce protection and per-click cache.
+* Added translations for new font-detection UI across all 9 supported admin languages.
+* Updated text domain slug to match WordPress.org plugin directory slug (web-pixel-studio-cookie-consent-eu).
+* Added "External services" section to readme disclosing optional GTM and Matomo remote resource loading as required by WordPress.org guidelines.
+* Renamed GTM template files and POT file to match the corrected plugin slug.
 
 = 1.0.6 =
 * Updated plugin display name for consistency across the admin panel and WordPress plugin repository.
@@ -185,6 +218,9 @@ The consent cookie is set client-side (not httpOnly) so the frontend can read it
 * Added predefined cookie and script presets for Google Analytics, Google Ads and Facebook Pixel
 
 == Upgrade Notice ==
+
+= 1.0.7 =
+Compliance and font update: removes Google Fonts dependency (uses local Poppins instead), switches font detection to manual-only to prevent automatic remote requests, corrects text domain slug for WordPress.org, and adds required external services disclosure.
 
 = 1.0.6 =
 Updates plugin name, removes Powered by link from the banner, improves import/export reliability, and removes the REST API endpoint.

@@ -1513,7 +1513,7 @@ class CCWPS_Admin {
 
 		<div class="ccwps-card">
 			<h2><?php esc_html_e( 'Autor a podpora', 'web-pixel-studio-cookie-consent-eu' ); ?></h2>
-			<p><?php esc_html_e( 'Plugin vytvoril Web Pixel Studio. Pre otázky, návrhy alebo hlásenie chýb nás kontaktujte na:', 'web-pixel-studio-cookie-consent-eu' ); ?> <a href="https://wps.sk" target="_blank" rel="noopener">wps.sk</a></p>
+			<p><?php esc_html_e( 'Plugin vytvoril Web Pixel Studio. Pre otázky, návrhy alebo hlásenie chýb nás kontaktujte na:', 'web-pixel-studio-cookie-consent-eu' ); ?> <a href="mailto:contact@webpixelstudio.org">contact@webpixelstudio.org</a></p>
 			<p style="margin-top:8px;"><?php esc_html_e( 'Plugin je bezplatný a open-source pod licenciou GPL-2.0. Postavený na:', 'web-pixel-studio-cookie-consent-eu' ); ?> <a href="https://cookieconsent.orestbida.com/" target="_blank" rel="noopener">cookieconsent.orestbida.com</a></p>
 		</div>
 		<?php

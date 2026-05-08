@@ -7,7 +7,7 @@
 [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=flat&logo=instagram&logoColor=white)](https://www.instagram.com/tvorbawebov/)
 
 **Contributors:** duddi, wpssk, webpixelstudio  
-**Tags:** cookie consent, GDPR, cookie banner, ePrivacy, consent mode  
+**Tags:** cookie consent, GDPR, cookie banner, ePrivacy, google consent mode  
 **Requires at least:** 5.9  
 **Tested up to:** 6.9  
 **Stable tag:** 1.0.7  

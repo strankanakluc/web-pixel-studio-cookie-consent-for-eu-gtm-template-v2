@@ -1,6 +1,6 @@
 === Web Pixel Studio Cookie Consent for EU ===
 Contributors: duddi, wpssk, webpixelstudio
-Tags: cookie consent, GDPR, cookie banner, ePrivacy, consent mode
+Tags: cookie consent, GDPR, cookie banner, ePrivacy, google consent mode
 Requires at least: 5.9
 Tested up to: 6.9
 Requires PHP: 7.4
@@ -8,142 +8,342 @@ Stable tag: 1.0.7
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-GDPR/ePrivacy cookie consent manager for WordPress with Google Consent Mode v2/v3, script blocking, consent logging, and full banner customization.
+Modern GDPR/ePrivacy cookie consent plugin with Google Consent Mode v2/v3, Matomo support, script blocking and consent logging.
 
 == Description ==
 
-**Web Pixel Studio Cookie Consent for EU** is a comprehensive, fully customisable cookie consent solution for WordPress, built primarily for GDPR and EU cookie/ePrivacy compliance workflows. Built on the [orest bida cookieconsent library](https://cookieconsent.orestbida.com/), it extends it with a full WordPress admin panel, database consent logging and advanced script blocking.
+🚀 **Web Pixel Studio Cookie Consent for EU** helps WordPress websites comply with GDPR and ePrivacy requirements using a modern, fast and fully customizable consent solution.
 
-= What this plugin offers =
+Built on the powerful Orest Bida CookieConsent library, the plugin extends it with advanced WordPress features including:
 
-**Cookie Banner & Preferences Modal**
-A polished, accessible cookie banner (box, bar or cloud layout) with a full-screen preferences modal. Users can accept all, reject all or manage individual cookie categories: Necessary, Analytics, Targeting and Preferences. The banner supports 7 positions on screen and is fully animated.
+✔ Google Consent Mode v2 & v3  
+✔ Matomo integration (strict or anonymous mode)  
+✔ Script blocking before consent  
+✔ Consent logging with export  
+✔ Cookie declarations  
+✔ Floating consent icon  
+✔ Translation presets  
+✔ Full visual customization  
+✔ Import / Export settings  
+✔ Re-consent support  
+✔ No Google dependency required  
 
-**Google Consent Mode v2 & v3**
-Automatically outputs the correct default denied state in `<head>` before any scripts run. After the user makes a choice, signals are updated via `gtag('consent', 'update', ...)`. Supports both Consent Mode v2 (required for Google Ads and GA4 in the EU since March 2024) and Consent Mode v3 with enhanced developer ID signals. Optional automatic Google Tag Manager loading.
+Perfect for:
+- Businesses
+- WooCommerce stores
+- Agencies
+- Public sector websites
+- Schools & universities
+- Healthcare organizations
+- Privacy-focused projects
 
-**Consent Logging**
-Every consent is recorded in the database with a unique ID, IP address, URL, user agent and timestamp. The log is viewable in the admin panel and exportable as CSV. Records serve as proof of consent for GDPR audits.
+---
 
-**Script Blocking**
-Define URL patterns (plain text or regex) that match script `src` attributes. Matching scripts are blocked (type changed to `text/plain`) until the user consents to the corresponding category.
+= ✨ Main Features =
 
-**Cookie Declarations**
-Declare individual cookies per category with name, domain, expiration, path and description. Descriptions are shown to visitors in the preferences modal so they understand what each cookie does.
+= 🍪 Modern Cookie Banner & Preferences Modal =
 
-**Prebuilt Cookie & Script Presets**
-Add ready-made presets for Google Analytics, Google Ads, Facebook Pixel, Matomo Analytics and Matomo Tag Manager directly from the admin. Matching blocking rules can be added together with the declared cookies to speed up setup.
+Create a beautiful and accessible consent experience:
 
-**Matomo Modes (strict + anonymous option)**
-Configure Matomo URL and Site ID directly in plugin settings. By default, Matomo remains fully disabled after reject (strict mode). Optionally, you can allow anonymous cookieless measurement after reject and automatically switch to full tracking once analytics consent is granted later. Matomo can be fully self-hosted on your own server, making it the preferred choice for projects that need to keep all visitor data off third-party and Google infrastructure.
+- Box, Bar or Cloud layouts
+- 7 banner positions
+- Fully animated UI
+- Full-screen preferences modal
+- Accept All / Reject All / Manage Preferences
+- Category-based consent:
+  - Necessary
+  - Analytics
+  - Preferences
+  - Targeting
+- Mobile-friendly & accessible
 
-**No Google Dependency Required**
-The plugin works equally well with Matomo as your only analytics platform. If you want consent management without any reliance on Google services, simply skip Google Consent Mode and use Matomo in self-hosted mode. This makes the plugin a strong fit for public sector websites, government projects, schools, and healthcare organisations that must keep visitor data within their own infrastructure.
+---
 
-**Floating Consent Icon**
-After consent is given, a floating icon lets users re-open their preferences at any time. Clicking the icon first shows a small popup with the consent ID, date/time of consent, and two buttons: Close and Manage Consent.
+= 📊 Google Consent Mode v2 & v3 =
 
-**Shortcodes**
-- `[ccwps_consent_id]` – shows the visitor's current consent ID. Ideal for cookie policy pages.
-- `[ccwps_cookie_list]` – renders an automatic table of declared cookies grouped by category.
+Supports Google's latest consent requirements for EU traffic.
 
-**9 Language Presets**
-Built-in translations for: 🇸🇰 Slovak, 🇬🇧 English, 🇨🇿 Czech, 🇩🇪 German, 🇫🇷 French, 🇪🇸 Spanish, 🇵🇱 Polish, 🇭🇺 Hungarian, 🇮🇹 Italian. All frontend text is fully editable from the admin panel. The admin panel language and frontend translations can be switched with a single click.
+Features include:
+- Automatic default denied state
+- Consent updates via `gtag('consent', 'update', ...)`
+- Google Ads & GA4 compatibility
+- Consent Mode v2 support
+- Consent Mode v3 support
+- Optional Google Tag Manager loading
+- Enhanced developer ID signals
 
-**Full Visual Customisation**
-Primary colour, background, text colour, button text colour, button border radius, font family, banner layout (box/bar/cloud), banner position (7 options), floating icon type (cookie/shield/settings/lock) and icon position (4 options).
+---
 
-**Export / Import Settings**
-Export all plugin settings to a JSON file for backup or migration between sites. Import restores all settings in one click.
+= 📈 Matomo Integration (Privacy Friendly) =
 
-**Bot Detection**
-Automatically hides the banner from search engine crawlers and bots to prevent incorrect indexing.
+Use Matomo instead of Google Analytics.
 
-**Re-consent**
-Automatically asks users to re-consent when the cookie list changes, keeping you compliant with GDPR requirements for updated consent.
+Features:
+- Self-hosted friendly
+- Strict no-tracking mode
+- Optional anonymous cookieless tracking
+- Automatic consent switching
+- Dynamic script loading after consent
+- Matomo Analytics presets
+- Matomo Tag Manager presets
 
-**Admin Panel**
-- Left sidebar navigation with all sections
-- Preview buttons (banner and preferences modal) always visible in the sidebar
-- Tips and explanations for every setting (expandable)
-- Consent log with pagination and CSV export
-- About section with full documentation, step-by-step setup guide and GTM integration instructions
-- Prebuilt cookie and script presets in the popup forms for faster setup
+Ideal for websites that must keep visitor data fully under their own infrastructure.
 
-= GDPR & ePrivacy Compliance =
+---
 
-This plugin is designed to help you comply with GDPR, ePrivacy Directive and similar legislation. However, compliance ultimately depends on your specific implementation and jurisdiction. We recommend consulting a legal professional.
+= 🛡 Script Blocking =
+
+Prevent third-party scripts from loading before consent.
+
+Supports:
+- Plain text matching
+- Regex matching
+- Automatic script type conversion
+- Category-based unlocking
+- Google & Matomo presets
+
+---
+
+= 📝 Consent Logging =
+
+Store proof of consent in WordPress with unique Consent ID, timestamp, IP, user agent, URL, and consent choices. Includes admin log viewer, pagination, CSV export, and GDPR audit support.
+
+---
+
+= 📋 Cookie Declarations =
+
+Display transparent cookie information using `[ccwps_cookie_list]`. Each cookie entry includes name, domain, duration, path, description, and category.
+
+---
+
+= ⚡ Ready-Made Presets =
+
+Quickly configure popular services:
+
+- Google Analytics
+- Google Ads
+- Facebook Pixel
+- Matomo Analytics
+- Matomo Tag Manager
+
+Presets can automatically add:
+- Cookies
+- Script blocking rules
+
+---
+
+= 🌍 Translation & Localization =
+
+Includes built-in presets for:
+
+- 🇬🇧 English
+- 🇸🇰 Slovak
+- 🇨🇿 Czech
+- 🇩🇪 German
+- 🇫🇷 French
+- 🇪🇸 Spanish
+- 🇵🇱 Polish
+- 🇭🇺 Hungarian
+- 🇮🇹 Italian
+
+All texts are fully editable and frontend language switching is included.
+
+---
+
+= 🎨 Full Visual Customization =
+
+Customize nearly everything:
+
+- Primary color
+- Background color
+- Text colors
+- Border radius
+- Font family
+- Banner layouts
+- Banner positions
+- Floating icon type
+- Floating icon position
+- Custom logo support
+
+No coding required.
+
+---
+
+= 🔄 Import / Export Settings =
+
+Move configuration between websites instantly.
+
+Export includes:
+- Appearance
+- Cookies
+- Blocking rules
+- Translations
+- Branding
+- Settings
+
+---
+
+= 🤖 Bot Detection =
+
+Automatically hides the banner from:
+- Search engine crawlers
+- Bots
+- Automated indexing systems
+
+Helps avoid incorrect indexing and consent artifacts.
+
+---
+
+= ♻ Re-consent Support =
+
+Automatically requests new consent when:
+- Cookie declarations change
+- Categories change
+- Consent version changes
+
+Helps maintain GDPR compliance over time.
+
+---
+
+= 🧩 Shortcodes =
+
+`[ccwps_consent_id]`
+Displays the visitor consent ID.
+
+`[ccwps_cookie_list]`
+Displays an automatic cookie table grouped by category.
+
+Perfect for Privacy Policy and Cookie Policy pages.
+
+---
+
+= 🖥 Powerful Admin Panel =
+
+Modern WordPress admin experience with:
+
+- Sidebar navigation
+- Always-visible preview buttons
+- Expandable help sections
+- Consent log viewer
+- CSV export
+- Step-by-step setup documentation
+- GTM integration guide
+- Preset popups for faster setup
+
+---
+
+= 🔒 GDPR & ePrivacy Compliance =
+
+This plugin is designed to help websites comply with:
+
+- GDPR
+- ePrivacy Directive
+- EU cookie laws
+
+⚠ Compliance depends on your implementation and local jurisdiction. Always consult a legal professional when necessary.
 
 == External services ==
 
 = Google Tag Manager (optional) =
 
-This plugin can load Google Tag Manager only when you provide a GTM Container ID in plugin settings. If the field is empty, the plugin does not load GTM.
+The plugin loads Google Tag Manager only if a GTM Container ID is provided.
 
-When enabled, the browser requests resources from Google domains (for example `www.googletagmanager.com`) and sends standard technical request data required by HTTP, typically including IP address, user agent, referrer, and request metadata.
+When enabled, requests may be sent to Google domains such as:
+- `www.googletagmanager.com`
 
-Service provider: Google Ireland Limited / Google LLC
-Terms of Service: https://policies.google.com/terms
+Data may include:
+- IP address
+- User agent
+- Referrer
+- Request metadata
+
+Service provider: Google Ireland Limited / Google LLC  
+Terms of Service: https://policies.google.com/terms  
 Privacy Policy: https://policies.google.com/privacy
+
+---
 
 = Matomo tracking script (optional) =
 
-This plugin can load Matomo only when you configure Matomo URL and Site ID in plugin settings. The script source is your configured Matomo endpoint.
+The plugin loads Matomo only when configured in plugin settings.
 
-When enabled, the browser requests Matomo script resources and sends tracking requests (such as page view events) to the configured Matomo server according to your Matomo setup and consent state.
+Tracking requests are sent to your configured Matomo server according to your setup and consent state.
 
-Service provider: your configured Matomo host (self-hosted or Matomo Cloud)
-Terms: depends on your Matomo provider
-Privacy: depends on your Matomo provider
-Matomo legal docs (for Matomo Cloud reference): https://matomo.org/terms/ and https://matomo.org/privacy-policy/
+Service provider:
+- Self-hosted Matomo
+- Matomo Cloud
+
+Terms & privacy depend on your provider.
+
+Matomo references:
+- https://matomo.org/terms/
+- https://matomo.org/privacy-policy/
 
 == Installation ==
 
-1. Upload the `web-pixel-studio-cookie-consent-eu` folder to `/wp-content/plugins/`, or install through the WordPress Plugins screen.
+1. Upload the plugin to `/wp-content/plugins/` or install via the WordPress Plugins screen.
 2. Activate the plugin.
-3. Go to **Cookie Consent** in your WordPress admin menu.
-4. In **Nastavenia** (Settings): enable consent logging, bot detection and re-consent. Select your Consent Mode version. Enter your GTM Container ID if applicable.
-5. In **Preklady** (Translations): select your language preset or edit texts manually.
-6. In **Vzhľad** (Appearance): customise colours, layout and icon.
-7. In **Cookies**: declare all cookies your site uses.
-8. In **Blokovanie skriptov** (Script Blocking): add blocking rules for third-party scripts.
-9. Add `[ccwps_cookie_list]` and `[ccwps_consent_id]` to your Cookie Policy page.
-10. Test in an incognito window.
+3. Open **Cookie Consent** in the WordPress admin.
+4. Configure:
+   - Consent Mode
+   - Cookies
+   - Script blocking
+   - Appearance
+   - Translations
+5. Add:
+   - `[ccwps_cookie_list]`
+   - `[ccwps_consent_id]`
+   to your Cookie Policy page.
+6. Test using an incognito window.
 
 == Frequently Asked Questions ==
 
 = Does this support Google Consent Mode v2? =
 
-Yes. The plugin outputs the correct default denied state and updates all Google signals after user interaction. Both v2 and v3 are supported.
+Yes. The plugin supports both Consent Mode v2 and v3.
+
+---
 
 = Can I block third-party scripts? =
 
-Yes. The Script Blocking tab lets you define URL patterns. Matching scripts have their `type` changed to `text/plain` until the user consents.
+Yes. Scripts can be blocked until consent is granted using URL or regex matching.
+
+---
 
 = Where is consent data stored? =
 
-In your WordPress database in a dedicated table (`wp_ccwps_consent_log`). You can view, export and clear this data from the Consent Log tab.
+Inside your WordPress database in:
+`wp_ccwps_consent_log`
+
+---
 
 = Can I translate the banner? =
 
-Yes. All frontend strings are editable in the Translations tab. 9 language presets are included. The plugin also supports `.po`/`.mo` translation files.
+Yes. All frontend texts are editable and 9 language presets are included.
+
+---
+
+= Is Google required? =
+
+No. The plugin works perfectly with self-hosted Matomo and without any Google services.
+
+---
 
 = Is the consent cookie httpOnly? =
 
-The consent cookie is set client-side (not httpOnly) so the frontend can read it to restore the user's choice without a server round-trip. This is standard practice for consent management.
+No. The cookie is intentionally readable by frontend scripts so user preferences can be restored without server requests.
 
 == Screenshots ==
 
-1. Cookie consent banner (box layout)
-2. Preferences modal with category toggles and cookie table
-3. Floating icon consent info popup
-4. Admin – Settings tab with Consent Mode radio buttons
-5. Admin – Appearance tab
-6. Admin – Translations tab with language presets
-7. Admin – Cookie declarations
-8. Admin – Script blocking rules
-9. Admin – Consent log
-10. Admin – About tab
+1. Modern cookie banner
+2. Preferences modal
+3. Floating consent icon popup
+4. Admin – Settings
+5. Admin – Appearance
+6. Admin – Cookie declarations
+7. Admin – Script blocking
+8. Admin – Consent log
+
 
 == Changelog ==
 
@@ -157,88 +357,7 @@ The consent cookie is set client-side (not httpOnly) so the frontend can read it
 * Added "External services" section to readme disclosing optional GTM and Matomo remote resource loading as required by WordPress.org guidelines.
 * Renamed GTM template files and POT file to match the corrected plugin slug.
 
-= 1.0.6 =
-* Updated plugin display name for consistency across the admin panel and WordPress plugin repository.
-* Removed "Powered by" link from banner output to keep frontend completely unbranded.
-* Revised import and export settings flow: improved field handling to prevent data loss on partial imports and avoid overwriting fields not included in the exported file.
-* Removed REST API endpoint registration that was previously used for internal consent handling.
-
-= 1.0.5 =
-* Fixed fatal activation error caused by missing closing brace in admin class.
-* Replaced frontend inline style output in cookie list shortcode with styles loaded from the enqueued frontend stylesheet.
-* Updated plugin branding rename consistency (new main plugin filename, GTM template filenames, and translation POT filename).
-* Updated sidebar author link to https://webpixelstudio.org.
-
-= 1.04 =
-* Added plugin action link for direct access to Cookie Consent settings from the Plugins list.
-* Removed Powered by text from banner layouts; branding remains available in the floating consent tip popup.
-* Removed editable Powered by field from Translations settings to keep frontend branding consistent.
-* Improved frontend i18n fallback handling for consent labels and cookie table headers across all supported languages.
-* Added missing language preset keys for consent ID label and cookie table headers in all language presets.
-* Added new cookie preset groups: Google Targeting and Google Preferences.
-* Added automatic script-blocking presets for the new Google Targeting and Google Preferences preset groups.
-* Improved Google Targeting blocking rules to use more specific ad/targeting endpoints instead of broad google.com matching.
-* Added multilingual preset descriptions for the new Google cookies and localized preset durations in admin preset workflow.
-* Added frontend runtime localization for preset cookie descriptions based on the active banner language.
-
-= 1.0.3 =
-* Added Matomo integration settings (Matomo URL + Site ID) in the Settings tab.
-* Added new Matomo behavior toggle: strict no-tracking after reject (default) or optional anonymous cookieless measurement after reject.
-* Added automatic Matomo consent switching to full tracking when analytics consent is granted later.
-* Fixed duplicate Matomo pageview call on initial page load when existing analytics consent was already stored.
-* Fixed strict Matomo mode: script is now lazy-loaded only after analytics consent is granted, preventing early script execution.
-* Added new cookie presets for Matomo Analytics and Matomo Tag Manager.
-* Added new script blocking presets for Matomo Analytics and Matomo Tag Manager with dynamic host-scoped regex (www + non-www).
-* Added Matomo integration guidance in the About tab.
-* Added installation screenshots with lightbox preview for Matomo Tag setup directly in the Settings tab.
-* Added bulk delete functionality with checkboxes and select-all in the Cookies and Blocking lists.
-* Added translations for all new admin texts (Matomo settings, bulk actions, screenshot labels) across all 8 supported languages.
-
-= 1.0.2 =
-* Fixed banner visibility regression where the banner could lose fixed positioning and appear only after scrolling.
-* Added Branding options for custom banner logo: upload, preview, width control, and optional clickable logo URL.
-* Improved banner layouts with refined Box/Bar/Cloud rendering, spacing, and alignment behavior.
-* Enhanced Cloud visual style with a cleaner frosted-glass look and improved readability.
-* Added Bar-specific behavior for banner position: only "Top center" and "Bottom center" are available, with automatic default to "Bottom center".
-* Improved admin usability with an additional sidebar "Save settings" action button.
-* Expanded admin translations and wording coverage across supported languages for newly added options.
-* Improved export/import reliability so full configuration is preserved, including custom texts, colors, logos/icons, cookies, and block rules.
-
-= 1.0.1 =
-* Added grouped cookie presets and script-blocking presets directly in popup forms for faster setup.
-* Added automatic pairing of blocking rules when applying cookie presets.
-* Added automatic insertion of required plugin cookies (`ccwps_consent`, `ccwps_version`) if missing.
-* Improved preset domain normalization to use shared subdomain format (for example `.example.com` without forced `www`).
-* Improved frontend translation consistency for the Necessary label "Always active" across language presets and browser language detection.
-* Updated preset UI so the "Apply preset" action uses the primary action button style.
-* Expanded and synced preset/admin translations across supported languages.
-
-= 1.0.0 =
-* Initial release
-* Added predefined cookie and script presets for Google Analytics, Google Ads and Facebook Pixel
-
 == Upgrade Notice ==
 
 = 1.0.7 =
-Compliance and font update: removes Google Fonts dependency (uses local Poppins instead), switches font detection to manual-only to prevent automatic remote requests, corrects text domain slug for WordPress.org, and adds required external services disclosure.
-
-= 1.0.6 =
-Updates plugin name, removes Powered by link from the banner, improves import/export reliability, and removes the REST API endpoint.
-
-= 1.0.5 =
-Maintenance and compliance release: fixes fatal activation issue, moves shortcode inline CSS to enqueued stylesheet for WordPress.org compliance, completes renamed file consistency, and updates sidebar author URL.
-
-= 1.04 =
-Adds plugin settings quick link, new Google Targeting/Preferences presets with auto-block rules, improved localization for consent labels and cookie descriptions, and removes Powered by from banner layouts (still shown in consent tip popup).
-
-= 1.0.3 =
-Adds Matomo integration (URL + Site ID) with strict no-tracking and optional anonymous mode, fixes duplicate pageview and lazy-loading behavior, adds Matomo cookie/blocking presets, introduces bulk delete in Cookies and Blocking lists, and expands translations.
-
-= 1.0.2 =
-Includes major 1.0.2 improvements: banner visibility fix, new Branding options (custom logo + link), refined layouts, stronger translation coverage, and more reliable full export/import roundtrip.
-
-= 1.0.1 =
-Improves presets workflow, localization consistency, and admin UI polish.
-
-= 1.0.0 =
-Initial release.
+Removes Google Fonts dependency, improves compliance, updates text domain naming consistency, and adds required external services disclosure for WordPress.org.

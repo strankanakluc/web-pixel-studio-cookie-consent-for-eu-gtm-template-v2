@@ -4,7 +4,7 @@ Tags: cookie consent, GDPR, cookie banner, ePrivacy, google consent mode
 Requires at least: 5.9
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -349,6 +349,12 @@ No. The cookie is intentionally readable by frontend scripts so user preferences
 
 == Changelog ==
 
+= 1.0.9 =
+* Added translations for all 34 admin UI messages (Settings saved, errors, confirmations, etc.) across all 8 supported languages.
+* Localized [ccwps_cookie_list] shortcode to use visitor-detected language when "Language by visitor" is enabled.
+* Improved cookie list shortcode with data attributes to support dynamic language switching in JavaScript.
+* Enhanced frontend i18n initialization to update language when visitor language detection is active.
+
 = 1.0.8 =
 * Added new cookie presets for Hotjar and Sourcebuster (sbjs), including default domain placeholders, categories, and expiration values.
 * Added new script-blocking presets for Hotjar and Sourcebuster with precise regex-based source matching.
@@ -367,6 +373,9 @@ No. The cookie is intentionally readable by frontend scripts so user preferences
 * Renamed GTM template files and POT file to match the corrected plugin slug.
 
 == Upgrade Notice ==
+
+= 1.0.9 =
+Adds complete translations for admin UI messages in all languages and localizes cookie list shortcode output to match detected visitor language. No breaking changes.
 
 = 1.0.8 =
 Adds Hotjar and Sourcebuster cookie/blocking presets, expands localized preset descriptions and expirations across all supported languages, and improves frontend language behavior for preset texts in both consent modal and cookie list output.

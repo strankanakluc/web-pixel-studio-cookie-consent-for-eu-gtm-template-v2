@@ -10,7 +10,7 @@
 **Tags:** cookie consent, GDPR, cookie banner, ePrivacy, google consent mode  
 **Requires at least:** 5.9  
 **Tested up to:** 6.9  
-**Stable tag:** 1.0.8  
+**Stable tag:** 1.0.9  
 **License:** GPL-2.0-or-later  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -296,6 +296,10 @@ Yes. The plugin includes shortcodes for the cookie list and for displaying the c
 - Added predefined cookie and blocking presets for Google Analytics, Google Ads, and Facebook Pixel
 
 ## Upgrade Notice
+
+### 1.0.9
+
+Adds complete translations for all admin UI messages (Settings saved, errors, confirmations, etc.) in all languages, and localizes the [ccwps_cookie_list] shortcode output to use detected visitor language when language detection is enabled.
 
 ### 1.0.8
 

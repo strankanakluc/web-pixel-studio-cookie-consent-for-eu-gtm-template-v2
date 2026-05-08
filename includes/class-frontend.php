@@ -362,21 +362,29 @@ class CCWPS_Frontend {
 			return '<p>' . esc_html__( 'Žiadne cookies nie sú deklarované.', 'web-pixel-studio-cookie-consent-eu' ) . '</p>';
 		}
 
+		// Store labels for JS localization when detectVisitorLanguage is enabled
+		$detect_visitor_lang = $s->get( 'frontend_detect_visitor_language' ) ? 'true' : 'false';
+		$data_attrs = ' data-ccwps-cookie-list="true" data-ccwps-detect-lang="' . esc_attr( $detect_visitor_lang ) . '"';
+		$data_attrs .= ' data-label-necessary="' . esc_attr( $cat_labels['necessary'] ) . '"';
+		$data_attrs .= ' data-label-analytics="' . esc_attr( $cat_labels['analytics'] ) . '"';
+		$data_attrs .= ' data-label-targeting="' . esc_attr( $cat_labels['targeting'] ) . '"';
+		$data_attrs .= ' data-label-preferences="' . esc_attr( $cat_labels['preferences'] ) . '"';
+
 		ob_start();
 		?>
-		<div class="<?php echo esc_attr( $atts['class'] ); ?>">
+		<div class="<?php echo esc_attr( $atts['class'] ); ?>"<?php echo $data_attrs; ?>>
 		<?php foreach ( $cookies_by_cat as $cat => $cookies ) :
 			if ( empty( $cookies ) ) continue;
 			?>
-			<h3 class="ccwps-cl-cat-title"><?php echo esc_html( $cat_labels[ $cat ] ?? ucfirst( $cat ) ); ?></h3>
+			<h3 class="ccwps-cl-cat-title" data-ccwps-cat="<?php echo esc_attr( $cat ); ?>"><?php echo esc_html( $cat_labels[ $cat ] ?? ucfirst( $cat ) ); ?></h3>
 			<div class="ccwps-cl-table-wrap">
 				<table class="ccwps-cl-table">
 					<thead>
 						<tr>
-							<th><?php echo esc_html( $s->get( 'lang_cookie_name', 'Názov' ) ); ?></th>
-							<th><?php echo esc_html( $s->get( 'lang_cookie_domain', 'Doména' ) ); ?></th>
-							<th><?php echo esc_html( $s->get( 'lang_cookie_expiration', 'Platnosť' ) ); ?></th>
-							<th><?php echo esc_html( $s->get( 'lang_cookie_description', 'Popis' ) ); ?></th>
+							<th data-ccwps-col="name"><?php echo esc_html( $s->get( 'lang_cookie_name', 'Názov' ) ); ?></th>
+							<th data-ccwps-col="domain"><?php echo esc_html( $s->get( 'lang_cookie_domain', 'Doména' ) ); ?></th>
+							<th data-ccwps-col="expiration"><?php echo esc_html( $s->get( 'lang_cookie_expiration', 'Platnosť' ) ); ?></th>
+							<th data-ccwps-col="description"><?php echo esc_html( $s->get( 'lang_cookie_description', 'Popis' ) ); ?></th>
 						</tr>
 					</thead>
 					<tbody>

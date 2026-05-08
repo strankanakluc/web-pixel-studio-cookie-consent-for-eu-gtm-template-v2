@@ -9,6 +9,12 @@
 	var col   = C.colors || {};
 	var activeFrontendLang = resolveFrontendLanguage();
 	var i18n  = resolveFrontendI18n();
+	var initialAdminLang = C.currentFrontendLang; // Track if lang changed from admin_lang
+
+	// Update i18n if visitor language was detected
+	if (C.detectVisitorLanguage && activeFrontendLang !== initialAdminLang) {
+		i18n = resolveFrontendI18n();
+	}
 
 	/* ---------- SVG icons ---------- */
 	var ICONS = {
@@ -642,6 +648,30 @@
 
 		for (var ti = 0; ti < tables.length; ti++) {
 			var table = tables[ti];
+			
+			// Get parent container with data attributes
+			var container = table.closest('[data-ccwps-cookie-list="true"]');
+			var catLabels = {};
+			if (container) {
+				catLabels.necessary = container.getAttribute('data-label-necessary');
+				catLabels.analytics = container.getAttribute('data-label-analytics');
+				catLabels.targeting = container.getAttribute('data-label-targeting');
+				catLabels.preferences = container.getAttribute('data-label-preferences');
+			}
+
+			// Localize category titles
+			var catTitles = table.parentElement.querySelector('.ccwps-cl-cat-title');
+			if (catTitles) {
+				var catTitles = table.closest('[data-ccwps-cat]');
+				if (catTitles) {
+					var cat = catTitles.getAttribute('data-ccwps-cat');
+					if (cat && catLabels[cat]) {
+						catTitles.textContent = catLabels[cat];
+					}
+				}
+			}
+			
+			// Localize column headers
 			var ths = table.querySelectorAll('thead th');
 			if (ths.length >= 4) {
 				ths[0].textContent = i18n.cookieName || ths[0].textContent;

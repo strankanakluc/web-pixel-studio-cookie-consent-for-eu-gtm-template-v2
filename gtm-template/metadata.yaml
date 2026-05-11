@@ -1,0 +1,16 @@
+homepage: "https://webpixelstudio.com"
+documentation: "https://webpixelstudio.com/cookie-consent-documentation"
+versions:
+  - sha: "0000000000000000000000000000000000000000"
+    changeNotes: |
+      Initial release of Web Pixel Studio Cookie Consent for EU template
+      - Full Google Consent Mode 2.0 support
+      - EU GDPR and EDPB compliance
+      - Multi-region ISO 3166-2 code support
+      - All 7 consent types (ad_storage, ad_user_data, ad_personalization, analytics_storage, functionality_storage, personalization_storage, security_storage)
+      - Optional ads data redaction
+      - Optional URL passthrough
+      - Developer ID support
+      - Cookie-based consent reading
+      - Consent change callback support
+      - Debug mode for troubleshooting

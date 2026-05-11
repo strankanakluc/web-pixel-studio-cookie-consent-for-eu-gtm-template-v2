@@ -301,3 +301,36 @@ V Google Analytics: GA4 Configuration tagu:
 - Rozšírené nastavenia → Nastavenia súhlasu
 - Zaškrtnúť: **Vyžadovať ďalší súhlas na spustenie tagu**
 - Typ súhlasu: `analytics_storage`
+
+
+___TERMS_OF_SERVICE___
+
+By using this Google Tag Manager template, you agree to the following terms:
+
+## License
+This template is provided as-is by Web Pixel Studio under the MIT License.
+
+## Usage Rights
+You may use this template in your Google Tag Manager containers for the purposes of managing user consent in compliance with applicable laws and regulations, including but not limited to GDPR, EDPB guidelines, and other EU regulations.
+
+## Disclaimer
+- This template is provided "AS IS" without warranties of any kind, express or implied.
+- The author assumes no responsibility for any data loss, legal non-compliance, or damages resulting from the use of this template.
+- It is your responsibility to ensure that your use of this template complies with all applicable laws and regulations in your jurisdiction.
+- You are responsible for properly implementing and testing this template before deploying it to production.
+
+## Data Protection
+- This template processes user consent information and may interact with cookies and consent data.
+- You are responsible for maintaining appropriate privacy policies and obtaining valid user consent in accordance with applicable laws.
+- You agree to comply with all applicable data protection regulations when using this template.
+
+## No Guarantee of Compliance
+- While this template is designed with GDPR and EDPB guidelines in mind, Web Pixel Studio makes no guarantee that your specific implementation will be fully compliant with all applicable laws.
+- You should have your implementation reviewed by legal counsel to ensure compliance with your jurisdiction's requirements.
+
+## Support
+- Support for this template is provided on a best-effort basis.
+- Web Pixel Studio reserves the right to update, modify, or discontinue this template at any time.
+
+## Liability Limitation
+In no event shall Web Pixel Studio be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to lost profits, lost data, or lost business opportunity.

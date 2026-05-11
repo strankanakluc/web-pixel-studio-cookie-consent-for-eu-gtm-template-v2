@@ -258,16 +258,11 @@ Denied: ad_storage, ad_user_data, ad_personalization, analytics_storage, persona
 - **Homepage**: https://webpixelstudio.com
 - **Documentation**: https://webpixelstudio.com/cookie-consent-documentation
 - **Support Email**: support@webpixelstudio.com
-
-## License
-
-Apache License 2.0, check the LICENSE file.
 - **Issue Tracker**: https://github.com/strankanakluc/web-pixel-studio-cookie-consent-for-eu-gtm-template-v2/issues
 
 ## License
 
-This template is distributed under the **Apache License 2.0**.
-See the [LICENSE](LICENSE) file for details.
+Apache License 2.0, check the LICENSE file.
 
 ## Version History
 

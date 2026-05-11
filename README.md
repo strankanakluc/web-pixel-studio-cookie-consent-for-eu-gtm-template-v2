@@ -255,9 +255,9 @@ Denied: ad_storage, ad_user_data, ad_personalization, analytics_storage, persona
 
 ## Support & Documentation
 
-- **Homepage**: https://webpixelstudio.com
-- **Documentation**: https://webpixelstudio.com/cookie-consent-documentation
-- **Support Email**: support@webpixelstudio.com
+- **Homepage**: https://webpixelstudio.org
+- **Documentation**: https://webpixelstudio.org/cookie-consent-documentation
+- **Support Email**: support@webpixelstudio.org
 - **Issue Tracker**: https://github.com/strankanakluc/web-pixel-studio-cookie-consent-for-eu-gtm-template-v2/issues
 
 ## License
